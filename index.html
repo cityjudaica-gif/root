@@ -179,6 +179,8 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--c)}
 .badge i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+.by-surname{display:inline-block;margin-right:6px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.note{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;color:var(--muted);margin-bottom:12px}
 .kind{font-size:12px;color:var(--faint);font-weight:600;text-align:right}
 .person{display:flex;gap:12px;align-items:center}
 .avatar{flex:0 0 52px;height:52px;border-radius:14px;background:color-mix(in srgb,var(--c) 18%,var(--bg-2));display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--c);overflow:hidden}
@@ -366,6 +368,7 @@ footer a{color:var(--text)}
       <div class="layout">
         <div>
           <div id="errors"></div>
+          <div id="note"></div>
           <div class="grid" id="grid"></div>
           <div class="more" id="moreWrap" hidden><button class="pill-btn" id="moreBtn" type="button" data-i18n="showMore"></button></div>
         </div>
@@ -498,6 +501,8 @@ const I18N = {
     kinds: { person: "Профиль", record: "Архивная запись", news: "Газета", book: "Книга", article: "Статья", image: "Фото / документ", nara: "Архивный документ" },
     errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
     openOnSite: "Открыть поиск на сайте источника",
+    bySurname: "по фамилии",
+    surnameNote: (f, l, srcs) => `Точных совпадений с именем «${f}» нет в: ${srcs}. Там показаны все ${l} — в документах имя часто записано иначе (полная форма, на идиш, по-немецки).`,
     errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов).",
       needProxy: "Этот сайт не принимает запросы из браузера напрямую. Владельцу сайта: настройте посредник на Cloudflare (PROXY_URL, см. README).",
       booksKey: "Закончился общий лимит Google без ключа. Владельцу сайта: добавьте GOOGLE_BOOKS_KEY (см. README).",
@@ -550,6 +555,8 @@ const I18N = {
     kinds: { person: "Profile", record: "Archive record", news: "Newspaper", book: "Book", article: "Article", image: "Photo / document", nara: "Archival record" },
     errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
     openOnSite: "Open search on the source's website",
+    bySurname: "surname only",
+    surnameNote: (f, l, srcs) => `No exact matches for the first name “${f}” in: ${srcs}. Showing all ${l} records there — old records often spell first names differently.`,
     errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked).",
       needProxy: "This site doesn't accept direct browser requests. Site owner: set up the Cloudflare proxy (PROXY_URL, see README).",
       booksKey: "Google's shared keyless quota is exhausted. Site owner: add GOOGLE_BOOKS_KEY (see README).",
@@ -670,7 +677,7 @@ const API = {
     };
     let list = [];
     if (q.latFirst){ const p1 = new URLSearchParams(p); p1.set("FirstName", q.latFirst); list = await call(p1); }
-    if (!list.length) list = await call(p);   // имя в документах могло писаться иначе — ищем по фамилии
+    else list = await call(p);
     return list.map(m => ({
       source: "wikitree", kind: "person",
       name: [m.FirstName, m.MiddleName, m.LastNameAtBirth].filter(Boolean).join(" ") + (m.LastNameCurrent && m.LastNameCurrent !== m.LastNameAtBirth ? ` (${m.LastNameCurrent})` : ""),
@@ -1023,7 +1030,7 @@ function cardHTML(r, i){
       ${r.snippet ? `<div class="snippet">${highlight(r.snippet)}</div>` : ""}`;
   }
   return `<article class="card" data-kind="${r.kind}" style="--c:${colorOf(r.source)};animation-delay:${Math.min(i % PAGE_SIZE, 12) * 30}ms">
-    <div class="card-top"><span class="badge"><i></i>${esc(src)}</span><span class="kind">${esc(kind)}</span></div>
+    <div class="card-top"><span class="badge"><i></i>${esc(src)}</span><span class="kind">${r.bySurname ? `<span class="by-surname">${esc(t("bySurname"))}</span>` : ""}${esc(kind)}</span></div>
     ${body}
     <div class="card-foot"><a class="open" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t("open"))} ${ICON.ext}</a>
     <button class="copy" type="button" data-copy="${esc(r.name + (r.birth ? " (" + r.birth + (r.death ? "–" + r.death : "") + ")" : "") + " — " + r.url)}">${esc(t("copy"))}</button></div>
@@ -1080,6 +1087,8 @@ function renderStatus(){
     html += `<button type="button" class="status ${state.filter === s.id ? "active" : ""} ${st.state === "error" ? "err" : ""}" style="--c:${s.color}" data-filter="${s.id}"><span class="dot"></span>${esc(t("src")[s.id][0])} ${inner}</button>`;
   }
   $("#statusRow").innerHTML = html;
+  const fb = SOURCES.filter(s => state.items.some(r => r.source === s.id && r.bySurname)).map(s => t("src")[s.id][0]);
+  $("#note").innerHTML = fb.length && state.q.first ? `<div class="note">${esc(t("surnameNote", state.q.first, state.q.latLast, fb.join(", ")))}</div>` : "";
   $("#errors").innerHTML = SOURCES.filter(s => state.status[s.id] && state.status[s.id].state === "error")
     .map(s => `<div class="err-box">${t("errSource", t("src")[s.id][0], API["searchUrl_" + s.id](state.q))}<br><small>${esc(t("errReason")[state.status[s.id].reason] || state.status[s.id].reason)}</small></div>`).join("");
 }
@@ -1141,7 +1150,12 @@ async function runSearch(){
 
   await Promise.all(active.map(async s => {
     try {
-      const res = await API[s.id](q);
+      let res = await API[s.id](q);
+      // Имя в документах часто записано иначе — если по имени и фамилии ничего нет, ищем по фамилии
+      if (!res.length && (q.first || q.latFirst)){
+        res = await API[s.id]({ ...q, first: "", latFirst: "" });
+        res.forEach(r => r.bySurname = true);
+      }
       if (run !== state.runId) return;
       state.items.push(...res.filter(r => keep(r, q)));
       state.status[s.id] = { state: "done" };
