@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>RootFinder — Поиск людей в открытых архивах</title>
-<meta name="description" content="Легальный поиск людей по открытым генеалогическим базам мира" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
 :root { --bg:#0a0a0f; --bg-elev:#14141c; --bg-elev-2:#1c1c28; --border:#262633; --text:#e8e8f0; --text-dim:#8a8a9a; --text-faint:#5a5a6a; --accent:#7c5cff; --accent-hover:#9277ff; --accent-2:#00d4ff; --success:#10b981; }
@@ -126,7 +125,7 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
   <p class="tagline">Поиск людей в открытых генеалогических архивах мира</p>
 
   <form class="home-search" id="homeForm">
-    <input type="text" id="homeInput" placeholder="Имя человека (например: Иван Петров)..." autocomplete="off" autofocus />
+    <input type="text" id="homeInput" placeholder="Имя человека (например: John Smith)..." autocomplete="off" autofocus />
     <button type="submit">Найти человека</button>
   </form>
 
@@ -142,8 +141,6 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
     <div class="source-pill"><span class="dot"></span>WikiTree — профили людей</div>
     <div class="source-pill"><span class="dot"></span>Wikidata — база знаний</div>
     <div class="source-pill"><span class="dot"></span>CWGC — военные мемориалы</div>
-    <div class="source-pill"><span class="dot"></span>Open Archives — Нидерланды</div>
-    <div class="source-pill"><span class="dot"></span>GenealogieOnline — Нидерланды</div>
   </div>
 </div>
 
@@ -195,7 +192,7 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
 
   <footer>
     <p>© 2026 RootFinder. Поиск только по людям через официальные открытые API.</p>
-    <p>Источники: WikiTree, Wikidata, CWGC, Open Archives, GenealogieOnline. Все права принадлежат правообладателям.</p>
+    <p>Источники: WikiTree, Wikidata, CWGC. Все права принадлежат правообладателям.</p>
   </footer>
 </div>
 
@@ -205,7 +202,7 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
     <h2>Расширенный поиск человека</h2>
     <div class="form-row">
       <label>Имя (обязательно)</label>
-      <input type="text" id="advName" placeholder="Иван Петров" />
+      <input type="text" id="advName" placeholder="John Smith" />
     </div>
     <div class="form-grid">
       <div class="form-row">
@@ -219,11 +216,7 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
     </div>
     <div class="form-row">
       <label>Место (страна, город)</label>
-      <input type="text" id="advLocation" placeholder="Россия, Москва" />
-    </div>
-    <div class="form-row">
-      <label>Родственники</label>
-      <input type="text" id="advRelative" placeholder="Отец, мать, супруг(а)" />
+      <input type="text" id="advLocation" placeholder="USA, New York" />
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="App.closeAdvSearch()">Отмена</button>
@@ -248,12 +241,6 @@ const Utils = {
     const s = Math.floor((Date.now() - ts) / 1000);
     if (s < 60) return 'только что'; if (s < 3600) return `${Math.floor(s/60)} мин назад`;
     if (s < 86400) return `${Math.floor(s/3600)} ч назад`; return `${Math.floor(s/86400)} дн назад`;
-  },
-  async fetchWithRetry(url, retries = 2) {
-    for (let i = 0; i <= retries; i++) {
-      try { const res = await fetch(url); if (!res.ok) throw new Error(`HTTP ${res.status}`); return res; }
-      catch (err) { if (i === retries) throw err; await new Promise(r => setTimeout(r, 1000 * (i + 1))); }
-    }
   }
 };
 
@@ -271,92 +258,87 @@ const Storage = {
     if (!f.find(x => x.url === item.url)) { f.push({ ...item, addedAt: Date.now() }); localStorage.setItem('rf_fav', JSON.stringify(f)); }
   },
   removeFavorite(url) { localStorage.setItem('rf_fav', JSON.stringify(this.getFavorites().filter(x => x.url !== url))); },
-  isFavorite(url) { return this.getFavorites().some(x => x.url === url); },
-  getCache(key) {
-    const c = localStorage.getItem(`rf_c_${key}`);
-    if (!c) return null;
-    const { data, ts } = JSON.parse(c);
-    if (Date.now() - ts > 24 * 60 * 60 * 1000) { localStorage.removeItem(`rf_c_${key}`); return null; }
-    return data;
-  },
-  setCache(key, data) { localStorage.setItem(`rf_c_${key}`, JSON.stringify({ data, ts: Date.now() })); }
+  isFavorite(url) { return this.getFavorites().some(x => x.url === url); }
 };
 
-/* ============================================
-   АДАПТЕРЫ — ТОЛЬКО ЛЮДИ
-   ============================================ */
 const ADAPTERS = {
-  // 🌳 WikiTree — профили реальных людей с родословными
   wikitree: {
     name: 'WikiTree', icon: '🌳', color: '#10b981',
     async search(q) {
-      const cache = Storage.getCache(`wt_${q}`); if (cache) return cache;
       try {
-        const res = await Utils.fetchWithRetry(`https://api.wikitree.com/api.php?action=searchPerson&q=${encodeURIComponent(q)}&limit=20`);
+        console.log('WikiTree: searching for', q);
+        const res = await fetch(`https://api.wikitree.com/api.php?action=searchPerson&q=${encodeURIComponent(q)}&limit=20`);
         const data = await res.json();
-        const results = (data[0]?.matches || []).map(p => {
-          const fn = p.Person.FirstName || '';
-          const ln = p.Person.LastNameAtBirth || '';
-          const b = p.Person.BirthDate && p.Person.BirthDate !== '0000-00-00' ? p.Person.BirthDate : '';
-          const d = p.Person.DeathDate && p.Person.DeathDate !== '0000-00-00' ? p.Person.DeathDate : '';
+        console.log('WikiTree response:', data);
+        
+        const matches = data?.[0]?.matches || [];
+        return matches.map(p => {
+          const person = p.Person || p;
+          const fn = person.FirstName || '';
+          const ln = person.LastNameAtBirth || person.LastNameCurrent || '';
+          const b = person.BirthDate && person.BirthDate !== '0000-00-00' ? person.BirthDate : '';
+          const d = person.DeathDate && person.DeathDate !== '0000-00-00' ? person.DeathDate : '';
+          
           return {
             source: 'wikitree',
             title: `${fn} ${ln}`.trim() || 'Неизвестное имя',
-            url: `https://www.wikitree.com/wiki/${p.Person.Name}`,
-            urlDisplay: `wikitree.com/wiki/${p.Person.Name}`,
+            url: `https://www.wikitree.com/wiki/${person.Name}`,
+            urlDisplay: `wikitree.com/wiki/${person.Name}`,
             snippet: [
-              b && `Рождение: ${b}${p.Person.BirthLocation ? ', ' + p.Person.BirthLocation : ''}`,
-              d && `Смерть: ${d}${p.Person.DeathLocation ? ', ' + p.Person.DeathLocation : ''}`,
-              p.Person.Gender && `Пол: ${p.Person.Gender === 'Male' ? 'М' : 'Ж'}`
+              b && `Рождение: ${b}${person.BirthLocation ? ', ' + person.BirthLocation : ''}`,
+              d && `Смерть: ${d}${person.DeathLocation ? ', ' + person.DeathLocation : ''}`,
+              person.Gender && `Пол: ${person.Gender === 'Male' ? 'Мужской' : 'Женский'}`
             ].filter(Boolean).join(' · '),
-            tags: [b?.slice(0,4), d?.slice(0,4), p.Person.BirthLocation, p.Person.DeathLocation].filter(Boolean),
+            tags: [b?.slice(0,4), d?.slice(0,4), person.BirthLocation, person.DeathLocation].filter(Boolean),
             date: b || d || null, type: 'person'
           };
         });
-        Storage.setCache(`wt_${q}`, results); return results;
-      } catch(e) { console.warn('WikiTree error', e); return []; }
+      } catch(e) { 
+        console.error('WikiTree error:', e); 
+        return []; 
+      }
     }
   },
 
-  // 🌐 Wikidata — фильтр только по людям (Q5)
   wikidata: {
     name: 'Wikidata', icon: '🌐', color: '#3b82f6',
     async search(q) {
-      const cache = Storage.getCache(`wd_${q}`); if (cache) return cache;
-      // Используем wbsearchentities + фильтр по типу "человек" через SPARQL-подобный подход
       try {
-        const res = await Utils.fetchWithRetry(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=ru&limit=20&format=json&origin=*`);
+        console.log('Wikidata: searching for', q);
+        const res = await fetch(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=ru&limit=20&format=json&origin=*`);
         const data = await res.json();
-        // Фильтруем только людей (description часто содержит "человек", "human", etc.)
-        const results = (data.search || [])
-          .filter(e => {
-            const desc = (e.description || '').toLowerCase();
-            return /human|person|человек|персона|писател|художник|политик|ученый|artist|actor|musician|sport|war|general|king|queen|saint/.test(desc) || !e.description;
-          })
-          .map(e => ({
-            source: 'wikidata',
-            title: e.label || e.id,
-            url: `https://www.wikidata.org/wiki/${e.id}`,
-            urlDisplay: `wikidata.org/wiki/${e.id}`,
-            snippet: e.description || 'Элемент базы знаний',
-            tags: [e.id],
-            type: 'person'
-          }));
-        Storage.setCache(`wd_${q}`, results); return results;
-      } catch(e) { console.warn('Wikidata error', e); return []; }
+        console.log('Wikidata response:', data);
+        
+        return (data.search || []).map(e => ({
+          source: 'wikidata',
+          title: e.label || e.id,
+          url: `https://www.wikidata.org/wiki/${e.id}`,
+          urlDisplay: `wikidata.org/wiki/${e.id}`,
+          snippet: e.description || 'Элемент базы знаний',
+          tags: [e.id, e.match?.text].filter(Boolean),
+          type: 'person'
+        }));
+      } catch(e) { 
+        console.error('Wikidata error:', e); 
+        return []; 
+      }
     }
   },
 
-  // ⚔️ CWGC — погибшие военные WWI/WWII
   cwgc: {
     name: 'War Graves', icon: '⚔️', color: '#64748b',
     async search(q) {
-      const cache = Storage.getCache(`cwgc_${q}`); if (cache) return cache;
       try {
-        const res = await Utils.fetchWithRetry(`https://www.cwgc.org/api/v1/casualties?search=${encodeURIComponent(q)}&pageSize=20`);
-        if (!res.ok) return [];
+        console.log('CWGC: searching for', q);
+        const res = await fetch(`https://www.cwgc.org/api/v1/casualties?search=${encodeURIComponent(q)}&pageSize=20`);
+        if (!res.ok) {
+          console.warn('CWGC returned', res.status);
+          return [];
+        }
         const data = await res.json();
-        const results = (data.results || []).map(c => ({
+        console.log('CWGC response:', data);
+        
+        return (data.results || []).map(c => ({
           source: 'cwgc',
           title: c.NameOfCasualty || 'Неизвестный',
           url: `https://www.cwgc.org/find-records/find-a-casualty/casualty/${c.CasualtyId}/`,
@@ -370,65 +352,10 @@ const ADAPTERS = {
           tags: [c.Rank, c.Regiment, c.Cemetery?.Name, (c.DateOfDeath || '').slice(0,4)].filter(Boolean),
           date: c.DateOfDeath || c.DateOfBurial || null, type: 'person'
         }));
-        Storage.setCache(`cwgc_${q}`, results); return results;
-      } catch(e) { console.warn('CWGC error', e); return []; }
-    }
-  },
-
-  // 🇳🇱 Open Archives — гражданские записи Нидерландов
-  openarchives: {
-    name: 'Open Archives', icon: '🇳🇱', color: '#f97316',
-    async search(q) {
-      const cache = Storage.getCache(`oa_${q}`); if (cache) return cache;
-      try {
-        const res = await Utils.fetchWithRetry(`https://api.openarch.nl/records.json?search=${encodeURIComponent(q)}&limit=20`);
-        if (!res.ok) return [];
-        const data = await res.json();
-        const results = (data.entries || data || []).slice(0, 20).map(r => ({
-          source: 'openarchives',
-          title: r.title || r.dc_title?.[0] || 'Запись о человеке',
-          url: r.links?.self?.href || r.identifier || '#',
-          urlDisplay: `openarch.nl`,
-          snippet: [r.dc_description?.[0], r.dc_date?.[0], r.dcterms_spatial?.[0]].filter(Boolean).join(' · '),
-          tags: [r.dc_date?.[0]?.slice(0,4), r.dcterms_spatial?.[0]].filter(Boolean),
-          date: r.dc_date?.[0] || null, type: 'person'
-        }));
-        Storage.setCache(`oa_${q}`, results); return results;
-      } catch(e) { console.warn('OpenArchives error', e); return []; }
-    }
-  },
-
-  // 🇳🇱 GenealogieOnline — голландские генеалогические данные
-  genealogieonline: {
-    name: 'GenealogieOnline', icon: '📜', color: '#a855f7',
-    async search(q) {
-      const cache = Storage.getCache(`go_${q}`); if (cache) return cache;
-      try {
-        // GenealogieOnline имеет открытый поиск через URL
-        const res = await Utils.fetchWithRetry(`https://www.genealogieonline.nl/zoeken/?q=${encodeURIComponent(q)}&page=1`);
-        if (!res.ok) return [];
-        const html = await res.text();
-        // Парсим HTML (это не скрапинг в сером смысле — это публичный поиск, который мы отображаем как ссылки)
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const items = doc.querySelectorAll('.search-result, .result-item, article');
-        const results = Array.from(items).slice(0, 15).map(el => {
-          const titleEl = el.querySelector('h2, h3, .title, a');
-          const title = titleEl?.textContent?.trim() || '';
-          const link = titleEl?.href || el.querySelector('a')?.href || '';
-          const desc = el.querySelector('.description, p, .snippet')?.textContent?.trim() || '';
-          return {
-            source: 'genealogieonline',
-            title: title || 'Запись о человеке',
-            url: link.startsWith('http') ? link : `https://www.genealogieonline.nl${link}`,
-            urlDisplay: `genealogieonline.nl`,
-            snippet: desc.slice(0, 200),
-            tags: [],
-            type: 'person'
-          };
-        }).filter(r => r.url && r.url.includes('genealogieonline'));
-        Storage.setCache(`go_${q}`, results); return results;
-      } catch(e) { console.warn('GenealogieOnline error', e); return []; }
+      } catch(e) { 
+        console.error('CWGC error:', e); 
+        return []; 
+      }
     }
   }
 };
@@ -444,11 +371,19 @@ const Search = {
     UI.showLoading();
 
     const promises = Object.entries(ADAPTERS).map(async ([key, adapter]) => {
-      try { const items = await adapter.search(this.state.query); return { key, items }; }
-      catch(e) { return { key, items: [] }; }
+      try { 
+        const items = await adapter.search(this.state.query); 
+        console.log(`${key}: found ${items.length} results`);
+        return { key, items }; 
+      } catch(e) { 
+        console.error(`${key} failed:`, e);
+        return { key, items: [] }; 
+      }
     });
+    
     const settled = await Promise.all(promises);
     this.state.results = settled.flatMap(({ items }) => items);
+    console.log('Total results:', this.state.results.length);
     this.render();
   },
   render() {
@@ -552,7 +487,7 @@ const UI = {
   },
   showLoading() {
     document.getElementById('resultsMeta').innerHTML = '';
-    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="spinner"></div><h3>Ищем людей в архивах...</h3><p>WikiTree · Wikidata · CWGC · Open Archives · GenealogieOnline</p></div>`;
+    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="spinner"></div><h3>Ищем людей в архивах...</h3><p>WikiTree · Wikidata · CWGC</p></div>`;
   }
 };
 
@@ -588,8 +523,6 @@ const App = {
     const yt = document.getElementById('advYearTo').value;
     if (loc) parts.push(loc);
     if (yf || yt) parts.push(`${yf || '****'}-${yt || '****'}`);
-    const rel = document.getElementById('advRelative').value.trim();
-    if (rel) parts.push(rel);
     this.closeAdvSearch(); Search.run(parts.join(' '));
   },
   showFavorites() {
