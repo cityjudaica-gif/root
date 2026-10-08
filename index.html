@@ -271,7 +271,10 @@ const ADAPTERS = {
         const data = await res.json();
         console.log('WikiTree response:', data);
         
-        const matches = data?.[0]?.matches || [];
+        // WikiTree возвращает массив, где первый элемент содержит matches
+        const matches = Array.isArray(data) && data[0]?.matches ? data[0].matches : [];
+        console.log('WikiTree matches count:', matches.length);
+        
         return matches.map(p => {
           const person = p.Person || p;
           const fn = person.FirstName || '';
@@ -338,7 +341,11 @@ const ADAPTERS = {
         const data = await res.json();
         console.log('CWGC response:', data);
         
-        return (data.results || []).map(c => ({
+        // CWGC возвращает объект с полем results
+        const results = data.results || [];
+        console.log('CWGC results count:', results.length);
+        
+        return results.map(c => ({
           source: 'cwgc',
           title: c.NameOfCasualty || 'Неизвестный',
           url: `https://www.cwgc.org/find-records/find-a-casualty/casualty/${c.CasualtyId}/`,
