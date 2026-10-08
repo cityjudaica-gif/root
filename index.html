@@ -419,7 +419,9 @@ footer a{color:var(--text)}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="config.js"></script>
 <script>
+const CFG = window.ISTOKI_CONFIG || {};
 /* =====================================================================
    НАСТРОЙКИ — меняйте только этот блок
    ===================================================================== */
@@ -427,7 +429,7 @@ const SITE_NAME = { ru: "Истоки", en: "Istoki" };
 
 const AD = {
   name: "Mystorytel",
-  url: "https://mystorytel.com",            // ← адрес вашего сайта
+  url: CFG.AD_URL || "https://mystorytel.com",   // ← задаётся в config.js
   utm: "utm_source=istoki&utm_medium=banner&utm_campaign=genealogy_search",
   ru: {
     topCta: "Mystorytel",
@@ -454,16 +456,16 @@ const WIKITREE_APP_ID = "IstokiGenealogySearch";   // любое имя ваше
 // Адрес вашего посредника на Cloudflare Workers (файл worker.js, инструкция в README).
 // Пока пусто — газеты США работать не будут: loc.gov не принимает запросы с чужих сайтов.
 // Пример: "https://istoki-proxy.ВАШ-ЛОГИН.workers.dev"
-const PROXY_URL = "https://istoki-proxy.aligiftstip.workers.dev/";
+const PROXY_URL = CFG.PROXY_URL || "";   // ← задаётся в config.js
 
 // Национальный архив США (NARA). Нужен бесплатный ключ: письмо на Catalog_API@nara.gov.
 // Ключ кладётся НЕ сюда, а в посредник на Cloudflare (переменная NARA_KEY) — так его никто не увидит.
 // Когда ключ добавлен в посредник, поставьте true.
-const NARA_ENABLED = false;
+const NARA_ENABLED = !!CFG.NARA_ENABLED;   // ← задаётся в config.js
 
 // Ключ Google Books API (бесплатно, инструкция в README). Без ключа Google быстро
 // упирается в общий лимит и отвечает ошибкой. Ключ обязательно ограничьте адресом вашего сайта.
-const GOOGLE_BOOKS_KEY = "";
+const GOOGLE_BOOKS_KEY = CFG.GOOGLE_BOOKS_KEY || "";   // ← задаётся в config.js
 const PAGE_SIZE = 24;
 /* ===================================================================== */
 
@@ -495,6 +497,7 @@ const I18N = {
     linkCopied: "Ссылка на поиск скопирована",
     kinds: { person: "Профиль", record: "Архивная запись", news: "Газета", book: "Книга", article: "Статья", image: "Фото / документ", nara: "Архивный документ" },
     errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
+    openOnSite: "Открыть поиск на сайте источника",
     errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов).",
       needProxy: "Этот сайт не принимает запросы из браузера напрямую. Владельцу сайта: настройте посредник на Cloudflare (PROXY_URL, см. README).",
       booksKey: "Закончился общий лимит Google без ключа. Владельцу сайта: добавьте GOOGLE_BOOKS_KEY (см. README).",
@@ -546,6 +549,7 @@ const I18N = {
     linkCopied: "Search link copied",
     kinds: { person: "Profile", record: "Archive record", news: "Newspaper", book: "Book", article: "Article", image: "Photo / document", nara: "Archival record" },
     errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
+    openOnSite: "Open search on the source's website",
     errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked).",
       needProxy: "This site doesn't accept direct browser requests. Site owner: set up the Cloudflare proxy (PROXY_URL, see README).",
       booksKey: "Google's shared keyless quota is exhausted. Site owner: add GOOGLE_BOOKS_KEY (see README).",
@@ -1068,6 +1072,10 @@ function renderStatus(){
   for (const s of SOURCES){
     const st = state.status[s.id]; if (!st) continue;
     const cnt = state.items.filter(r => r.source === s.id).length;
+    if (st.state === "link"){
+      html += `<a class="status" style="--c:${s.color};text-decoration:none" href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener" title="${esc(t("openOnSite"))}"><span class="dot"></span>${esc(t("src")[s.id][0])} <span class="n">↗</span></a>`;
+      continue;
+    }
     const inner = st.state === "loading" ? '<span class="spin"></span>' : st.state === "error" ? '<span class="n">!</span>' : `<span class="n">${cnt}</span>`;
     html += `<button type="button" class="status ${state.filter === s.id ? "active" : ""} ${st.state === "error" ? "err" : ""}" style="--c:${s.color}" data-filter="${s.id}"><span class="dot"></span>${esc(t("src")[s.id][0])} ${inner}</button>`;
   }
@@ -1144,7 +1152,7 @@ async function runSearch(){
       if (s.id === "books" && !GOOGLE_BOOKS_KEY && /HTTP (403|429)/.test(e.message)) reason = "booksKey";
       if (reason === "blocked" && !PROXY_URL) reason = "needProxy";
       if (/HTTP 403/.test(e.message) && s.id !== "books") reason = "403";
-      state.status[s.id] = { state: "error", reason };
+      state.status[s.id] = s.id === "loc" ? { state: "link" } : { state: "error", reason };
     }
     // сохраняем порядок источников
     const order = SOURCES.map(x => x.id);
