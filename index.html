@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RootFinder — Поиск людей в открытых архивах</title>
+<title>RootFinder — Поиск людей в Wikidata</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
 :root { --bg:#0a0a0f; --bg-elev:#14141c; --bg-elev-2:#1c1c28; --border:#262633; --text:#e8e8f0; --text-dim:#8a8a9a; --text-faint:#5a5a6a; --accent:#7c5cff; --accent-hover:#9277ff; --accent-2:#00d4ff; --success:#10b981; }
@@ -47,15 +47,9 @@ input,select { font-family:inherit; }
 .top-search:focus-within { border-color:var(--accent); }
 .top-search input { flex:1; background:none; border:none; outline:none; color:var(--text); padding:8px; font-size:0.95rem; }
 .top-search button { background:var(--accent); color:white; padding:8px 16px; border-radius:7px; font-size:0.85rem; font-weight:600; }
-.results-layout { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:240px 1fr 300px; gap:24px; padding:20px 24px; }
-@media (max-width:1100px) { .results-layout { grid-template-columns:200px 1fr; } .ad-sidebar { display:none; } }
-@media (max-width:768px) { .results-layout { grid-template-columns:1fr; padding:16px; } .filters-col { display:none; } }
-.filters-col h3 { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-faint); margin-bottom:10px; margin-top:20px; }
-.filters-col h3:first-child { margin-top:0; }
-.filter-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; font-size:0.9rem; transition:background 0.15s; }
-.filter-item:hover { background:var(--bg-elev); }
-.filter-item input { accent-color:var(--accent); cursor:pointer; }
-.filter-item .count { margin-left:auto; font-size:0.75rem; color:var(--text-faint); background:var(--bg-elev-2); padding:2px 8px; border-radius:999px; }
+.results-layout { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:1fr 300px; gap:24px; padding:20px 24px; }
+@media (max-width:1100px) { .results-layout { grid-template-columns:1fr; } .ad-sidebar { display:none; } }
+@media (max-width:768px) { .results-layout { padding:16px; } }
 .results-meta { margin-bottom:16px; font-size:0.85rem; color:var(--text-dim); }
 .results-meta strong { color:var(--text); }
 .result-item { padding:16px 0; border-bottom:1px solid var(--border); animation:fadeIn 0.3s ease; }
@@ -122,10 +116,10 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
 <div id="homeScreen" class="home">
   <div class="logo-big">👤</div>
   <h1>RootFinder</h1>
-  <p class="tagline">Поиск людей в открытых генеалогических архивах мира</p>
+  <p class="tagline">Поиск людей в Wikidata — крупнейшей открытой базе знаний</p>
 
   <form class="home-search" id="homeForm">
-    <input type="text" id="homeInput" placeholder="Имя человека (например: John Smith)..." autocomplete="off" autofocus />
+    <input type="text" id="homeInput" placeholder="Имя человека (например: Альберт Эйнштейн)..." autocomplete="off" autofocus />
     <button type="submit">Найти человека</button>
   </form>
 
@@ -138,9 +132,9 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
   <div id="historyList" class="history-list"></div>
 
   <div class="sources-preview">
-    <div class="source-pill"><span class="dot"></span>WikiTree — профили людей</div>
-    <div class="source-pill"><span class="dot"></span>Wikidata — база знаний</div>
-    <div class="source-pill"><span class="dot"></span>CWGC — военные мемориалы</div>
+    <div class="source-pill"><span class="dot"></span>Wikidata — 100+ млн элементов</div>
+    <div class="source-pill"><span class="dot"></span>Только люди</div>
+    <div class="source-pill"><span class="dot"></span>100% бесплатно</div>
   </div>
 </div>
 
@@ -159,17 +153,6 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
   </div>
 
   <div class="results-layout">
-    <aside class="filters-col">
-      <h3>Источники</h3>
-      <div id="sourceFilters"></div>
-      <h3>Сортировка</h3>
-      <select id="sortBy" class="tool-btn" style="width:100%; justify-content:space-between;">
-        <option value="relevance">По релевантности</option>
-        <option value="date-desc">Сначала новые</option>
-        <option value="date-asc">Сначала старые</option>
-      </select>
-    </aside>
-
     <main>
       <div class="results-meta" id="resultsMeta"></div>
       <div class="toolbar">
@@ -191,8 +174,8 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
   </div>
 
   <footer>
-    <p>© 2026 RootFinder. Поиск только по людям через официальные открытые API.</p>
-    <p>Источники: WikiTree, Wikidata, CWGC. Все права принадлежат правообладателям.</p>
+    <p>© 2026 RootFinder. Поиск людей через Wikidata API.</p>
+    <p>Все данные принадлежат Wikidata и доступны на условиях CC0.</p>
   </footer>
 </div>
 
@@ -202,7 +185,7 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
     <h2>Расширенный поиск человека</h2>
     <div class="form-row">
       <label>Имя (обязательно)</label>
-      <input type="text" id="advName" placeholder="John Smith" />
+      <input type="text" id="advName" placeholder="Альберт Эйнштейн" />
     </div>
     <div class="form-grid">
       <div class="form-row">
@@ -215,8 +198,8 @@ footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-siz
       </div>
     </div>
     <div class="form-row">
-      <label>Место (страна, город)</label>
-      <input type="text" id="advLocation" placeholder="USA, New York" />
+      <label>Род занятий</label>
+      <input type="text" id="advOccupation" placeholder="физик, писатель, политик..." />
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="App.closeAdvSearch()">Отмена</button>
@@ -261,164 +244,130 @@ const Storage = {
   isFavorite(url) { return this.getFavorites().some(x => x.url === url); }
 };
 
-const ADAPTERS = {
-  wikitree: {
-    name: 'WikiTree', icon: '🌳', color: '#10b981',
-    async search(q) {
-      try {
-        console.log('WikiTree: searching for', q);
-        const res = await fetch(`https://api.wikitree.com/api.php?action=searchPerson&q=${encodeURIComponent(q)}&limit=20`);
-        const data = await res.json();
-        console.log('WikiTree response:', data);
-        
-        // WikiTree возвращает массив, где первый элемент содержит matches
-        const matches = Array.isArray(data) && data[0]?.matches ? data[0].matches : [];
-        console.log('WikiTree matches count:', matches.length);
-        
-        return matches.map(p => {
-          const person = p.Person || p;
-          const fn = person.FirstName || '';
-          const ln = person.LastNameAtBirth || person.LastNameCurrent || '';
-          const b = person.BirthDate && person.BirthDate !== '0000-00-00' ? person.BirthDate : '';
-          const d = person.DeathDate && person.DeathDate !== '0000-00-00' ? person.DeathDate : '';
+const WikidataAdapter = {
+  name: 'Wikidata', icon: '🌐', color: '#3b82f6',
+  async search(q, opts = {}) {
+    try {
+      console.log('Wikidata: searching for', q);
+      
+      // Используем wbsearchentities для поиска
+      const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=ru&limit=50&format=json&origin=*`;
+      const res = await fetch(searchUrl);
+      const data = await res.json();
+      console.log('Wikidata search response:', data);
+      
+      const entities = data.search || [];
+      
+      // Для каждого элемента получаем детальную информацию
+      const detailed = await Promise.all(entities.slice(0, 20).map(async e => {
+        try {
+          // Получаем claims (свойства) для проверки, что это человек (P31 = Q5)
+          const claimsUrl = `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${e.id}&props=claims|descriptions|labels&languages=ru|en&format=json&origin=*`;
+          const claimsRes = await fetch(claimsUrl);
+          const claimsData = await claimsRes.json();
+          const entity = claimsData.entities?.[e.id];
+          
+          if (!entity) return null;
+          
+          // Проверяем, что это человек (instance of = human Q5)
+          const isHuman = entity.claims?.P31?.some(c => c.mainsnak?.datavalue?.value?.id === 'Q5');
+          
+          if (!isHuman) return null;
+          
+          // Извлекаем дату рождения (P569)
+          const birthClaim = entity.claims?.P569?.[0];
+          const birthDate = birthClaim?.mainsnak?.datavalue?.value?.time?.replace('+', '').split('T')[0] || '';
+          const birthYear = birthDate ? birthDate.split('-')[0] : '';
+          
+          // Извлекаем дату смерти (P570)
+          const deathClaim = entity.claims?.P570?.[0];
+          const deathDate = deathClaim?.mainsnak?.datavalue?.value?.time?.replace('+', '').split('T')[0] || '';
+          const deathYear = deathDate ? deathDate.split('-')[0] : '';
+          
+          // Извлекаем место рождения (P19)
+          const birthPlaceClaim = entity.claims?.P19?.[0];
+          const birthPlaceId = birthPlaceClaim?.mainsnak?.datavalue?.value?.id;
+          let birthPlace = '';
+          if (birthPlaceId) {
+            const placeRes = await fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${birthPlaceId}&props=labels&languages=ru|en&format=json&origin=*`);
+            const placeData = await placeRes.json();
+            birthPlace = placeData.entities?.[birthPlaceId]?.labels?.ru?.value || placeData.entities?.[birthPlaceId]?.labels?.en?.value || '';
+          }
+          
+          // Извлекаем род занятий (P106)
+          const occupations = (entity.claims?.P106 || []).slice(0, 3).map(c => c.mainsnak?.datavalue?.value?.id).filter(Boolean);
           
           return {
-            source: 'wikitree',
-            title: `${fn} ${ln}`.trim() || 'Неизвестное имя',
-            url: `https://www.wikitree.com/wiki/${person.Name}`,
-            urlDisplay: `wikitree.com/wiki/${person.Name}`,
+            source: 'wikidata',
+            title: entity.labels?.ru?.value || entity.labels?.en?.value || e.label || e.id,
+            url: `https://www.wikidata.org/wiki/${e.id}`,
+            urlDisplay: `wikidata.org/wiki/${e.id}`,
             snippet: [
-              b && `Рождение: ${b}${person.BirthLocation ? ', ' + person.BirthLocation : ''}`,
-              d && `Смерть: ${d}${person.DeathLocation ? ', ' + person.DeathLocation : ''}`,
-              person.Gender && `Пол: ${person.Gender === 'Male' ? 'Мужской' : 'Женский'}`
+              entity.descriptions?.ru?.value || entity.descriptions?.en?.value || e.description,
+              birthDate && `Рождение: ${birthDate}${birthPlace ? ', ' + birthPlace : ''}`,
+              deathDate && `Смерть: ${deathDate}`
             ].filter(Boolean).join(' · '),
-            tags: [b?.slice(0,4), d?.slice(0,4), person.BirthLocation, person.DeathLocation].filter(Boolean),
-            date: b || d || null, type: 'person'
+            tags: [birthYear, deathYear, birthPlace].filter(Boolean),
+            date: birthDate || null, type: 'person',
+            rawData: { birthDate, deathDate, birthPlace, occupations }
           };
-        });
-      } catch(e) { 
-        console.error('WikiTree error:', e); 
-        return []; 
-      }
-    }
-  },
-
-  wikidata: {
-    name: 'Wikidata', icon: '🌐', color: '#3b82f6',
-    async search(q) {
-      try {
-        console.log('Wikidata: searching for', q);
-        const res = await fetch(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=ru&limit=20&format=json&origin=*`);
-        const data = await res.json();
-        console.log('Wikidata response:', data);
-        
-        return (data.search || []).map(e => ({
-          source: 'wikidata',
-          title: e.label || e.id,
-          url: `https://www.wikidata.org/wiki/${e.id}`,
-          urlDisplay: `wikidata.org/wiki/${e.id}`,
-          snippet: e.description || 'Элемент базы знаний',
-          tags: [e.id, e.match?.text].filter(Boolean),
-          type: 'person'
-        }));
-      } catch(e) { 
-        console.error('Wikidata error:', e); 
-        return []; 
-      }
-    }
-  },
-
-  cwgc: {
-    name: 'War Graves', icon: '⚔️', color: '#64748b',
-    async search(q) {
-      try {
-        console.log('CWGC: searching for', q);
-        const res = await fetch(`https://www.cwgc.org/api/v1/casualties?search=${encodeURIComponent(q)}&pageSize=20`);
-        if (!res.ok) {
-          console.warn('CWGC returned', res.status);
-          return [];
+        } catch(err) {
+          console.warn('Error fetching details for', e.id, err);
+          return null;
         }
-        const data = await res.json();
-        console.log('CWGC response:', data);
-        
-        // CWGC возвращает объект с полем results
-        const results = data.results || [];
-        console.log('CWGC results count:', results.length);
-        
-        return results.map(c => ({
-          source: 'cwgc',
-          title: c.NameOfCasualty || 'Неизвестный',
-          url: `https://www.cwgc.org/find-records/find-a-casualty/casualty/${c.CasualtyId}/`,
-          urlDisplay: `cwgc.org`,
-          snippet: [
-            c.Rank && `Звание: ${c.Rank}`,
-            c.Regiment && `Полк: ${c.Regiment}`,
-            c.DateOfBurial || c.DateOfDeath,
-            c.Cemetery?.Name && `Похоронен: ${c.Cemetery.Name}`
-          ].filter(Boolean).join(' · '),
-          tags: [c.Rank, c.Regiment, c.Cemetery?.Name, (c.DateOfDeath || '').slice(0,4)].filter(Boolean),
-          date: c.DateOfDeath || c.DateOfBurial || null, type: 'person'
-        }));
-      } catch(e) { 
-        console.error('CWGC error:', e); 
-        return []; 
-      }
+      }));
+      
+      const results = detailed.filter(Boolean);
+      console.log('Wikidata: found', results.length, 'people');
+      return results;
+    } catch(e) { 
+      console.error('Wikidata error:', e); 
+      return []; 
     }
   }
 };
 
 const Search = {
-  state: { query: '', results: [], activeSource: 'all', sortBy: 'relevance' },
+  state: { query: '', results: [], sortBy: 'relevance' },
   async run(query) {
     if (!query?.trim()) return;
     this.state.query = query.trim();
-    this.state.activeSource = 'all';
     Storage.addToHistory(this.state.query);
     App.goResults();
     UI.showLoading();
 
-    const promises = Object.entries(ADAPTERS).map(async ([key, adapter]) => {
-      try { 
-        const items = await adapter.search(this.state.query); 
-        console.log(`${key}: found ${items.length} results`);
-        return { key, items }; 
-      } catch(e) { 
-        console.error(`${key} failed:`, e);
-        return { key, items: [] }; 
-      }
-    });
-    
-    const settled = await Promise.all(promises);
-    this.state.results = settled.flatMap(({ items }) => items);
-    console.log('Total results:', this.state.results.length);
-    this.render();
+    try {
+      this.state.results = await WikidataAdapter.search(this.state.query);
+      console.log('Total results:', this.state.results.length);
+      this.render();
+    } catch(e) {
+      console.error('Search failed:', e);
+      UI.showError();
+    }
   },
   render() {
-    UI.renderSourceFilters(this.state.results, this.state.activeSource);
     const filtered = this.getFilteredResults();
     UI.renderResults(filtered, this.state.query);
     this.renderMeta(filtered);
   },
   getFilteredResults() {
-    let items = this.state.activeSource === 'all' ? [...this.state.results] : this.state.results.filter(r => r.source === this.state.activeSource);
+    let items = [...this.state.results];
     if (this.state.sortBy === 'date-desc') items.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     else if (this.state.sortBy === 'date-asc') items.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
     return items;
   },
   renderMeta(items) {
     const total = items.length;
-    const sources = new Set(items.map(i => i.source)).size;
     document.getElementById('resultsMeta').innerHTML = total
-      ? `Найдено <strong>${total}</strong> человек из <strong>${sources}</strong> источников по запросу «<strong>${Utils.escapeHtml(this.state.query)}</strong>»`
+      ? `Найдено <strong>${total}</strong> человек по запросу «<strong>${Utils.escapeHtml(this.state.query)}</strong>»`
       : '';
   },
-  setActiveSource(src) { this.state.activeSource = src; this.render(); },
   setSortBy(sort) { this.state.sortBy = sort; this.render(); },
   exportCSV() {
     const items = this.getFilteredResults();
     if (!items.length) return alert('Нет данных для экспорта');
     const rows = [['Источник', 'Имя', 'Ссылка', 'Описание', 'Теги', 'Дата']];
-    items.forEach(r => rows.push([ADAPTERS[r.source].name, r.title, r.url, (r.snippet||'').replace(/"/g, '""'), r.tags.join('; '), r.date || '']));
+    items.forEach(r => rows.push([r.source, r.title, r.url, (r.snippet||'').replace(/"/g, '""'), r.tags.join('; '), r.date || '']));
     const csv = '\uFEFF' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
     a.download = `rootfinder-${this.state.query.replace(/\s+/g, '-')}.csv`; a.click();
@@ -431,16 +380,6 @@ const Search = {
 };
 
 const UI = {
-  renderSourceFilters(results, active) {
-    const counts = {}; results.forEach(r => counts[r.source] = (counts[r.source] || 0) + 1);
-    let html = `<label class="filter-item"><input type="radio" name="src" value="all" ${active==='all'?'checked':''}><span>Все источники</span><span class="count">${results.length}</span></label>`;
-    Object.entries(ADAPTERS).forEach(([key, a]) => {
-      const c = counts[key] || 0;
-      html += `<label class="filter-item"><input type="radio" name="src" value="${key}" ${active===key?'checked':''}><span>${a.icon} ${a.name}</span><span class="count">${c}</span></label>`;
-    });
-    document.getElementById('sourceFilters').innerHTML = html;
-    document.querySelectorAll('#sourceFilters input').forEach(inp => inp.addEventListener('change', () => Search.setActiveSource(inp.value)));
-  },
   renderResults(results, query) {
     const list = document.getElementById('resultsList');
     const qWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
@@ -461,13 +400,12 @@ const UI = {
 
     results.forEach((r, i) => {
       if (i > 0 && i % 5 === 0) html += promoHTML;
-      const a = ADAPTERS[r.source];
       const isFav = Storage.isFavorite(r.url);
       html += `
         <article class="result-item">
           <div class="source-line">
-            <span class="source-icon" style="background:${a.color}20;color:${a.color}">${a.icon}</span>
-            <span>${a.name}</span>
+            <span class="source-icon" style="background:${r.source === 'wikidata' ? '#3b82f620' : '#10b98120'};color:${r.source === 'wikidata' ? '#3b82f6' : '#10b981'}">${r.source === 'wikidata' ? '🌐' : '🌳'}</span>
+            <span>Wikidata</span>
             <span>·</span>
             <span>Человек</span>
             <button class="tool-btn" style="margin-left:auto; padding:4px 8px;" data-fav="${r.url}">${isFav ? '⭐' : '☆'}</button>
@@ -494,7 +432,10 @@ const UI = {
   },
   showLoading() {
     document.getElementById('resultsMeta').innerHTML = '';
-    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="spinner"></div><h3>Ищем людей в архивах...</h3><p>WikiTree · Wikidata · CWGC</p></div>`;
+    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="spinner"></div><h3>Ищем людей в Wikidata...</h3><p>Это может занять несколько секунд</p></div>`;
+  },
+  showError() {
+    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="icon">❌</div><h3>Ошибка поиска</h3><p>Проверьте подключение к интернету и попробуйте снова.</p></div>`;
   }
 };
 
@@ -525,10 +466,10 @@ const App = {
     const name = document.getElementById('advName').value.trim();
     if (!name) return alert('Введите имя');
     const parts = [name];
-    const loc = document.getElementById('advLocation').value.trim();
+    const occ = document.getElementById('advOccupation').value.trim();
     const yf = document.getElementById('advYearFrom').value;
     const yt = document.getElementById('advYearTo').value;
-    if (loc) parts.push(loc);
+    if (occ) parts.push(occ);
     if (yf || yt) parts.push(`${yf || '****'}-${yt || '****'}`);
     this.closeAdvSearch(); Search.run(parts.join(' '));
   },
