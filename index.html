@@ -454,12 +454,16 @@ const WIKITREE_APP_ID = "IstokiGenealogySearch";   // любое имя ваше
 // Адрес вашего посредника на Cloudflare Workers (файл worker.js, инструкция в README).
 // Пока пусто — газеты США работать не будут: loc.gov не принимает запросы с чужих сайтов.
 // Пример: "https://istoki-proxy.ВАШ-ЛОГИН.workers.dev"
-const PROXY_URL = "https://istoki-proxy.aligiftstip.workers.dev";
- 
+const PROXY_URL = "";
+
 // Национальный архив США (NARA). Нужен бесплатный ключ: письмо на Catalog_API@nara.gov.
 // Ключ кладётся НЕ сюда, а в посредник на Cloudflare (переменная NARA_KEY) — так его никто не увидит.
 // Когда ключ добавлен в посредник, поставьте true.
 const NARA_ENABLED = false;
+
+// Ключ Google Books API (бесплатно, инструкция в README). Без ключа Google быстро
+// упирается в общий лимит и отвечает ошибкой. Ключ обязательно ограничьте адресом вашего сайта.
+const GOOGLE_BOOKS_KEY = "";
 const PAGE_SIZE = 24;
 /* ===================================================================== */
 
@@ -491,7 +495,10 @@ const I18N = {
     linkCopied: "Ссылка на поиск скопирована",
     kinds: { person: "Профиль", record: "Архивная запись", news: "Газета", book: "Книга", article: "Статья", image: "Фото / документ", nara: "Архивный документ" },
     errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
-    errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов)." },
+    errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов).",
+      needProxy: "Этот сайт не принимает запросы из браузера напрямую. Владельцу сайта: настройте посредник на Cloudflare (PROXY_URL, см. README).",
+      booksKey: "Закончился общий лимит Google без ключа. Владельцу сайта: добавьте GOOGLE_BOOKS_KEY (см. README).",
+      "403": "Источник отклонил запрос посредника. Владельцу сайта: обновите код воркера на Cloudflare последней версией worker.js." },
     emptyTitle: "Ничего не нашлось",
     emptyText: "Попробуйте убрать годы, место или проверьте написание фамилии латиницей — в старых документах фамилии часто записывали по-разному.",
     needLast: "Введите фамилию",
@@ -539,7 +546,10 @@ const I18N = {
     linkCopied: "Search link copied",
     kinds: { person: "Profile", record: "Archive record", news: "Newspaper", book: "Book", article: "Article", image: "Photo / document", nara: "Archival record" },
     errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
-    errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked)." },
+    errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked).",
+      needProxy: "This site doesn't accept direct browser requests. Site owner: set up the Cloudflare proxy (PROXY_URL, see README).",
+      booksKey: "Google's shared keyless quota is exhausted. Site owner: add GOOGLE_BOOKS_KEY (see README).",
+      "403": "The source rejected the proxy request. Site owner: update the Cloudflare worker with the latest worker.js." },
     emptyTitle: "Nothing found",
     emptyText: "Try removing years or place, or check the Latin spelling — old records often spelled names differently.",
     needLast: "Enter a last name",
@@ -809,7 +819,7 @@ Object.assign(API, {
   /* Google Книги — поиск внутри текста книг (запрос идёт напрямую из браузера посетителя) */
   async books(q){
     const list = await settledFlat(queryTerms(q).map(async term => {
-      const data = await getJSON(`https://www.googleapis.com/books/v1/volumes?q=${enc('"' + term + '"')}&maxResults=40&printType=all`);
+      const data = await getJSON(`https://www.googleapis.com/books/v1/volumes?q=${enc('"' + term + '"')}&maxResults=40&printType=all` + (GOOGLE_BOOKS_KEY ? "&key=" + enc(GOOGLE_BOOKS_KEY) : ""));
       return ((data && data.items) || []).map(it => {
         const v = it.volumeInfo || {};
         const img = v.imageLinks && (v.imageLinks.thumbnail || v.imageLinks.smallThumbnail);
@@ -1130,7 +1140,11 @@ async function runSearch(){
     } catch(e){
       if (run !== state.runId) return;
       console.warn(s.id, e);
-      state.status[s.id] = { state: "error", reason: /HTTP 429/.test(e.message) ? "429" : /HTTP/.test(e.message) ? e.message : "blocked" };
+      let reason = /HTTP 429/.test(e.message) ? "429" : /HTTP/.test(e.message) ? e.message : "blocked";
+      if (s.id === "books" && !GOOGLE_BOOKS_KEY && /HTTP (403|429)/.test(e.message)) reason = "booksKey";
+      if (reason === "blocked" && !PROXY_URL) reason = "needProxy";
+      if (/HTTP 403/.test(e.message) && s.id !== "books") reason = "403";
+      state.status[s.id] = { state: "error", reason };
     }
     // сохраняем порядок источников
     const order = SOURCES.map(x => x.id);
