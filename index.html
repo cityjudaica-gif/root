@@ -476,6 +476,7 @@ const I18N = {
     linkCopied: "Ссылка на поиск скопирована",
     kinds: { person: "Профиль", record: "Архивная запись", news: "Газета" },
     errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
+    errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов)." },
     emptyTitle: "Ничего не нашлось",
     emptyText: "Попробуйте убрать годы, место или проверьте написание фамилии латиницей — в старых документах фамилии часто записывали по-разному.",
     needLast: "Введите фамилию",
@@ -518,6 +519,7 @@ const I18N = {
     linkCopied: "Search link copied",
     kinds: { person: "Profile", record: "Archive record", news: "Newspaper" },
     errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
+    errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked)." },
     emptyTitle: "Nothing found",
     emptyText: "Try removing years or place, or check the Latin spelling — old records often spelled names differently.",
     needLast: "Enter a last name",
@@ -608,12 +610,17 @@ const API = {
       action: "searchPerson", appId: WIKITREE_APP_ID, limit: "60",
       fields: "Id,Name,FirstName,MiddleName,LastNameAtBirth,LastNameCurrent,BirthDate,DeathDate,BirthLocation,DeathLocation,Photo,PhotoData,Gender"
     });
-    if (q.latFirst) p.set("FirstName", q.latFirst);
     p.set("LastName", q.latLast);
-    if (q.place) p.set("BirthLocation", q.placeLat);
-    const data = await getJSON("https://api.wikitree.com/api.php?" + p.toString());
-    const block = Array.isArray(data) ? data[0] : (data && (data[0] || data));
-    const list = (block && block.matches) || [];
+    const call = async params => {
+      let data;
+      try { data = await getJSON("https://api.wikitree.com/api.php", { method: "POST", body: params }); }
+      catch(e){ data = await getJSON("https://api.wikitree.com/api.php?" + params.toString()); }
+      const block = Array.isArray(data) ? data[0] : (data && (data[0] || data));
+      return (block && block.matches) || [];
+    };
+    let list = [];
+    if (q.latFirst){ const p1 = new URLSearchParams(p); p1.set("FirstName", q.latFirst); list = await call(p1); }
+    if (!list.length) list = await call(p);   // имя в документах могло писаться иначе — ищем по фамилии
     return list.map(m => ({
       source: "wikitree", kind: "person",
       name: [m.FirstName, m.MiddleName, m.LastNameAtBirth].filter(Boolean).join(" ") + (m.LastNameCurrent && m.LastNameCurrent !== m.LastNameAtBirth ? ` (${m.LastNameCurrent})` : ""),
@@ -695,10 +702,13 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
     const phrase = ((q.latFirst ? q.latFirst + " " : "") + q.latLast).trim();
     const p = new URLSearchParams({ q: `"${phrase}"`, dl: "page", fo: "json", c: "30" });
     if (q.yf) { p.set("start_date", `${q.yf}-01-01`); p.set("end_date", `${Math.min((q.yt || q.yf) + 90, 1963)}-12-31`); }
-    if (q.place && !hasCyr(q.place)) p.set("location_state", q.place.toLowerCase());
-    let data;
-    try { data = await getJSON("https://www.loc.gov/collections/chronicling-america/?" + p.toString()); }
-    catch(e){ if (!p.has("location_state")) throw e; p.delete("location_state"); data = await getJSON("https://www.loc.gov/collections/chronicling-america/?" + p.toString()); }
+    const st = US_STATES.find(s => s === (q.place || "").toLowerCase().trim());
+    if (st) p.set("location_state", st);
+    const base = "https://www.loc.gov/collections/chronicling-america/?";
+    let data = await getJSON(base + p.toString());
+    if (!(data && data.results && data.results.length) && p.has("start_date")){
+      p.delete("start_date"); p.delete("end_date"); data = await getJSON(base + p.toString());
+    }
     return ((data && data.results) || []).map(r => {
       const desc = Array.isArray(r.description) ? r.description.join(" ") : (r.description || "");
       const thumb = Array.isArray(r.image_url) ? (r.image_url.find(u => /\.(jpg|gif|png)/i.test(u)) || r.image_url[0]) : r.image_url;
@@ -725,6 +735,8 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
     return { name: s, count: +o.COUNT, rank: +o.RANK, prop: +o.PROP100K };
   }
 };
+
+const US_STATES = ["alabama","alaska","arizona","arkansas","california","colorado","connecticut","delaware","district of columbia","florida","georgia","hawaii","idaho","illinois","indiana","iowa","kansas","kentucky","louisiana","maine","maryland","massachusetts","michigan","minnesota","mississippi","missouri","montana","nebraska","nevada","new hampshire","new jersey","new mexico","new york","north carolina","north dakota","ohio","oklahoma","oregon","pennsylvania","rhode island","south carolina","south dakota","tennessee","texas","utah","vermont","virginia","washington","west virginia","wisconsin","wyoming","puerto rico"];
 
 const EXTERNAL = q => {
   const f = q.latFirst, l = q.latLast, fc = q.first, lc = q.last;
@@ -867,7 +879,7 @@ function renderStatus(){
   }
   $("#statusRow").innerHTML = html;
   $("#errors").innerHTML = SOURCES.filter(s => state.status[s.id] && state.status[s.id].state === "error")
-    .map(s => `<div class="err-box">${t("errSource", t("src")[s.id][0], API["searchUrl_" + s.id](state.q))}</div>`).join("");
+    .map(s => `<div class="err-box">${t("errSource", t("src")[s.id][0], API["searchUrl_" + s.id](state.q))}<br><small>${esc(t("errReason")[state.status[s.id].reason] || state.status[s.id].reason)}</small></div>`).join("");
 }
 
 function renderExternal(){
@@ -929,7 +941,7 @@ async function runSearch(){
     } catch(e){
       if (run !== state.runId) return;
       console.warn(s.id, e);
-      state.status[s.id] = { state: "error" };
+      state.status[s.id] = { state: "error", reason: /HTTP 429/.test(e.message) ? "429" : /HTTP/.test(e.message) ? e.message : "blocked" };
     }
     // сохраняем порядок источников
     const order = SOURCES.map(x => x.id);
