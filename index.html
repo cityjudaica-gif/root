@@ -1,489 +1,1021 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RootFinder — Поиск людей в Wikidata</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Истоки — поиск предков в открытых архивах</title>
+<meta name="description" content="Бесплатный поиск предков одновременно в WikiTree, Wikidata, европейских архивах и исторических газетах США.">
+<meta property="og:title" content="Истоки — поиск предков в открытых архивах">
+<meta property="og:description" content="Один поиск — несколько открытых генеалогических баз сразу.">
+<meta name="theme-color" content="#0d0f17">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23e8b25c'/%3E%3Cpath d='M32 50V30M32 30l-10-10M32 30l10-10M32 38l-8-6M32 38l8-6' stroke='%230d0f17' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+
 <style>
-:root { --bg:#0a0a0f; --bg-elev:#14141c; --bg-elev-2:#1c1c28; --border:#262633; --text:#e8e8f0; --text-dim:#8a8a9a; --text-faint:#5a5a6a; --accent:#7c5cff; --accent-hover:#9277ff; --accent-2:#00d4ff; --success:#10b981; }
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; }
-a { color:inherit; text-decoration:none; }
-button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
-input,select { font-family:inherit; }
+/* ============ ТЕМА ============ */
+:root{
+  --bg:#0d0f17; --bg-2:#131623; --surface:rgba(255,255,255,.045); --surface-2:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.09); --border-strong:rgba(255,255,255,.18);
+  --text:#eef0f7; --muted:#9aa0b8; --faint:#6b7190;
+  --accent:#e8b25c; --accent-2:#f5d29a; --accent-ink:#1a1206;
+  --c-wikitree:#4cc38a; --c-wikidata:#5b9cff; --c-openarch:#f59e42; --c-loc:#b58cff; --c-census:#ff7a9c;
+  --shadow:0 20px 60px -20px rgba(0,0,0,.6);
+  --radius:20px; --radius-sm:12px;
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Playfair Display",Georgia,serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#f7f3ec; --bg-2:#efe8dc; --surface:rgba(255,255,255,.7); --surface-2:rgba(255,255,255,.95);
+  --border:rgba(40,30,10,.10); --border-strong:rgba(40,30,10,.22);
+  --text:#1d1a14; --muted:#6a6252; --faint:#9a917e;
+  --accent:#b9781c; --accent-2:#8a5510; --accent-ink:#fff;
+  --shadow:0 20px 50px -24px rgba(80,55,10,.35);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f7f3ec; --bg-2:#efe8dc; --surface:rgba(255,255,255,.7); --surface-2:rgba(255,255,255,.95);
+    --border:rgba(40,30,10,.10); --border-strong:rgba(40,30,10,.22);
+    --text:#1d1a14; --muted:#6a6252; --faint:#9a917e;
+    --accent:#b9781c; --accent-2:#8a5510; --accent-ink:#fff;
+    --shadow:0 20px 50px -24px rgba(80,55,10,.35);
+    color-scheme:light;
+  }
+}
 
-.home { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem; position:relative; }
-.home::before { content:''; position:absolute; inset:0; background:radial-gradient(600px circle at 20% 30%,rgba(124,92,255,0.08),transparent 50%),radial-gradient(500px circle at 80% 70%,rgba(0,212,255,0.06),transparent 50%); pointer-events:none; }
-.logo-big { font-size:4rem; margin-bottom:0.5rem; filter:drop-shadow(0 0 30px rgba(124,92,255,0.3)); }
-.home h1 { font-size:3rem; font-weight:800; letter-spacing:-0.03em; background:linear-gradient(135deg,#fff 0%,#b8a8ff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:0.5rem; }
-.home .tagline { color:var(--text-dim); font-size:1.1rem; margin-bottom:2.5rem; text-align:center; }
-.home-search { width:100%; max-width:680px; background:var(--bg-elev); border:1px solid var(--border); border-radius:16px; padding:6px; display:flex; align-items:center; transition:all 0.2s; }
-.home-search:focus-within { border-color:var(--accent); box-shadow:0 0 0 4px rgba(124,92,255,0.15); }
-.home-search input { flex:1; background:none; border:none; outline:none; color:var(--text); font-size:1.05rem; padding:14px 18px; }
-.home-search input::placeholder { color:var(--text-faint); }
-.home-search button { background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:white; padding:12px 24px; border-radius:10px; font-weight:600; font-size:0.95rem; transition:all 0.2s; }
-.home-search button:hover { transform:translateY(-1px); box-shadow:0 8px 20px -5px rgba(124,92,255,0.5); }
-.home-links { margin-top:1.5rem; display:flex; gap:1.5rem; font-size:0.85rem; color:var(--text-dim); }
-.home-links a:hover { color:var(--accent); }
-.sources-preview { margin-top:3rem; display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; max-width:700px; }
-.source-pill { background:var(--bg-elev); border:1px solid var(--border); padding:6px 12px; border-radius:999px; font-size:0.8rem; color:var(--text-dim); display:flex; align-items:center; gap:6px; }
-.source-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--success); }
-.history-list { margin-top:2rem; width:100%; max-width:680px; }
-.history-list h4 { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-faint); margin-bottom:10px; }
-.history-item { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--bg-elev); border:1px solid var(--border); border-radius:10px; margin-bottom:6px; cursor:pointer; transition:all 0.15s; }
-.history-item:hover { border-color:var(--accent); }
-.history-item .q { color:var(--text); font-size:0.9rem; }
-.history-item .meta { color:var(--text-faint); font-size:0.75rem; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-.results-screen { display:none; min-height:100vh; }
-.results-screen.active { display:block; }
-.home.hidden { display:none; }
-.top-bar { position:sticky; top:0; background:rgba(10,10,15,0.85); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); z-index:50; padding:12px 24px; }
-.top-bar-inner { max-width:1400px; margin:0 auto; display:flex; align-items:center; gap:20px; }
-.logo-small { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.1rem; cursor:pointer; }
-.logo-small .emoji { font-size:1.4rem; }
-.top-search { flex:1; max-width:600px; background:var(--bg-elev); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; padding:4px 4px 4px 14px; }
-.top-search:focus-within { border-color:var(--accent); }
-.top-search input { flex:1; background:none; border:none; outline:none; color:var(--text); padding:8px; font-size:0.95rem; }
-.top-search button { background:var(--accent); color:white; padding:8px 16px; border-radius:7px; font-size:0.85rem; font-weight:600; }
-.results-layout { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:1fr 300px; gap:24px; padding:20px 24px; }
-@media (max-width:1100px) { .results-layout { grid-template-columns:1fr; } .ad-sidebar { display:none; } }
-@media (max-width:768px) { .results-layout { padding:16px; } }
-.results-meta { margin-bottom:16px; font-size:0.85rem; color:var(--text-dim); }
-.results-meta strong { color:var(--text); }
-.result-item { padding:16px 0; border-bottom:1px solid var(--border); animation:fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-.result-item .source-line { display:flex; align-items:center; gap:8px; font-size:0.78rem; color:var(--text-dim); margin-bottom:6px; }
-.source-icon { width:22px; height:22px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; flex-shrink:0; }
-.result-item h3 { font-size:1.15rem; font-weight:600; margin-bottom:4px; line-height:1.3; }
-.result-item h3 a { color:#a8b4ff; transition:color 0.15s; }
-.result-item h3 a:hover { color:var(--accent-2); text-decoration:underline; }
-.result-url { font-size:0.8rem; color:var(--text-faint); margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.result-snippet { font-size:0.9rem; color:var(--text-dim); line-height:1.5; margin-bottom:8px; }
-.result-snippet mark { background:rgba(124,92,255,0.2); color:var(--text); padding:0 2px; border-radius:2px; }
-.result-tags { display:flex; flex-wrap:wrap; gap:6px; font-size:0.75rem; }
-.tag { background:var(--bg-elev); border:1px solid var(--border); padding:3px 9px; border-radius:999px; color:var(--text-dim); }
-.tool-btn { background:var(--bg-elev); border:1px solid var(--border); padding:7px 12px; border-radius:8px; font-size:0.82rem; color:var(--text-dim); display:inline-flex; align-items:center; gap:6px; transition:all 0.15s; }
-.tool-btn:hover { border-color:var(--accent); color:var(--text); }
-.toolbar { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
-.state-box { text-align:center; padding:60px 20px; color:var(--text-dim); }
-.state-box .icon { font-size:3rem; margin-bottom:12px; }
-.state-box h3 { color:var(--text); font-size:1.2rem; margin-bottom:6px; }
-.spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto 12px; }
-@keyframes spin { to { transform:rotate(360deg); } }
+/* фон */
+.aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;animation:float 22s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:560px;height:560px;background:#c98a2b;top:-180px;left:-120px}
+.aurora i:nth-child(2){width:520px;height:520px;background:#4b5cff;top:-120px;right:-160px;animation-delay:-6s;opacity:.22}
+.aurora i:nth-child(3){width:420px;height:420px;background:#3aa776;top:420px;left:40%;animation-delay:-12s;opacity:.14}
+:root[data-theme="light"] .aurora i{opacity:.18}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .aurora i{opacity:.18}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes float{to{transform:translate(60px,40px) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.aurora i{animation:none}*{transition:none!important;animation-duration:0s!important}}
 
-.native-promo-block { background:linear-gradient(135deg,rgba(124,92,255,0.08),rgba(0,212,255,0.05)); border:1px solid rgba(124,92,255,0.25); border-radius:12px; padding:20px; margin:16px 0; position:relative; transition:transform 0.2s, border-color 0.2s; }
-.native-promo-block:hover { transform:translateY(-2px); border-color:rgba(124,92,255,0.5); }
-.promo-badge { position:absolute; top:10px; right:12px; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); font-weight:600; background:rgba(124,92,255,0.1); padding:3px 8px; border-radius:4px; }
-.promo-content { display:flex; align-items:center; gap:16px; }
-.promo-icon { font-size:2.5rem; flex-shrink:0; }
-.promo-text h4 { font-size:1.1rem; font-weight:700; color:var(--text); margin-bottom:6px; }
-.promo-text p { font-size:0.9rem; color:var(--text-dim); line-height:1.5; margin-bottom:12px; }
-.promo-btn { display:inline-block; background:var(--accent); color:white; padding:10px 20px; border-radius:8px; font-weight:600; font-size:0.9rem; text-decoration:none; transition:background 0.2s; white-space:nowrap; }
-.promo-btn:hover { background:var(--accent-hover); }
-.promo-sidebar-block { background:var(--bg-elev); border:1px solid var(--border); border-radius:12px; padding:24px; text-align:center; position:sticky; top:80px; }
-.promo-icon-large { font-size:3rem; margin-bottom:12px; }
-.promo-sidebar-block h3 { font-size:1.2rem; margin-bottom:8px; color:var(--text); }
-.promo-sidebar-block p { font-size:0.85rem; color:var(--text-dim); margin-bottom:20px; line-height:1.5; }
-.promo-btn-full { display:block; width:100%; background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:white; padding:12px; border-radius:8px; font-weight:600; text-decoration:none; margin-bottom:12px; transition:opacity 0.2s; }
-.promo-btn-full:hover { opacity:0.9; }
-.promo-disclaimer { font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.05em; }
+/* шапка */
+.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:-.02em;font-size:19px}
+.logo svg{width:30px;height:30px}
+.top nav{margin-left:auto;display:flex;gap:6px;align-items:center}
+.pill-btn{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+.pill-btn:hover{border-color:var(--border-strong);background:var(--surface-2)}
+.top .ad-link{background:var(--accent);color:var(--accent-ink);border-color:transparent;text-decoration:none}
+.top .ad-link:hover{background:var(--accent-2);color:var(--accent-ink)}
+@media (max-width:640px){.top .ad-link span{display:none}}
 
-.modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:100; align-items:center; justify-content:center; padding:20px; }
-.modal-backdrop.active { display:flex; }
-.modal { background:var(--bg-elev); border:1px solid var(--border); border-radius:16px; padding:28px; max-width:560px; width:100%; max-height:90vh; overflow-y:auto; position:relative; }
-.modal-close { position:absolute; top:16px; right:16px; font-size:2rem; color:var(--text-dim); width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; transition:all 0.15s; }
-.modal-close:hover { background:var(--bg-elev-2); color:var(--text); }
-.modal h2 { font-size:1.3rem; margin-bottom:18px; }
-.form-row { margin-bottom:14px; }
-.form-row label { display:block; font-size:0.8rem; color:var(--text-dim); margin-bottom:6px; }
-.form-row input, .form-row select { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); outline:none; font-size:0.9rem; }
-.form-row input:focus { border-color:var(--accent); }
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
-.btn { padding:10px 18px; border-radius:8px; font-size:0.9rem; font-weight:500; transition:all 0.15s; }
-.btn-ghost { background:var(--bg-elev-2); color:var(--text); }
-.btn-ghost:hover { background:var(--border); }
-.btn-primary { background:var(--accent); color:white; }
-.btn-primary:hover { background:var(--accent-hover); }
-footer { text-align:center; padding:40px 20px; color:var(--text-faint); font-size:0.8rem; border-top:1px solid var(--border); margin-top:40px; }
-@media (max-width:768px) { .promo-content { flex-direction:column; text-align:center; } }
+/* герой */
+.hero{padding:72px 0 28px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);padding:6px 12px;border-radius:999px}
+.eyebrow b{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(36px,6.4vw,72px);line-height:1.04;letter-spacing:-.02em;margin:22px auto 16px;max-width:900px}
+h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--accent),var(--accent-2) 60%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:640px;margin:0 auto}
+
+/* форма */
+.search{margin:38px auto 0;max-width:920px;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:28px;padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.row-main{display:grid;grid-template-columns:1fr 1fr auto;gap:10px}
+.field{position:relative;display:flex;flex-direction:column;background:var(--bg-2);border:1px solid var(--border);border-radius:18px;padding:10px 16px 10px;transition:.2s}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+.field label{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.field input,.field select{border:0;background:transparent;outline:0;font-size:17px;font-weight:600;padding:2px 0 0;width:100%;min-width:0}
+.field input::placeholder{color:var(--faint);font-weight:500}
+.go{border:0;border-radius:18px;padding:0 30px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--accent-ink);font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:transform .15s,box-shadow .2s;box-shadow:0 10px 30px -10px color-mix(in srgb,var(--accent) 70%,transparent)}
+.go:hover{transform:translateY(-1px)}
+.go:active{transform:translateY(1px)}
+.go svg{width:20px;height:20px}
+.adv-toggle{margin:12px 6px 2px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.link-btn{background:none;border:0;color:var(--muted);font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;padding:4px 2px}
+.link-btn:hover{color:var(--text)}
+.link-btn svg{width:16px;height:16px;transition:transform .25s}
+.link-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.adv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.adv[hidden]{display:none}
+.adv .wide{grid-column:span 2}
+.translit-note{grid-column:1/-1;font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;padding:0 6px}
+.translit-note svg{flex:0 0 16px;margin-top:3px}
+.sources{display:flex;gap:8px;flex-wrap:wrap;margin:14px 4px 4px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:transparent;border-radius:999px;padding:7px 13px 7px 10px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.2s;user-select:none}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c);opacity:.35;transition:.2s}
+.chip[aria-pressed="true"]{border-color:color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.chip[aria-pressed="true"] .dot{opacity:1;box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.variants{display:flex;gap:6px;flex-wrap:wrap;margin:10px 6px 2px;align-items:center;font-size:13px;color:var(--muted)}
+.variants[hidden]{display:none}
+.variants button{border:1px dashed var(--border-strong);background:none;border-radius:8px;padding:3px 9px;font-size:13px;font-weight:600;cursor:pointer}
+.variants button:hover{border-color:var(--accent);color:var(--accent)}
+.examples{margin-top:16px;color:var(--faint);font-size:14px}
+.examples button{background:none;border:0;color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer;padding:0 3px;font-weight:600}
+.examples button:hover{color:var(--accent)}
+
+@media (max-width:760px){
+  .row-main{grid-template-columns:1fr}
+  .go{padding:16px;justify-content:center}
+  .adv{grid-template-columns:1fr 1fr}
+  .adv .wide{grid-column:1/-1}
+  .search{border-radius:22px;padding:10px}
+}
+
+/* реклама */
+.promo{margin:34px auto 0;max-width:920px;text-align:left;display:flex;align-items:center;gap:20px;padding:18px 20px;border-radius:var(--radius);text-decoration:none;position:relative;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:linear-gradient(110deg,color-mix(in srgb,var(--accent) 16%,transparent),color-mix(in srgb,var(--c-wikidata) 10%,transparent));transition:.25s}
+.promo:hover{transform:translateY(-2px);border-color:var(--accent)}
+.promo .ad-label{position:absolute;top:8px;right:12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.promo .mark{flex:0 0 52px;height:52px;border-radius:14px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--serif);font-size:26px;font-weight:700}
+.promo h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.01em}
+.promo p{margin:2px 0 0;color:var(--muted);font-size:14.5px}
+.promo .cta{margin-left:auto;white-space:nowrap;background:var(--text);color:var(--bg);font-weight:800;font-size:14px;padding:10px 16px;border-radius:12px}
+@media (max-width:640px){.promo{flex-wrap:wrap}.promo .cta{margin-left:0;width:100%;text-align:center}}
+
+/* как это работает */
+.intro{padding:56px 0 30px}
+.section-title{font-family:var(--serif);font-size:clamp(26px,3.4vw,38px);letter-spacing:-.01em;margin:0 0 8px;font-weight:700}
+.section-sub{color:var(--muted);margin:0 0 26px;max-width:640px}
+.cards-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.src-card{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden}
+.src-card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c)}
+.src-card h4{margin:6px 0 6px;font-size:16px}
+.src-card p{margin:0;color:var(--muted);font-size:14px}
+.src-card .tag{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+@media (max-width:900px){.cards-4{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.cards-4{grid-template-columns:1fr}}
+
+/* результаты */
+.results{padding:30px 0 40px}
+.results[hidden]{display:none}
+.res-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.res-head h2{margin:0;font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:700}
+.res-head h2 small{display:block;font-family:var(--font);font-size:14px;color:var(--muted);font-weight:500;margin-top:4px}
+.res-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.select{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600}
+.status-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:.2s}
+.status .dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.status .n{color:var(--muted);font-variant-numeric:tabular-nums}
+.status.active{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+.status.err .n{color:#ff6b6b}
+.spin{width:12px;height:12px;border-radius:50%;border:2px solid var(--border-strong);border-top-color:var(--c);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.layout{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+
+.card{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,border-color .2s,box-shadow .2s;animation:rise .45s both;position:relative;min-width:0}
+.card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--c) 50%,transparent);box-shadow:var(--shadow)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--c)}
+.badge i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+.kind{font-size:12px;color:var(--faint);font-weight:600;text-align:right}
+.person{display:flex;gap:12px;align-items:center}
+.avatar{flex:0 0 52px;height:52px;border-radius:14px;background:color-mix(in srgb,var(--c) 18%,var(--bg-2));display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:20px;color:var(--c);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.card h3{margin:0;font-family:var(--serif);font-size:20px;line-height:1.2;font-weight:700;overflow-wrap:anywhere}
+.years{font-size:14.5px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;margin-top:2px}
+.meta{display:flex;flex-direction:column;gap:5px;font-size:13.5px;color:var(--muted)}
+.meta div{display:flex;gap:8px;align-items:flex-start}
+.meta svg{flex:0 0 14px;width:14px;height:14px;margin-top:3px;opacity:.75}
+.meta span{overflow-wrap:anywhere}
+.snippet{font-size:13px;color:var(--muted);background:var(--bg-2);border-radius:10px;padding:10px 12px;line-height:1.5;max-height:7.5em;overflow:hidden;border:1px solid var(--border)}
+.thumb{border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--bg-2);border:1px solid var(--border)}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:6px;border-top:1px dashed var(--border)}
+.open{text-decoration:none;font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;color:var(--text)}
+.open:hover{color:var(--c)}
+.open svg{width:14px;height:14px}
+.copy{background:none;border:0;color:var(--faint);cursor:pointer;font-size:12.5px;font-weight:600}
+.copy:hover{color:var(--text)}
+
+.card.ad-card{--c:var(--accent);background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 16%,var(--bg-2)),var(--surface));border-color:color-mix(in srgb,var(--accent) 40%,transparent);text-decoration:none}
+
+.skel{border-radius:var(--radius);height:210px;background:linear-gradient(100deg,var(--surface) 30%,var(--surface-2) 50%,var(--surface) 70%);background-size:300% 100%;animation:sh 1.4s infinite;border:1px solid var(--border)}
+@keyframes sh{to{background-position:-150% 0}}
+
+.empty{border:1px dashed var(--border-strong);border-radius:var(--radius);padding:36px 24px;text-align:center;color:var(--muted)}
+.empty h3{color:var(--text);margin:0 0 6px;font-family:var(--serif);font-size:22px}
+.err-box{border:1px solid color-mix(in srgb,#ff6b6b 40%,transparent);background:color-mix(in srgb,#ff6b6b 8%,transparent);border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;color:var(--muted);margin-bottom:12px}
+.err-box a{color:var(--text);font-weight:700}
+
+.more{display:flex;justify-content:center;margin-top:18px}
+.more[hidden]{display:none}
+#results{scroll-margin-top:70px}
+
+/* боковая панель */
+.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:84px}
+@media (max-width:1000px){.side{position:static}}
+.panel{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:18px}
+.panel h4{margin:0 0 4px;font-size:15px;font-weight:800}
+.panel .sub{margin:0 0 12px;font-size:13px;color:var(--muted)}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat div{background:var(--bg-2);border-radius:12px;padding:10px 12px;border:1px solid var(--border)}
+.stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums;color:var(--c-census)}
+.stat small{color:var(--muted);font-size:12px}
+.ext{display:flex;flex-direction:column;gap:6px}
+.ext a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;text-decoration:none;border:1px solid transparent;transition:.2s}
+.ext a:hover{background:var(--bg-2);border-color:var(--border)}
+.ext .ico{flex:0 0 32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--bg-2);border:1px solid var(--border)}
+.ext b{display:block;font-size:14px}
+.ext small{display:block;color:var(--muted);font-size:12px;line-height:1.35}
+.side-ad{text-decoration:none;display:block;border-radius:var(--radius);padding:22px;background:radial-gradient(120% 120% at 100% 0%,color-mix(in srgb,var(--accent) 35%,transparent),transparent 60%),var(--bg-2);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);position:relative;transition:.25s}
+.side-ad:hover{transform:translateY(-2px)}
+.side-ad .ad-label{position:absolute;top:10px;right:14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.side-ad h4{font-family:var(--serif);font-size:22px;margin:4px 0 8px;line-height:1.2}
+.side-ad p{margin:0 0 16px;color:var(--muted);font-size:14px}
+.side-ad ul{margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.side-ad li::before{content:"✓";color:var(--accent);font-weight:800;margin-right:8px}
+.side-ad .cta{display:block;text-align:center;background:var(--accent);color:var(--accent-ink);font-weight:800;border-radius:12px;padding:11px}
+
+/* подвал */
+footer{border-top:1px solid var(--border);padding:34px 0 50px;margin-top:40px;color:var(--muted);font-size:13.5px}
+footer .cols{display:grid;grid-template-columns:2fr 1fr;gap:30px}
+footer h5{color:var(--text);margin:0 0 8px;font-size:14px}
+footer p{margin:0 0 8px}
+footer a{color:var(--text)}
+@media (max-width:760px){footer .cols{grid-template-columns:1fr}}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="grain" aria-hidden="true"></div>
 
-<div id="homeScreen" class="home">
-  <div class="logo-big">👤</div>
-  <h1>RootFinder</h1>
-  <p class="tagline">Поиск людей в Wikidata — крупнейшей открытой базе знаний</p>
-
-  <form class="home-search" id="homeForm">
-    <input type="text" id="homeInput" placeholder="Имя человека (например: Альберт Эйнштейн)..." autocomplete="off" autofocus />
-    <button type="submit">Найти человека</button>
-  </form>
-
-  <div class="home-links">
-    <a href="#" id="advSearchLink">⚙️ Расширенный поиск</a>
-    <a href="#" id="favoritesLink">⭐ Избранное</a>
-    <a href="#" id="clearHistory">🗑 Очистить историю</a>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="./" aria-label="Главная">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--accent)"/><path d="M32 50V30M32 30l-10-10M32 30l10-10M32 38l-8-6M32 38l8-6" stroke="var(--bg)" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+      <span id="siteName">Истоки</span>
+    </a>
+    <nav>
+      <button class="pill-btn" id="langBtn" type="button" aria-label="Language">EN</button>
+      <button class="pill-btn" id="themeBtn" type="button" aria-label="Тема">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="pill-btn ad-link" id="topAd" href="#" target="_blank" rel="noopener sponsored">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5L12 17l-6.5 4 2-7.5L2 9h7z"/></svg>
+        <span data-ad="topCta"></span>
+      </a>
+    </nav>
   </div>
+</header>
 
-  <div id="historyList" class="history-list"></div>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><b></b><span data-i18n="eyebrow"></span></span>
+      <h1 data-i18n-html="title"></h1>
+      <p class="lead" data-i18n="lead"></p>
 
-  <div class="sources-preview">
-    <div class="source-pill"><span class="dot"></span>Wikidata — 100+ млн элементов</div>
-    <div class="source-pill"><span class="dot"></span>Только люди</div>
-    <div class="source-pill"><span class="dot"></span>100% бесплатно</div>
-  </div>
-</div>
+      <form class="search" id="form" autocomplete="off">
+        <div class="row-main">
+          <div class="field">
+            <label for="fn" data-i18n="firstName"></label>
+            <input id="fn" name="fn" data-i18n-ph="firstNamePh">
+          </div>
+          <div class="field">
+            <label for="ln" data-i18n="lastName"></label>
+            <input id="ln" name="ln" data-i18n-ph="lastNamePh" required>
+          </div>
+          <button class="go" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <span data-i18n="searchBtn"></span>
+          </button>
+        </div>
 
-<div id="resultsScreen" class="results-screen">
-  <div class="top-bar">
-    <div class="top-bar-inner">
-      <div class="logo-small" onclick="App.goHome()">
-        <span class="emoji">👤</span><span>RootFinder</span>
-      </div>
-      <form class="top-search" id="topForm">
-        <input type="text" id="topInput" placeholder="Имя человека..." />
-        <button type="submit">Найти</button>
+        <div class="adv-toggle">
+          <button type="button" class="link-btn" id="advBtn" aria-expanded="false" aria-controls="adv">
+            <span data-i18n="advanced"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+
+        <div class="adv" id="adv" hidden>
+          <div class="field"><label for="yf" data-i18n="yearFrom"></label><input id="yf" name="yf" inputmode="numeric" maxlength="4" placeholder="1850"></div>
+          <div class="field"><label for="yt" data-i18n="yearTo"></label><input id="yt" name="yt" inputmode="numeric" maxlength="4" placeholder="1920"></div>
+          <div class="field wide"><label for="pl" data-i18n="place"></label><input id="pl" name="pl" data-i18n-ph="placePh"></div>
+          <div class="field wide"><label for="lfn" data-i18n="latFirst"></label><input id="lfn" name="lfn" placeholder="Ivan"></div>
+          <div class="field wide"><label for="lln" data-i18n="latLast"></label><input id="lln" name="lln" placeholder="Ivanov"></div>
+          <div class="translit-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+            <span data-i18n="translitNote"></span>
+          </div>
+        </div>
+
+        <div class="variants" id="variants" hidden></div>
+
+        <div class="sources" id="sourceChips" role="group" aria-label="Sources"></div>
       </form>
-      <button class="tool-btn" onclick="App.openAdvSearch()">⚙️ Расширенный</button>
+
+      <p class="examples"><span data-i18n="tryEx"></span>
+        <button type="button" data-ex="Albert|Einstein">Albert Einstein</button>,
+        <button type="button" data-ex="Марк|Шагал">Марк Шагал</button>,
+        <button type="button" data-ex="|Goldberg|1860|1910">Goldberg 1860–1910</button>
+      </p>
+
+      <a class="promo" id="heroAd" href="#" target="_blank" rel="noopener sponsored">
+        <span class="ad-label" data-i18n="adLabel"></span>
+        <span class="mark" data-ad="initial"></span>
+        <span><h3 data-ad="title"></h3><p data-ad="text"></p></span>
+        <span class="cta" data-ad="cta"></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Результаты -->
+  <section class="results" id="results" hidden>
+    <div class="wrap">
+      <div class="res-head">
+        <h2 id="resTitle"></h2>
+        <div class="res-tools">
+          <select class="select" id="sort" aria-label="Sort">
+            <option value="rel" data-i18n="sortRel"></option>
+            <option value="year" data-i18n="sortYear"></option>
+            <option value="name" data-i18n="sortName"></option>
+          </select>
+          <button class="pill-btn" id="shareBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+            <span data-i18n="share"></span>
+          </button>
+          <button class="pill-btn" id="csvBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg>
+            CSV
+          </button>
+        </div>
+      </div>
+      <div class="status-row" id="statusRow"></div>
+
+      <div class="layout">
+        <div>
+          <div id="errors"></div>
+          <div class="grid" id="grid"></div>
+          <div class="more" id="moreWrap" hidden><button class="pill-btn" id="moreBtn" type="button" data-i18n="showMore"></button></div>
+        </div>
+        <aside class="side">
+          <div class="panel" id="censusPanel" hidden>
+            <h4 data-i18n="censusTitle"></h4>
+            <p class="sub" id="censusSub"></p>
+            <div class="stat" id="censusStat"></div>
+          </div>
+          <a class="side-ad" id="sideAd" href="#" target="_blank" rel="noopener sponsored">
+            <span class="ad-label" data-i18n="adLabel"></span>
+            <h4 data-ad="sideTitle"></h4>
+            <p data-ad="sideText"></p>
+            <ul id="sideAdList"></ul>
+            <span class="cta" data-ad="cta"></span>
+          </a>
+          <div class="panel">
+            <h4 data-i18n="extTitle"></h4>
+            <p class="sub" data-i18n="extSub"></p>
+            <div class="ext" id="extLinks"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- О источниках -->
+  <section class="intro" id="intro">
+    <div class="wrap">
+      <h2 class="section-title" data-i18n="introTitle"></h2>
+      <p class="section-sub" data-i18n="introSub"></p>
+      <div class="cards-4" id="srcCards"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <h5 data-i18n="aboutTitle"></h5>
+      <p data-i18n="aboutText"></p>
+      <p data-i18n-html="attrib"></p>
+    </div>
+    <div>
+      <h5 data-i18n="privacyTitle"></h5>
+      <p data-i18n="privacyText"></p>
+      <p>© <span id="year"></span> <span class="siteNameFoot">Истоки</span></p>
     </div>
   </div>
+</footer>
 
-  <div class="results-layout">
-    <main>
-      <div class="results-meta" id="resultsMeta"></div>
-      <div class="toolbar">
-        <button class="tool-btn" onclick="App.exportCSV()">📥 Экспорт CSV</button>
-        <button class="tool-btn" onclick="App.copyAllLinks()">🔗 Копировать ссылки</button>
-      </div>
-      <div id="resultsList"></div>
-    </main>
-
-    <aside class="ad-sidebar">
-      <div class="promo-sidebar-block">
-        <div class="promo-icon-large">🚀</div>
-        <h3>Ваш Второй Сайт</h3>
-        <p>Профессиональные инструменты для генеалогических исследований и построения семейных древ.</p>
-        <a href="https://ВАШ-ВТОРОЙ-САЙТ.ru" target="_blank" rel="noopener" class="promo-btn-full">Перейти на сайт →</a>
-        <div class="promo-disclaimer">Рекомендуемый партнер</div>
-      </div>
-    </aside>
-  </div>
-
-  <footer>
-    <p>© 2026 RootFinder. Поиск людей через Wikidata API.</p>
-    <p>Все данные принадлежат Wikidata и доступны на условиях CC0.</p>
-  </footer>
-</div>
-
-<div class="modal-backdrop" id="advModal">
-  <div class="modal">
-    <button class="modal-close" onclick="App.closeAdvSearch()">×</button>
-    <h2>Расширенный поиск человека</h2>
-    <div class="form-row">
-      <label>Имя (обязательно)</label>
-      <input type="text" id="advName" placeholder="Альберт Эйнштейн" />
-    </div>
-    <div class="form-grid">
-      <div class="form-row">
-        <label>Год рождения (от)</label>
-        <input type="number" id="advYearFrom" placeholder="1800" />
-      </div>
-      <div class="form-row">
-        <label>Год рождения (до)</label>
-        <input type="number" id="advYearTo" placeholder="1950" />
-      </div>
-    </div>
-    <div class="form-row">
-      <label>Род занятий</label>
-      <input type="text" id="advOccupation" placeholder="физик, писатель, политик..." />
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="App.closeAdvSearch()">Отмена</button>
-      <button class="btn btn-primary" onclick="App.runAdvSearch()">Искать</button>
-    </div>
-  </div>
-</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const Utils = {
-  escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); },
-  highlight(text, words) {
-    if (!words.length) return this.escapeHtml(text);
-    let safe = this.escapeHtml(text);
-    words.forEach(w => {
-      const re = new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-      safe = safe.replace(re, '<mark>$1</mark>');
-    });
-    return safe;
+/* =====================================================================
+   НАСТРОЙКИ — меняйте только этот блок
+   ===================================================================== */
+const SITE_NAME = { ru: "Истоки", en: "Istoki" };
+
+const AD = {
+  name: "Mystorytel",
+  url: "https://mystorytel.com",            // ← адрес вашего сайта
+  utm: "utm_source=istoki&utm_medium=banner&utm_campaign=genealogy_search",
+  ru: {
+    topCta: "Mystorytel",
+    title: "Нашли предков? Сохраните их историю",
+    text: "Mystorytel — семейное древо, летопись, фото и печатная книга памяти на русском.",
+    cta: "Попробовать",
+    sideTitle: "Превратите находки в семейную книгу",
+    sideText: "Соберите всё, что нашли, в одном месте — для детей и внуков.",
+    bullets: ["Семейное древо", "Летопись и воспоминания", "Фотоархив и рецепты", "Печатная книга памяти"]
   },
-  timeAgo(ts) {
-    const s = Math.floor((Date.now() - ts) / 1000);
-    if (s < 60) return 'только что'; if (s < 3600) return `${Math.floor(s/60)} мин назад`;
-    if (s < 86400) return `${Math.floor(s/3600)} ч назад`; return `${Math.floor(s/86400)} дн назад`;
+  en: {
+    topCta: "Mystorytel",
+    title: "Found your ancestors? Keep their story",
+    text: "Mystorytel — family tree, chronicle, photos and a printed memory book.",
+    cta: "Try it",
+    sideTitle: "Turn your findings into a family book",
+    sideText: "Keep everything you found in one place — for your children and grandchildren.",
+    bullets: ["Family tree", "Chronicle & memories", "Photo archive & recipes", "Printed memory book"]
   }
 };
 
-const Storage = {
-  getHistory() { return JSON.parse(localStorage.getItem('rf_history') || '[]'); },
-  addToHistory(query) {
-    const h = this.getHistory().filter(x => x.q !== query);
-    h.unshift({ q: query, t: Date.now() });
-    localStorage.setItem('rf_history', JSON.stringify(h.slice(0, 20)));
-  },
-  clearHistory() { localStorage.removeItem('rf_history'); },
-  getFavorites() { return JSON.parse(localStorage.getItem('rf_fav') || '[]'); },
-  addFavorite(item) {
-    const f = this.getFavorites();
-    if (!f.find(x => x.url === item.url)) { f.push({ ...item, addedAt: Date.now() }); localStorage.setItem('rf_fav', JSON.stringify(f)); }
-  },
-  removeFavorite(url) { localStorage.setItem('rf_fav', JSON.stringify(this.getFavorites().filter(x => x.url !== url))); },
-  isFavorite(url) { return this.getFavorites().some(x => x.url === url); }
-};
+const WIKITREE_APP_ID = "IstokiGenealogySearch";   // любое имя вашего приложения
+const PAGE_SIZE = 24;
+/* ===================================================================== */
 
-const WikidataAdapter = {
-  name: 'Wikidata', icon: '🌐', color: '#3b82f6',
-  async search(q, opts = {}) {
-    try {
-      console.log('Wikidata: searching for', q);
-      
-      // Используем wbsearchentities для поиска
-      const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=ru&limit=50&format=json&origin=*`;
-      const res = await fetch(searchUrl);
-      const data = await res.json();
-      console.log('Wikidata search response:', data);
-      
-      const entities = data.search || [];
-      
-      // Для каждого элемента получаем детальную информацию
-      const detailed = await Promise.all(entities.slice(0, 20).map(async e => {
-        try {
-          // Получаем claims (свойства) для проверки, что это человек (P31 = Q5)
-          const claimsUrl = `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${e.id}&props=claims|descriptions|labels&languages=ru|en&format=json&origin=*`;
-          const claimsRes = await fetch(claimsUrl);
-          const claimsData = await claimsRes.json();
-          const entity = claimsData.entities?.[e.id];
-          
-          if (!entity) return null;
-          
-          // Проверяем, что это человек (instance of = human Q5)
-          const isHuman = entity.claims?.P31?.some(c => c.mainsnak?.datavalue?.value?.id === 'Q5');
-          
-          if (!isHuman) return null;
-          
-          // Извлекаем дату рождения (P569)
-          const birthClaim = entity.claims?.P569?.[0];
-          const birthDate = birthClaim?.mainsnak?.datavalue?.value?.time?.replace('+', '').split('T')[0] || '';
-          const birthYear = birthDate ? birthDate.split('-')[0] : '';
-          
-          // Извлекаем дату смерти (P570)
-          const deathClaim = entity.claims?.P570?.[0];
-          const deathDate = deathClaim?.mainsnak?.datavalue?.value?.time?.replace('+', '').split('T')[0] || '';
-          const deathYear = deathDate ? deathDate.split('-')[0] : '';
-          
-          // Извлекаем место рождения (P19)
-          const birthPlaceClaim = entity.claims?.P19?.[0];
-          const birthPlaceId = birthPlaceClaim?.mainsnak?.datavalue?.value?.id;
-          let birthPlace = '';
-          if (birthPlaceId) {
-            const placeRes = await fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${birthPlaceId}&props=labels&languages=ru|en&format=json&origin=*`);
-            const placeData = await placeRes.json();
-            birthPlace = placeData.entities?.[birthPlaceId]?.labels?.ru?.value || placeData.entities?.[birthPlaceId]?.labels?.en?.value || '';
-          }
-          
-          // Извлекаем род занятий (P106)
-          const occupations = (entity.claims?.P106 || []).slice(0, 3).map(c => c.mainsnak?.datavalue?.value?.id).filter(Boolean);
-          
-          return {
-            source: 'wikidata',
-            title: entity.labels?.ru?.value || entity.labels?.en?.value || e.label || e.id,
-            url: `https://www.wikidata.org/wiki/${e.id}`,
-            urlDisplay: `wikidata.org/wiki/${e.id}`,
-            snippet: [
-              entity.descriptions?.ru?.value || entity.descriptions?.en?.value || e.description,
-              birthDate && `Рождение: ${birthDate}${birthPlace ? ', ' + birthPlace : ''}`,
-              deathDate && `Смерть: ${deathDate}`
-            ].filter(Boolean).join(' · '),
-            tags: [birthYear, deathYear, birthPlace].filter(Boolean),
-            date: birthDate || null, type: 'person',
-            rawData: { birthDate, deathDate, birthPlace, occupations }
-          };
-        } catch(err) {
-          console.warn('Error fetching details for', e.id, err);
-          return null;
-        }
-      }));
-      
-      const results = detailed.filter(Boolean);
-      console.log('Wikidata: found', results.length, 'people');
-      return results;
-    } catch(e) { 
-      console.error('Wikidata error:', e); 
-      return []; 
+const I18N = {
+  ru: {
+    eyebrow: "Бесплатно · без регистрации",
+    title: "Найдите своих предков<br>в <em>открытых архивах</em> мира",
+    lead: "Один запрос — поиск сразу в WikiTree, Wikidata, европейских архивах и исторических газетах США. Кириллица переводится в латиницу автоматически.",
+    firstName: "Имя", firstNamePh: "Например, Иван", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
+    searchBtn: "Найти", advanced: "Годы, место и латинское написание",
+    yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
+    latFirst: "Имя латиницей", latLast: "Фамилия латиницей",
+    translitNote: "Американские и европейские базы ищут латиницей. Мы заполним эти поля сами — исправьте, если в документах фамилия писалась иначе.",
+    variantsLabel: "Другие написания:",
+    tryEx: "Попробуйте:",
+    adLabel: "Реклама",
+    results: n => `${n} ${plural(n, ["находка","находки","находок"])}`,
+    resultsFor: q => `по запросу «${q}»`,
+    sortRel: "По источнику", sortYear: "По году рождения", sortName: "По имени",
+    share: "Ссылка", showMore: "Показать ещё",
+    all: "Все",
+    censusTitle: "Фамилия в переписи США",
+    censusSub: n => `Данные переписи 2010 года для фамилии ${n}`,
+    censusCount: "носителей фамилии", censusRank: "место по частоте", censusProp: "на 100 000 человек", censusNone: "Фамилия встречается реже 100 раз и не попала в список.",
+    extTitle: "Ищите также здесь", extSub: "Эти базы не дают открытого API — откроем их поиск с вашим запросом.",
+    introTitle: "Где мы ищем", introSub: "Только открытые и законные источники. Мы ничего не храним — запрос уходит напрямую в базы.",
+    born: "Рождение", died: "Смерть", parents: "Родители", event: "Событие", archive: "Архив", role: "Роль",
+    open: "Открыть", copy: "Копировать", copied: "Скопировано",
+    linkCopied: "Ссылка на поиск скопирована",
+    kinds: { person: "Профиль", record: "Архивная запись", news: "Газета" },
+    errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
+    emptyTitle: "Ничего не нашлось",
+    emptyText: "Попробуйте убрать годы, место или проверьте написание фамилии латиницей — в старых документах фамилии часто записывали по-разному.",
+    needLast: "Введите фамилию",
+    aboutTitle: "О проекте",
+    aboutText: "Истоки — бесплатный инструмент поиска по открытым генеалогическим базам. Мы не являемся владельцами данных: все результаты принадлежат их источникам и открываются на их сайтах.",
+    attrib: 'Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.',
+    privacyTitle: "Конфиденциальность",
+    privacyText: "Без регистрации, без cookies и без хранения запросов. Поиск выполняется прямо в вашем браузере.",
+    src: {
+      wikitree: ["WikiTree", "Общее древо", "Бесплатное мировое семейное древо: более 30 млн профилей с источниками и связями."],
+      wikidata: ["Wikidata", "Энциклопедия", "Известные люди: даты, места, родители, фото. Хорошо ищет и на кириллице."],
+      openarch: ["Open Archives", "Архивы Европы", "Сотни миллионов метрических записей: рождения, браки, смерти — Нидерланды, Бельгия и др."],
+      loc: ["Газеты США", "1770–1963", "Chronicling America: миллионы оцифрованных страниц американских газет с полнотекстовым поиском."]
+    }
+  },
+  en: {
+    eyebrow: "Free · no sign-up",
+    title: "Find your ancestors<br>in the world's <em>open archives</em>",
+    lead: "One search across WikiTree, Wikidata, European archives and historic U.S. newspapers. Cyrillic names are transliterated automatically.",
+    firstName: "First name", firstNamePh: "e.g. John", lastName: "Last name", lastNamePh: "e.g. Goldberg",
+    searchBtn: "Search", advanced: "Years, place and Latin spelling",
+    yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
+    latFirst: "First name (Latin)", latLast: "Last name (Latin)",
+    translitNote: "U.S. and European databases search in Latin letters. We fill these in automatically — edit them if records spelled the name differently.",
+    variantsLabel: "Other spellings:",
+    tryEx: "Try:",
+    adLabel: "Ad",
+    results: n => `${n} ${n === 1 ? "result" : "results"}`,
+    resultsFor: q => `for “${q}”`,
+    sortRel: "By source", sortYear: "By birth year", sortName: "By name",
+    share: "Link", showMore: "Show more",
+    all: "All",
+    censusTitle: "Surname in the U.S. Census",
+    censusSub: n => `2010 Census data for the surname ${n}`,
+    censusCount: "people with this surname", censusRank: "frequency rank", censusProp: "per 100,000 people", censusNone: "This surname occurs fewer than 100 times and is not listed.",
+    extTitle: "Also search here", extSub: "These databases have no open API — we open their search with your query.",
+    introTitle: "Where we search", introSub: "Only open, legal sources. We store nothing — your query goes straight to the databases.",
+    born: "Born", died: "Died", parents: "Parents", event: "Event", archive: "Archive", role: "Role",
+    open: "Open", copy: "Copy", copied: "Copied",
+    linkCopied: "Search link copied",
+    kinds: { person: "Profile", record: "Archive record", news: "Newspaper" },
+    errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
+    emptyTitle: "Nothing found",
+    emptyText: "Try removing years or place, or check the Latin spelling — old records often spelled names differently.",
+    needLast: "Enter a last name",
+    aboutTitle: "About",
+    aboutText: "Istoki is a free search tool for open genealogy databases. We do not own the data: all results belong to their sources and open on their websites.",
+    attrib: 'Data: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.',
+    privacyTitle: "Privacy",
+    privacyText: "No sign-up, no cookies, no stored queries. Searches run right in your browser.",
+    src: {
+      wikitree: ["WikiTree", "Shared tree", "Free worldwide family tree: 30M+ sourced profiles with family links."],
+      wikidata: ["Wikidata", "Encyclopedia", "Notable people: dates, places, parents, photos. Works well with Cyrillic too."],
+      openarch: ["Open Archives", "European archives", "Hundreds of millions of civil and church records: births, marriages, deaths."],
+      loc: ["U.S. newspapers", "1770–1963", "Chronicling America: millions of digitized U.S. newspaper pages, full-text searchable."]
     }
   }
 };
 
-const Search = {
-  state: { query: '', results: [], sortBy: 'relevance' },
-  async run(query) {
-    if (!query?.trim()) return;
-    this.state.query = query.trim();
-    Storage.addToHistory(this.state.query);
-    App.goResults();
-    UI.showLoading();
+const SOURCES = [
+  { id: "wikitree", color: "var(--c-wikitree)" },
+  { id: "wikidata", color: "var(--c-wikidata)" },
+  { id: "openarch", color: "var(--c-openarch)" },
+  { id: "loc",      color: "var(--c-loc)" }
+];
 
-    try {
-      this.state.results = await WikidataAdapter.search(this.state.query);
-      console.log('Total results:', this.state.results.length);
-      this.render();
-    } catch(e) {
-      console.error('Search failed:', e);
-      UI.showError();
-    }
-  },
-  render() {
-    const filtered = this.getFilteredResults();
-    UI.renderResults(filtered, this.state.query);
-    this.renderMeta(filtered);
-  },
-  getFilteredResults() {
-    let items = [...this.state.results];
-    if (this.state.sortBy === 'date-desc') items.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-    else if (this.state.sortBy === 'date-asc') items.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-    return items;
-  },
-  renderMeta(items) {
-    const total = items.length;
-    document.getElementById('resultsMeta').innerHTML = total
-      ? `Найдено <strong>${total}</strong> человек по запросу «<strong>${Utils.escapeHtml(this.state.query)}</strong>»`
-      : '';
-  },
-  setSortBy(sort) { this.state.sortBy = sort; this.render(); },
-  exportCSV() {
-    const items = this.getFilteredResults();
-    if (!items.length) return alert('Нет данных для экспорта');
-    const rows = [['Источник', 'Имя', 'Ссылка', 'Описание', 'Теги', 'Дата']];
-    items.forEach(r => rows.push([r.source, r.title, r.url, (r.snippet||'').replace(/"/g, '""'), r.tags.join('; '), r.date || '']));
-    const csv = '\uFEFF' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
-    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
-    a.download = `rootfinder-${this.state.query.replace(/\s+/g, '-')}.csv`; a.click();
-  },
-  copyAllLinks() {
-    const items = this.getFilteredResults();
-    if (!items.length) return;
-    navigator.clipboard.writeText(items.map(r => `${r.title}\n${r.url}`).join('\n\n')).then(() => alert(`Скопировано ${items.length} ссылок`));
-  }
-};
+/* ---------- утилиты ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const enc = encodeURIComponent;
+function plural(n, f){ const a = Math.abs(n) % 100, b = a % 10; if (a > 10 && a < 20) return f[2]; if (b > 1 && b < 5) return f[1]; if (b === 1) return f[0]; return f[2]; }
+const hasCyr = s => /[\u0400-\u04FF]/.test(s || "");
+const yearOf = v => { if (v == null) return null; const m = String(v).match(/-?\d{3,4}/); if (!m) return null; const y = parseInt(m[0], 10); return y > 0 ? y : null; };
+let lang = (navigator.language || "ru").toLowerCase().startsWith("en") ? "en" : "ru";
+try { lang = localStorage.getItem("lang") || lang; } catch(e){}
+const t = (k, ...a) => { const v = I18N[lang][k]; return typeof v === "function" ? v(...a) : v; };
 
-const UI = {
-  renderResults(results, query) {
-    const list = document.getElementById('resultsList');
-    const qWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
-    let html = '';
-    
-    const promoHTML = `
-      <div class="native-promo-block">
-        <div class="promo-badge">Рекомендуем</div>
-        <div class="promo-content">
-          <div class="promo-icon">🚀</div>
-          <div class="promo-text">
-            <h4>Нашли предка? Узнайте о нём больше!</h4>
-            <p>На <strong>ВАШ-ВТОРОЙ-САЙТ.ru</strong> мы помогаем восстановить полную историю рода, построить интерактивное древо и заказать архивные выписки.</p>
-          </div>
-          <a href="https://ВАШ-ВТОРОЙ-САЙТ.ru" target="_blank" rel="noopener" class="promo-btn">Перейти на сайт →</a>
-        </div>
-      </div>`;
+function toast(msg){ const el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove("show"), 2200); }
 
-    results.forEach((r, i) => {
-      if (i > 0 && i % 5 === 0) html += promoHTML;
-      const isFav = Storage.isFavorite(r.url);
-      html += `
-        <article class="result-item">
-          <div class="source-line">
-            <span class="source-icon" style="background:${r.source === 'wikidata' ? '#3b82f620' : '#10b98120'};color:${r.source === 'wikidata' ? '#3b82f6' : '#10b981'}">${r.source === 'wikidata' ? '🌐' : '🌳'}</span>
-            <span>Wikidata</span>
-            <span>·</span>
-            <span>Человек</span>
-            <button class="tool-btn" style="margin-left:auto; padding:4px 8px;" data-fav="${r.url}">${isFav ? '⭐' : '☆'}</button>
-          </div>
-          <h3><a href="${r.url}" target="_blank" rel="noopener">${Utils.escapeHtml(r.title)}</a></h3>
-          <div class="result-url">${Utils.escapeHtml(r.urlDisplay)}</div>
-          ${r.snippet ? `<div class="result-snippet">${Utils.highlight(r.snippet, qWords)}</div>` : ''}
-          <div class="result-tags">${r.tags.filter(Boolean).slice(0, 5).map(t => `<span class="tag">${Utils.escapeHtml(t)}</span>`).join('')}</div>
-        </article>`;
+async function getJSON(url, opts = {}, ms = 20000){
+  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), ms);
+  try {
+    const r = await fetch(url, { ...opts, signal: ctl.signal });
+    if (r.status === 204) return null;
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const txt = await r.text();
+    return txt ? JSON.parse(txt) : null;
+  } finally { clearTimeout(timer); }
+}
+function jsonp(url, ms = 20000){
+  return new Promise((res, rej) => {
+    const cb = "__jp" + Math.random().toString(36).slice(2);
+    const s = document.createElement("script");
+    const done = () => { clearTimeout(timer); delete window[cb]; s.remove(); };
+    const timer = setTimeout(() => { done(); rej(new Error("timeout")); }, ms);
+    window[cb] = d => { done(); res(d); };
+    s.onerror = () => { done(); rej(new Error("network")); };
+    s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+    document.head.appendChild(s);
+  });
+}
+
+/* ---------- транслитерация и варианты написания ---------- */
+const TR = { а:"a",б:"b",в:"v",г:"g",д:"d",е:"e",ё:"yo",ж:"zh",з:"z",и:"i",й:"y",к:"k",л:"l",м:"m",н:"n",о:"o",п:"p",р:"r",с:"s",т:"t",у:"u",ф:"f",х:"kh",ц:"ts",ч:"ch",ш:"sh",щ:"shch",ъ:"",ы:"y",ь:"",э:"e",ю:"yu",я:"ya",і:"i",ї:"yi",є:"ye",ґ:"g",ў:"u" };
+function translit(s){
+  if (!s) return "";
+  return s.split("").map(ch => {
+    const lo = ch.toLowerCase(); const r = TR[lo];
+    if (r === undefined) return ch;
+    return ch === lo ? r : (r.charAt(0).toUpperCase() + r.slice(1));
+  }).join("").replace(/([A-Za-z])iy\b/g, "$1y").replace(/yy\b/g, "y");
+}
+const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s;
+function variants(name){
+  if (!name || name.length < 3) return [];
+  const n = name.toLowerCase(); const out = new Set();
+  const rules = [
+    [/v/g,"w"],[/ov$/,"off"],[/ev$/,"eff"],[/ov$/,"ow"],[/kh/g,"h"],[/kh/g,"ch"],[/ts/g,"tz"],[/ch/g,"tsch"],
+    [/sh/g,"sch"],[/zh/g,"sch"],[/ya/g,"ia"],[/ya/g,"ja"],[/yu/g,"iu"],[/y/g,"j"],[/sky$/,"ski"],[/sky$/,"skiy"],
+    [/berg$/,"burg"],[/man$/,"mann"],[/stein$/,"shtein"],[/shtein$/,"stein"],[/e/g,"a"]
+  ];
+  for (const [re, rep] of rules){ if (re.test(n)) { re.lastIndex = 0; const v = n.replace(re, rep); if (v !== n) out.add(cap(v)); } if (out.size >= 7) break; }
+  return [...out].slice(0, 7);
+}
+
+/* ---------- источники ---------- */
+const API = {
+  async wikitree(q){
+    const p = new URLSearchParams({
+      action: "searchPerson", appId: WIKITREE_APP_ID, limit: "60",
+      fields: "Id,Name,FirstName,MiddleName,LastNameAtBirth,LastNameCurrent,BirthDate,DeathDate,BirthLocation,DeathLocation,Photo,PhotoData,Gender"
     });
-    list.innerHTML = html || `<div class="state-box"><div class="icon">🔍</div><h3>Человек не найден</h3><p>Попробуйте другое написание имени или укажите период в расширенном поиске.</p></div>`;
-    
-    list.querySelectorAll('[data-fav]').forEach(btn => btn.addEventListener('click', () => {
-      const url = btn.dataset.fav; const item = results.find(r => r.url === url);
-      if (Storage.isFavorite(url)) { Storage.removeFavorite(url); btn.textContent = '☆'; }
-      else { Storage.addFavorite(item); btn.textContent = '⭐'; }
+    if (q.latFirst) p.set("FirstName", q.latFirst);
+    p.set("LastName", q.latLast);
+    if (q.place) p.set("BirthLocation", q.placeLat);
+    const data = await getJSON("https://api.wikitree.com/api.php?" + p.toString());
+    const block = Array.isArray(data) ? data[0] : (data && (data[0] || data));
+    const list = (block && block.matches) || [];
+    return list.map(m => ({
+      source: "wikitree", kind: "person",
+      name: [m.FirstName, m.MiddleName, m.LastNameAtBirth].filter(Boolean).join(" ") + (m.LastNameCurrent && m.LastNameCurrent !== m.LastNameAtBirth ? ` (${m.LastNameCurrent})` : ""),
+      birth: yearOf(m.BirthDate), death: yearOf(m.DeathDate),
+      birthPlace: m.BirthLocation, deathPlace: m.DeathLocation,
+      img: m.PhotoData && m.PhotoData.url ? "https://www.wikitree.com" + m.PhotoData.url : null,
+      url: "https://www.wikitree.com/wiki/" + enc(m.Name)
     }));
   },
-  renderHistory() {
-    const h = Storage.getHistory(); const el = document.getElementById('historyList');
-    if (!h.length) { el.innerHTML = ''; return; }
-    el.innerHTML = `<h4>Недавние запросы</h4>` + h.map(x => `<div class="history-item" data-q="${Utils.escapeHtml(x.q)}"><span class="q">🔍 ${Utils.escapeHtml(x.q)}</span><span class="meta">${Utils.timeAgo(x.t)}</span></div>`).join('');
-    el.querySelectorAll('.history-item').forEach(item => item.addEventListener('click', () => Search.run(item.dataset.q)));
+  searchUrl_wikitree: q => `https://www.wikitree.com/index.php?title=Special:SearchPerson&wpFirst=${enc(q.latFirst)}&wpLast=${enc(q.latLast)}`,
+
+  async wikidata(q){
+    const term = (q.first ? q.first + " " : "") + q.last;
+    const safe = term.replace(/["\\]/g, " ");
+    const lg = hasCyr(term) ? "ru" : "en";
+    const sparql = `
+SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image ?fatherLabel ?motherLabel WHERE {
+  SERVICE wikibase:mwapi {
+    bd:serviceParam wikibase:api "EntitySearch" ; wikibase:endpoint "www.wikidata.org" ;
+                    mwapi:search "${safe}" ; mwapi:language "${lg}" ; wikibase:limit 150 .
+    ?item wikibase:apiOutputItem mwapi:item .
+  }
+  ?item wdt:P31 wd:Q5 .
+  OPTIONAL { ?item wdt:P569 ?birth }
+  OPTIONAL { ?item wdt:P570 ?death }
+  OPTIONAL { ?item wdt:P19 ?bp }
+  OPTIONAL { ?item wdt:P20 ?dp }
+  OPTIONAL { ?item wdt:P18 ?image }
+  OPTIONAL { ?item wdt:P22 ?father }
+  OPTIONAL { ?item wdt:P25 ?mother }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang},ru,en,uk,de,he,pl" . }
+} LIMIT 400`;
+    const data = await getJSON("https://query.wikidata.org/sparql?format=json&query=" + enc(sparql), { headers: { Accept: "application/sparql-results+json" } });
+    const map = new Map();
+    for (const b of (data && data.results && data.results.bindings) || []){
+      const id = b.item.value;
+      if (!map.has(id)) map.set(id, {
+        source: "wikidata", kind: "person",
+        name: b.itemLabel && b.itemLabel.value, desc: b.itemDescription && b.itemDescription.value,
+        birth: b.birth ? yearOf(b.birth.value) : null, death: b.death ? yearOf(b.death.value) : null,
+        birthPlace: b.bpLabel && b.bpLabel.value, deathPlace: b.dpLabel && b.dpLabel.value,
+        img: b.image ? b.image.value.replace("http://", "https://") + "?width=160" : null,
+        parents: new Set(), url: id.replace("http://", "https://")
+      });
+      const r = map.get(id);
+      if (b.fatherLabel) r.parents.add(b.fatherLabel.value);
+      if (b.motherLabel) r.parents.add(b.motherLabel.value);
+    }
+    return [...map.values()].filter(r => r.name && !/^Q\d+$/.test(r.name)).map(r => ({ ...r, parents: [...r.parents].filter(p => !/^Q\d+$/.test(p)) }));
   },
-  showLoading() {
-    document.getElementById('resultsMeta').innerHTML = '';
-    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="spinner"></div><h3>Ищем людей в Wikidata...</h3><p>Это может занять несколько секунд</p></div>`;
+  searchUrl_wikidata: q => `https://www.wikidata.org/w/index.php?search=${enc((q.first + " " + q.last).trim())}`,
+
+  async openarch(q){
+    const name = ((q.latFirst ? q.latFirst + " " : "") + q.latLast).trim();
+    const p = new URLSearchParams({ name, lang: "en", number_show: "60" });
+    if (q.place) p.set("eventplace", q.placeLat);
+    const url = "https://api.openarchieven.nl/1.1/records/search.json?" + p.toString();
+    let data;
+    try { data = await getJSON(url); } catch(e) { data = await jsonp(url); }
+    const docs = (data && data.response && data.response.docs) || [];
+    return docs.map(d => {
+      const ed = d.eventdate || {};
+      const y = typeof ed === "object" ? ed.year : yearOf(ed);
+      const dateStr = typeof ed === "object" ? [ed.day, ed.month, ed.year].filter(Boolean).join(".") : String(ed || "");
+      const place = Array.isArray(d.eventplace) ? d.eventplace.join(", ") : d.eventplace;
+      return {
+        source: "openarch", kind: "record",
+        name: d.personname || d.name || name,
+        eventYear: y ? parseInt(y, 10) : null, eventDate: dateStr,
+        event: [d.eventtype, d.sourcetype].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(" · "),
+        role: d.relationtype, place, archive: d.archive_org || d.archive,
+        url: d.url || `https://www.openarchieven.nl/${d.archive_code}:${d.identifier}`
+      };
+    });
   },
-  showError() {
-    document.getElementById('resultsList').innerHTML = `<div class="state-box"><div class="icon">❌</div><h3>Ошибка поиска</h3><p>Проверьте подключение к интернету и попробуйте снова.</p></div>`;
+  searchUrl_openarch: q => `https://www.openarchieven.nl/search.php?lang=en&name=${enc((q.latFirst + " " + q.latLast).trim())}`,
+
+  async loc(q){
+    const phrase = ((q.latFirst ? q.latFirst + " " : "") + q.latLast).trim();
+    const p = new URLSearchParams({ q: `"${phrase}"`, dl: "page", fo: "json", c: "30" });
+    if (q.yf) { p.set("start_date", `${q.yf}-01-01`); p.set("end_date", `${Math.min((q.yt || q.yf) + 90, 1963)}-12-31`); }
+    if (q.place && !hasCyr(q.place)) p.set("location_state", q.place.toLowerCase());
+    let data;
+    try { data = await getJSON("https://www.loc.gov/collections/chronicling-america/?" + p.toString()); }
+    catch(e){ if (!p.has("location_state")) throw e; p.delete("location_state"); data = await getJSON("https://www.loc.gov/collections/chronicling-america/?" + p.toString()); }
+    return ((data && data.results) || []).map(r => {
+      const desc = Array.isArray(r.description) ? r.description.join(" ") : (r.description || "");
+      const thumb = Array.isArray(r.image_url) ? (r.image_url.find(u => /\.(jpg|gif|png)/i.test(u)) || r.image_url[0]) : r.image_url;
+      const st = Array.isArray(r.location_state) ? r.location_state.join(", ") : r.location_state;
+      const paper = Array.isArray(r.partof_title) ? r.partof_title[0] : r.partof_title;
+      return {
+        source: "loc", kind: "news",
+        name: paper || String(r.title || "").replace(/^Image \d+ of /, ""),
+        eventYear: yearOf(r.date), eventDate: r.date, place: st ? st.replace(/\b\w/g, c => c.toUpperCase()) : "",
+        snippet: desc.slice(0, 400),
+        img: thumb ? (thumb.startsWith("//") ? "https:" + thumb : thumb) : null,
+        url: r.url || r.id
+      };
+    });
+  },
+  searchUrl_loc: q => `https://www.loc.gov/collections/chronicling-america/?q=${enc('"' + (q.latFirst + " " + q.latLast).trim() + '"')}`,
+
+  async census(q){
+    const s = q.latLast.toUpperCase().replace(/[^A-Z]/g, "");
+    if (!s) return null;
+    const data = await getJSON(`https://api.census.gov/data/2010/surname?get=NAME,COUNT,RANK,PROP100K&NAME=${enc(s)}`);
+    if (!data || data.length < 2) return { name: s, none: true };
+    const h = data[0], v = data[1], o = {}; h.forEach((k, i) => o[k] = v[i]);
+    return { name: s, count: +o.COUNT, rank: +o.RANK, prop: +o.PROP100K };
   }
 };
 
-const App = {
-  init() { this.bindEvents(); UI.renderHistory(); },
-  bindEvents() {
-    document.getElementById('homeForm').addEventListener('submit', e => { e.preventDefault(); Search.run(document.getElementById('homeInput').value); });
-    document.getElementById('topForm').addEventListener('submit', e => { e.preventDefault(); Search.run(document.getElementById('topInput').value); });
-    document.getElementById('advSearchLink').addEventListener('click', e => { e.preventDefault(); this.openAdvSearch(); });
-    document.getElementById('favoritesLink').addEventListener('click', e => { e.preventDefault(); this.showFavorites(); });
-    document.getElementById('clearHistory').addEventListener('click', e => { e.preventDefault(); Storage.clearHistory(); UI.renderHistory(); });
-    document.getElementById('sortBy').addEventListener('change', e => Search.setSortBy(e.target.value));
-    document.getElementById('advModal').addEventListener('click', e => { if (e.target.id === 'advModal') this.closeAdvSearch(); });
-  },
-  goHome() {
-    document.getElementById('homeScreen').classList.remove('hidden');
-    document.getElementById('resultsScreen').classList.remove('active');
-    UI.renderHistory(); document.getElementById('homeInput').focus();
-  },
-  goResults() {
-    document.getElementById('homeScreen').classList.add('hidden');
-    document.getElementById('resultsScreen').classList.add('active');
-    document.getElementById('topInput').value = Search.state.query;
-  },
-  openAdvSearch() { document.getElementById('advModal').classList.add('active'); },
-  closeAdvSearch() { document.getElementById('advModal').classList.remove('active'); },
-  runAdvSearch() {
-    const name = document.getElementById('advName').value.trim();
-    if (!name) return alert('Введите имя');
-    const parts = [name];
-    const occ = document.getElementById('advOccupation').value.trim();
-    const yf = document.getElementById('advYearFrom').value;
-    const yt = document.getElementById('advYearTo').value;
-    if (occ) parts.push(occ);
-    if (yf || yt) parts.push(`${yf || '****'}-${yt || '****'}`);
-    this.closeAdvSearch(); Search.run(parts.join(' '));
-  },
-  showFavorites() {
-    const f = Storage.getFavorites();
-    if (!f.length) return alert('Избранное пусто. Нажмите ☆ рядом с результатом, чтобы добавить.');
-    Search.state.results = f; Search.state.query = 'Избранное';
-    this.goResults(); document.getElementById('topInput').value = 'Избранное'; Search.render();
-  },
-  exportCSV() { Search.exportCSV(); },
-  copyAllLinks() { Search.copyAllLinks(); }
+const EXTERNAL = q => {
+  const f = q.latFirst, l = q.latLast, fc = q.first, lc = q.last;
+  const ru = lang === "ru";
+  return [
+    { ico: "FS", c: "#86b049", name: "FamilySearch", d: ru ? "Крупнейшая бесплатная база записей (нужен бесплатный аккаунт)" : "Largest free record collection (free account required)",
+      url: `https://www.familysearch.org/search/record/results?q.givenName=${enc(f)}&q.surname=${enc(l)}` + (q.yf ? `&q.birthLikeDate.from=${q.yf}` : "") + (q.yt ? `&q.birthLikeDate.to=${q.yt}` : "") },
+    { ico: "NA", c: "#5b9cff", name: "U.S. National Archives", d: ru ? "Каталог NARA: иммиграция, армия, натурализация" : "NARA catalog: immigration, military, naturalization",
+      url: `https://catalog.archives.gov/search?q=${enc((f + " " + l).trim())}` },
+    { ico: "ПН", c: "#e05252", name: ru ? "Память народа" : "Pamyat Naroda", d: ru ? "Участники Великой Отечественной войны" : "Soviet WWII soldiers and awards",
+      url: `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}` },
+    { ico: "AA", c: "#9a8cff", name: "Arolsen Archives", d: ru ? "Документы о жертвах нацизма и перемещённых лицах" : "Records on Nazi victims and displaced persons",
+      url: `https://collections.arolsen-archives.org/en/search?s=${enc((f + " " + l).trim())}` },
+    { ico: "YV", c: "#d9a441", name: "Yad Vashem", d: ru ? "Центральная база имён жертв Холокоста" : "Central Database of Shoah Victims' Names",
+      url: `https://collections.yadvashem.org/en/names` },
+    { ico: "JG", c: "#4cc38a", name: "JewishGen", d: ru ? "Еврейская генеалогия, включая Российскую империю" : "Jewish genealogy incl. the Russian Empire",
+      url: `https://www.jewishgen.org/databases/` },
+    { ico: "FG", c: "#8a8a8a", name: "Find a Grave", d: ru ? "Захоронения и надгробия по всему миру" : "Graves and memorials worldwide",
+      url: `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (q.yf ? `&birthyear=${q.yf}&birthyearfilter=10` : "") },
+    { ico: "Ge", c: "#4aa3df", name: "Geni", d: ru ? "Большое общее семейное древо" : "Large collaborative family tree",
+      url: `https://www.geni.com/search?search_type=people&names=${enc((f + " " + l).trim())}` }
+  ];
 };
 
-document.addEventListener('DOMContentLoaded', () => App.init());
+/* ---------- состояние ---------- */
+const state = { q: null, items: [], status: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id)), runId: 0 };
+
+/* ---------- интерфейс ---------- */
+function applyI18n(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => el.placeholder = t(el.dataset.i18nPh));
+  const ad = AD[lang];
+  const adUrl = AD.url + (AD.url.includes("?") ? "&" : "?") + AD.utm;
+  ["#topAd", "#heroAd", "#sideAd"].forEach((s, i) => $(s).href = adUrl + "&utm_content=" + ["header","hero","sidebar"][i]);
+  document.querySelectorAll("[data-ad]").forEach(el => {
+    const k = el.dataset.ad; el.textContent = k === "initial" ? AD.name.charAt(0) : ad[k];
+  });
+  $("#sideAdList").innerHTML = ad.bullets.map(b => `<li>${esc(b)}</li>`).join("");
+  $("#siteName").textContent = SITE_NAME[lang];
+  document.querySelectorAll(".siteNameFoot").forEach(e => e.textContent = SITE_NAME[lang]);
+  $("#langBtn").textContent = lang === "ru" ? "EN" : "RU";
+  renderChips(); renderSrcCards();
+  if (state.q) { renderStatus(); renderGrid(); renderExternal(); renderCensus(state.census); }
+  updateVariants();
+}
+
+function renderChips(){
+  $("#sourceChips").innerHTML = SOURCES.map(s => `<button type="button" class="chip" style="--c:${s.color}" data-src="${s.id}" aria-pressed="${state.enabled.has(s.id)}"><span class="dot"></span>${esc(t("src")[s.id][0])}</button>`).join("");
+}
+function renderSrcCards(){
+  $("#srcCards").innerHTML = SOURCES.map(s => { const [n, tag, d] = t("src")[s.id]; return `<div class="src-card" style="--c:${s.color}"><span class="tag">${esc(tag)}</span><h4>${esc(n)}</h4><p>${esc(d)}</p></div>`; }).join("");
+}
+
+const ICON = {
+  born: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 10l7-7 7 7"/></svg>',
+  died: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M7 8h10"/></svg>',
+  pin:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  ppl:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>',
+  doc:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M9 13h6M9 17h4"/></svg>',
+  arch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-5 9 5M5 9v9M19 9v9M9 9v9M15 9v9M3 20h18"/></svg>',
+  cal:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  ext:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg>'
+};
+const colorOf = id => (SOURCES.find(s => s.id === id) || {}).color;
+const line = (icon, text) => text ? `<div>${ICON[icon]}<span>${esc(text)}</span></div>` : "";
+
+function cardHTML(r, i){
+  const src = t("src")[r.source][0];
+  const kind = t("kinds")[r.kind];
+  const initials = (r.name || "?").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  let body = "";
+  if (r.kind === "person"){
+    const yrs = (r.birth || r.death) ? `${r.birth || "?"} — ${r.death || (r.birth && r.birth > new Date().getFullYear() - 110 ? "" : "?")}` : "";
+    body = `<div class="person"><div class="avatar">${r.img ? `<img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}${r.img ? "" : esc(initials)}</div>
+      <div style="min-width:0"><h3>${esc(r.name)}</h3>${yrs ? `<div class="years">${esc(yrs)}</div>` : ""}</div></div>
+      <div class="meta">${r.desc ? `<div>${ICON.doc}<span>${esc(r.desc)}</span></div>` : ""}${line("born", r.birthPlace)}${line("died", r.deathPlace)}${r.parents && r.parents.length ? line("ppl", t("parents") + ": " + r.parents.join(", ")) : ""}</div>`;
+  } else if (r.kind === "record"){
+    body = `<div class="person"><div class="avatar">${esc(initials)}</div><div style="min-width:0"><h3>${esc(r.name)}</h3>${r.eventYear ? `<div class="years">${esc(r.eventDate || r.eventYear)}</div>` : ""}</div></div>
+      <div class="meta">${line("doc", r.event)}${line("ppl", r.role ? t("role") + ": " + r.role : "")}${line("pin", r.place)}${line("arch", r.archive)}</div>`;
+  } else {
+    body = `${r.img ? `<div class="thumb"><img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>` : ""}
+      <div><h3>${esc(r.name)}</h3></div>
+      <div class="meta">${line("cal", r.eventDate)}${line("pin", r.place)}</div>
+      ${r.snippet ? `<div class="snippet">${esc(r.snippet)}</div>` : ""}`;
+  }
+  return `<article class="card" style="--c:${colorOf(r.source)};animation-delay:${Math.min(i % PAGE_SIZE, 12) * 30}ms">
+    <div class="card-top"><span class="badge"><i></i>${esc(src)}</span><span class="kind">${esc(kind)}</span></div>
+    ${body}
+    <div class="card-foot"><a class="open" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t("open"))} ${ICON.ext}</a>
+    <button class="copy" type="button" data-copy="${esc(r.name + (r.birth ? " (" + r.birth + (r.death ? "–" + r.death : "") + ")" : "") + " — " + r.url)}">${esc(t("copy"))}</button></div>
+  </article>`;
+}
+
+function inlineAdHTML(){
+  const ad = AD[lang];
+  const url = AD.url + (AD.url.includes("?") ? "&" : "?") + AD.utm + "&utm_content=results";
+  return `<a class="card ad-card" href="${esc(url)}" target="_blank" rel="noopener sponsored">
+    <div class="card-top"><span class="badge"><i></i>${esc(AD.name)}</span><span class="kind">${esc(t("adLabel"))}</span></div>
+    <h3>${esc(ad.title)}</h3><div class="meta"><span>${esc(ad.text)}</span></div>
+    <div class="card-foot"><span class="open">${esc(ad.cta)} ${ICON.ext}</span></div></a>`;
+}
+
+function filteredItems(){
+  let list = state.items.filter(r => state.filter === "all" || r.source === state.filter);
+  const sort = $("#sort").value;
+  if (sort === "year") list = [...list].sort((a, b) => (a.birth || a.eventYear || 9999) - (b.birth || b.eventYear || 9999));
+  if (sort === "name") list = [...list].sort((a, b) => String(a.name).localeCompare(String(b.name), lang));
+  return list;
+}
+
+function renderGrid(){
+  const list = filteredItems();
+  const loading = Object.values(state.status).some(s => s.state === "loading");
+  const grid = $("#grid");
+  const n = state.items.length;
+  $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", [state.q.first, state.q.last].filter(Boolean).join(" ")))}</small>`;
+
+  if (!list.length && loading){ grid.innerHTML = Array.from({ length: 6 }, () => '<div class="skel"></div>').join(""); $("#moreWrap").hidden = true; return; }
+  if (!list.length){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`; $("#moreWrap").hidden = true; return; }
+
+  const slice = list.slice(0, state.shown);
+  let html = "";
+  slice.forEach((r, i) => { html += cardHTML(r, i); if (i === 5) html += inlineAdHTML(); });
+  if (slice.length < 6) html += inlineAdHTML();
+  if (loading) html += '<div class="skel"></div><div class="skel"></div>';
+  grid.innerHTML = html;
+  $("#moreWrap").hidden = list.length <= state.shown;
+}
+
+function renderStatus(){
+  const total = state.items.length;
+  let html = `<button type="button" class="status ${state.filter === "all" ? "active" : ""}" style="--c:var(--accent)" data-filter="all"><span class="dot"></span>${esc(t("all"))} <span class="n">${total}</span></button>`;
+  for (const s of SOURCES){
+    const st = state.status[s.id]; if (!st) continue;
+    const cnt = state.items.filter(r => r.source === s.id).length;
+    const inner = st.state === "loading" ? '<span class="spin"></span>' : st.state === "error" ? '<span class="n">!</span>' : `<span class="n">${cnt}</span>`;
+    html += `<button type="button" class="status ${state.filter === s.id ? "active" : ""} ${st.state === "error" ? "err" : ""}" style="--c:${s.color}" data-filter="${s.id}"><span class="dot"></span>${esc(t("src")[s.id][0])} ${inner}</button>`;
+  }
+  $("#statusRow").innerHTML = html;
+  $("#errors").innerHTML = SOURCES.filter(s => state.status[s.id] && state.status[s.id].state === "error")
+    .map(s => `<div class="err-box">${t("errSource", t("src")[s.id][0], API["searchUrl_" + s.id](state.q))}</div>`).join("");
+}
+
+function renderExternal(){
+  $("#extLinks").innerHTML = EXTERNAL(state.q).map(e => `<a href="${esc(e.url)}" target="_blank" rel="noopener"><span class="ico" style="color:${e.c}">${esc(e.ico)}</span><span><b>${esc(e.name)}</b><small>${esc(e.d)}</small></span></a>`).join("");
+}
+
+function renderCensus(c){
+  const p = $("#censusPanel");
+  if (!c){ p.hidden = true; return; }
+  p.hidden = false;
+  $("#censusSub").textContent = t("censusSub", cap(c.name));
+  const nf = new Intl.NumberFormat(lang === "ru" ? "ru-RU" : "en-US");
+  $("#censusStat").innerHTML = c.none ? `<p class="sub" style="grid-column:1/-1;margin:0">${esc(t("censusNone"))}</p>` :
+    `<div style="grid-column:1/-1"><b>${nf.format(c.count)}</b><small>${esc(t("censusCount"))}</small></div>
+     <div><b>#${nf.format(c.rank)}</b><small>${esc(t("censusRank"))}</small></div>
+     <div><b>${esc(c.prop)}</b><small>${esc(t("censusProp"))}</small></div>`;
+}
+
+/* ---------- фильтр по годам ---------- */
+function keep(r, q){
+  if (!q.yf && !q.yt) return true;
+  const from = q.yf || -Infinity, to = q.yt || Infinity;
+  if (r.kind === "person") return r.birth == null || (r.birth >= from && r.birth <= to);
+  if (r.kind === "record") return r.eventYear == null || (r.eventYear >= from && r.eventYear <= to + 100);
+  return true;
+}
+
+/* ---------- поиск ---------- */
+function readQuery(){
+  const first = $("#fn").value.trim(), last = $("#ln").value.trim();
+  const yf = parseInt($("#yf").value, 10) || null, yt = parseInt($("#yt").value, 10) || null;
+  const place = $("#pl").value.trim();
+  const latFirst = ($("#lfn").value.trim() || translit(first));
+  const latLast = ($("#lln").value.trim() || translit(last));
+  return { first, last, yf, yt, place, placeLat: translit(place), latFirst, latLast };
+}
+
+async function runSearch(){
+  const q = readQuery();
+  if (!q.last){ $("#ln").focus(); toast(t("needLast")); return; }
+  const run = ++state.runId;
+  Object.assign(state, { q, items: [], status: {}, filter: "all", shown: PAGE_SIZE, census: null });
+  $("#results").hidden = false; $("#intro").hidden = true;
+  syncUrl(q);
+  renderExternal(); renderCensus(null);
+  const active = SOURCES.filter(s => state.enabled.has(s.id));
+  active.forEach(s => state.status[s.id] = { state: "loading" });
+  renderStatus(); renderGrid();
+  setTimeout(() => $("#results").scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+
+  API.census(q).then(c => { if (run === state.runId){ state.census = c; renderCensus(c); } }).catch(() => {});
+
+  await Promise.all(active.map(async s => {
+    try {
+      const res = await API[s.id](q);
+      if (run !== state.runId) return;
+      state.items.push(...res.filter(r => keep(r, q)));
+      state.status[s.id] = { state: "done" };
+    } catch(e){
+      if (run !== state.runId) return;
+      console.warn(s.id, e);
+      state.status[s.id] = { state: "error" };
+    }
+    // сохраняем порядок источников
+    const order = SOURCES.map(x => x.id);
+    state.items.sort((a, b) => order.indexOf(a.source) - order.indexOf(b.source));
+    renderStatus(); renderGrid();
+  }));
+}
+
+function syncUrl(q){
+  const p = new URLSearchParams();
+  if (q.first) p.set("fn", q.first); p.set("ln", q.last);
+  if (q.yf) p.set("yf", q.yf); if (q.yt) p.set("yt", q.yt); if (q.place) p.set("pl", q.place);
+  if ($("#lfn").value.trim()) p.set("lfn", $("#lfn").value.trim());
+  if ($("#lln").value.trim()) p.set("lln", $("#lln").value.trim());
+  history.replaceState(null, "", "?" + p.toString());
+}
+
+function updateVariants(){
+  const last = $("#lln").value.trim() || translit($("#ln").value.trim());
+  if (!$("#lln").matches(":focus") && hasCyr($("#ln").value)) $("#lln").placeholder = translit($("#ln").value.trim()) || "Ivanov";
+  if (!$("#lfn").matches(":focus") && hasCyr($("#fn").value)) $("#lfn").placeholder = translit($("#fn").value.trim()) || "Ivan";
+  const v = variants(last);
+  const box = $("#variants");
+  if (!v.length || !last){ box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = `<span>${esc(t("variantsLabel"))}</span>` + v.map(x => `<button type="button" data-variant="${esc(x)}">${esc(x)}</button>`).join("");
+}
+
+function toCSV(){
+  const rows = [["source","type","name","birth","death","birth_place","death_place","event","date","place","archive","url"]];
+  for (const r of filteredItems()) rows.push([t("src")[r.source][0], r.kind, r.name, r.birth, r.death, r.birthPlace, r.deathPlace, r.event, r.eventDate, r.place, r.archive, r.url]);
+  const csv = "\ufeff" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = `genealogy-${(state.q.latLast || "search").toLowerCase()}.csv`;
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+/* ---------- события ---------- */
+$("#form").addEventListener("submit", e => { e.preventDefault(); runSearch(); });
+$("#advBtn").addEventListener("click", e => { const b = e.currentTarget, open = b.getAttribute("aria-expanded") !== "true"; b.setAttribute("aria-expanded", open); $("#adv").hidden = !open; });
+["#fn", "#ln", "#lln"].forEach(s => $(s).addEventListener("input", updateVariants));
+["#yf", "#yt"].forEach(s => $(s).addEventListener("input", e => e.target.value = e.target.value.replace(/\D/g, "")));
+$("#variants").addEventListener("click", e => { const b = e.target.closest("[data-variant]"); if (!b) return; $("#lln").value = b.dataset.variant; $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); updateVariants(); runSearch(); });
+$("#sourceChips").addEventListener("click", e => {
+  const c = e.target.closest("[data-src]"); if (!c) return;
+  const id = c.dataset.src;
+  if (state.enabled.has(id)) { if (state.enabled.size > 1) state.enabled.delete(id); } else state.enabled.add(id);
+  renderChips();
+});
+$("#statusRow").addEventListener("click", e => { const b = e.target.closest("[data-filter]"); if (!b) return; state.filter = b.dataset.filter; state.shown = PAGE_SIZE; renderStatus(); renderGrid(); });
+$("#sort").addEventListener("change", renderGrid);
+$("#moreBtn").addEventListener("click", () => { state.shown += PAGE_SIZE; renderGrid(); });
+$("#grid").addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]"); if (!b) return;
+  navigator.clipboard && navigator.clipboard.writeText(b.dataset.copy).then(() => { b.textContent = t("copied"); setTimeout(() => b.textContent = t("copy"), 1500); });
+});
+$("#shareBtn").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(location.href).then(() => toast(t("linkCopied"))); });
+$("#csvBtn").addEventListener("click", toCSV);
+document.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", () => {
+  const [f, l, yf, yt] = b.dataset.ex.split("|");
+  $("#fn").value = f || ""; $("#ln").value = l || ""; $("#yf").value = yf || ""; $("#yt").value = yt || "";
+  $("#lfn").value = ""; $("#lln").value = ""; $("#pl").value = "";
+  if (yf){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
+  updateVariants(); runSearch();
+}));
+$("#langBtn").addEventListener("click", () => { lang = lang === "ru" ? "en" : "ru"; try { localStorage.setItem("lang", lang); } catch(e){} applyI18n(); });
+$("#themeBtn").addEventListener("click", () => {
+  const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  const next = cur === "light" ? "dark" : "light";
+  document.documentElement.dataset.theme = next; try { localStorage.setItem("theme", next); } catch(e){}
+});
+
+/* ---------- старт ---------- */
+try { const th = localStorage.getItem("theme"); if (th) document.documentElement.dataset.theme = th; } catch(e){}
+$("#year").textContent = new Date().getFullYear();
+applyI18n();
+(() => {
+  const p = new URLSearchParams(location.search);
+  if (!p.get("ln")) return;
+  $("#fn").value = p.get("fn") || ""; $("#ln").value = p.get("ln") || "";
+  $("#yf").value = p.get("yf") || ""; $("#yt").value = p.get("yt") || ""; $("#pl").value = p.get("pl") || "";
+  $("#lfn").value = p.get("lfn") || ""; $("#lln").value = p.get("lln") || "";
+  if (p.get("yf") || p.get("yt") || p.get("pl") || p.get("lln")){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
+  updateVariants(); runSearch();
+})();
 </script>
 </body>
 </html>
