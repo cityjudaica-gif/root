@@ -189,9 +189,12 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .meta div{display:flex;gap:8px;align-items:flex-start}
 .meta svg{flex:0 0 14px;width:14px;height:14px;margin-top:3px;opacity:.75}
 .meta span{overflow-wrap:anywhere}
+.snippet mark{background:color-mix(in srgb,var(--accent) 35%,transparent);color:inherit;border-radius:3px;padding:0 2px}
 .snippet{font-size:13px;color:var(--muted);background:var(--bg-2);border-radius:10px;padding:10px 12px;line-height:1.5;max-height:7.5em;overflow:hidden;border:1px solid var(--border)}
 .thumb{border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--bg-2);border:1px solid var(--border)}
 .thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.card[data-kind="book"] .thumb{aspect-ratio:auto;height:150px;display:grid;place-items:center;background:var(--bg-2)}
+.card[data-kind="book"] .thumb img{width:auto;height:100%;object-fit:contain}
 .card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:6px;border-top:1px dashed var(--border)}
 .open{text-decoration:none;font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;gap:6px;color:var(--text)}
 .open:hover{color:var(--c)}
@@ -228,6 +231,8 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .ext a:hover{background:var(--bg-2);border-color:var(--border)}
 .ext .ico{flex:0 0 32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--bg-2);border:1px solid var(--border)}
 .ext b{display:block;font-size:14px}
+.ext-group{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin:10px 10px 2px}
+.ext-group:first-child{margin-top:0}
 .ext small{display:block;color:var(--muted);font-size:12px;line-height:1.35}
 .side-ad{text-decoration:none;display:block;border-radius:var(--radius);padding:22px;background:radial-gradient(120% 120% at 100% 0%,color-mix(in srgb,var(--accent) 35%,transparent),transparent 60%),var(--bg-2);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);position:relative;transition:.25s}
 .side-ad:hover{transform:translateY(-2px)}
@@ -445,6 +450,16 @@ const AD = {
 };
 
 const WIKITREE_APP_ID = "IstokiGenealogySearch";   // любое имя вашего приложения
+
+// Адрес вашего посредника на Cloudflare Workers (файл worker.js, инструкция в README).
+// Пока пусто — газеты США работать не будут: loc.gov не принимает запросы с чужих сайтов.
+// Пример: "https://istoki-proxy.ВАШ-ЛОГИН.workers.dev"
+const PROXY_URL = "";
+
+// Национальный архив США (NARA). Нужен бесплатный ключ: письмо на Catalog_API@nara.gov.
+// Ключ кладётся НЕ сюда, а в посредник на Cloudflare (переменная NARA_KEY) — так его никто не увидит.
+// Когда ключ добавлен в посредник, поставьте true.
+const NARA_ENABLED = false;
 const PAGE_SIZE = 24;
 /* ===================================================================== */
 
@@ -452,7 +467,7 @@ const I18N = {
   ru: {
     eyebrow: "Бесплатно · без регистрации",
     title: "Найдите своих предков<br>в <em>открытых архивах</em> мира",
-    lead: "Один запрос — поиск сразу в WikiTree, Wikidata, европейских архивах и исторических газетах США. Кириллица переводится в латиницу автоматически.",
+    lead: "Один запрос — поиск сразу в родословных древах, архивах, газетах, книгах и фотоархивах. Кириллица переводится в латиницу автоматически.",
     firstName: "Имя", firstNamePh: "Например, Иван", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
     searchBtn: "Найти", advanced: "Годы, место и латинское написание",
     yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
@@ -469,12 +484,12 @@ const I18N = {
     censusTitle: "Фамилия в переписи США",
     censusSub: n => `Данные переписи 2010 года для фамилии ${n}`,
     censusCount: "носителей фамилии", censusRank: "место по частоте", censusProp: "на 100 000 человек", censusNone: "Фамилия встречается реже 100 раз и не попала в список.",
-    extTitle: "Ищите также здесь", extSub: "Эти базы не дают открытого API — откроем их поиск с вашим запросом.",
+    extTitle: "Ищите также здесь", extSub: "У этих баз нет открытого API — ссылка откроет их поиск (где возможно — сразу с вашим запросом).",
     introTitle: "Где мы ищем", introSub: "Только открытые и законные источники. Мы ничего не храним — запрос уходит напрямую в базы.",
     born: "Рождение", died: "Смерть", parents: "Родители", event: "Событие", archive: "Архив", role: "Роль",
     open: "Открыть", copy: "Копировать", copied: "Скопировано",
     linkCopied: "Ссылка на поиск скопирована",
-    kinds: { person: "Профиль", record: "Архивная запись", news: "Газета" },
+    kinds: { person: "Профиль", record: "Архивная запись", news: "Газета", book: "Книга", article: "Статья", image: "Фото / документ", nara: "Архивный документ" },
     errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
     errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов)." },
     emptyTitle: "Ничего не нашлось",
@@ -482,20 +497,25 @@ const I18N = {
     needLast: "Введите фамилию",
     aboutTitle: "О проекте",
     aboutText: "Истоки — бесплатный инструмент поиска по открытым генеалогическим базам. Мы не являемся владельцами данных: все результаты принадлежат их источникам и открываются на их сайтах.",
-    attrib: 'Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.',
+    attrib: 'Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://books.google.com" target="_blank" rel="noopener">Google Books</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Википедия</a> и <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Викисклад</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.',
     privacyTitle: "Конфиденциальность",
     privacyText: "Без регистрации, без cookies и без хранения запросов. Поиск выполняется прямо в вашем браузере.",
     src: {
       wikitree: ["WikiTree", "Общее древо", "Бесплатное мировое семейное древо: более 30 млн профилей с источниками и связями."],
       wikidata: ["Wikidata", "Энциклопедия", "Известные люди: даты, места, родители, фото. Хорошо ищет и на кириллице."],
       openarch: ["Open Archives", "Архивы Европы", "Сотни миллионов метрических записей: рождения, браки, смерти — Нидерланды, Бельгия и др."],
-      loc: ["Газеты США", "1770–1963", "Chronicling America: миллионы оцифрованных страниц американских газет с полнотекстовым поиском."]
+      loc: ["Газеты США", "1770–1963", "Chronicling America: миллионы оцифрованных страниц американских газет с полнотекстовым поиском."],
+      nara: ["Архив США (NARA)", "Документы", "Национальный архив США: иммиграция, натурализация, армия, переписи."],
+      archive: ["Internet Archive", "Книги и справочники", "Оцифрованные книги, адресные книги, школьные альбомы, книги памяти (Yizkor)."],
+      books: ["Google Книги", "Упоминания", "Поиск фамилии внутри текста миллионов книг — с цитатой, где она встречается."],
+      wikipedia: ["Википедия", "Статьи", "Статьи на русском и английском, где упоминается этот человек или фамилия."],
+      commons: ["Викисклад", "Фото", "Свободные фотографии и сканы: надгробия, документы, портреты."]
     }
   },
   en: {
     eyebrow: "Free · no sign-up",
     title: "Find your ancestors<br>in the world's <em>open archives</em>",
-    lead: "One search across WikiTree, Wikidata, European archives and historic U.S. newspapers. Cyrillic names are transliterated automatically.",
+    lead: "One search across family trees, archives, newspapers, books and photo collections. Cyrillic names are transliterated automatically.",
     firstName: "First name", firstNamePh: "e.g. John", lastName: "Last name", lastNamePh: "e.g. Goldberg",
     searchBtn: "Search", advanced: "Years, place and Latin spelling",
     yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
@@ -512,12 +532,12 @@ const I18N = {
     censusTitle: "Surname in the U.S. Census",
     censusSub: n => `2010 Census data for the surname ${n}`,
     censusCount: "people with this surname", censusRank: "frequency rank", censusProp: "per 100,000 people", censusNone: "This surname occurs fewer than 100 times and is not listed.",
-    extTitle: "Also search here", extSub: "These databases have no open API — we open their search with your query.",
+    extTitle: "Also search here", extSub: "These databases have no open API — the link opens their search (with your query where possible).",
     introTitle: "Where we search", introSub: "Only open, legal sources. We store nothing — your query goes straight to the databases.",
     born: "Born", died: "Died", parents: "Parents", event: "Event", archive: "Archive", role: "Role",
     open: "Open", copy: "Copy", copied: "Copied",
     linkCopied: "Search link copied",
-    kinds: { person: "Profile", record: "Archive record", news: "Newspaper" },
+    kinds: { person: "Profile", record: "Archive record", news: "Newspaper", book: "Book", article: "Article", image: "Photo / document", nara: "Archival record" },
     errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
     errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked)." },
     emptyTitle: "Nothing found",
@@ -525,24 +545,34 @@ const I18N = {
     needLast: "Enter a last name",
     aboutTitle: "About",
     aboutText: "Istoki is a free search tool for open genealogy databases. We do not own the data: all results belong to their sources and open on their websites.",
-    attrib: 'Data: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.',
+    attrib: 'Data: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://books.google.com" target="_blank" rel="noopener">Google Books</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a> and <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.',
     privacyTitle: "Privacy",
     privacyText: "No sign-up, no cookies, no stored queries. Searches run right in your browser.",
     src: {
       wikitree: ["WikiTree", "Shared tree", "Free worldwide family tree: 30M+ sourced profiles with family links."],
       wikidata: ["Wikidata", "Encyclopedia", "Notable people: dates, places, parents, photos. Works well with Cyrillic too."],
       openarch: ["Open Archives", "European archives", "Hundreds of millions of civil and church records: births, marriages, deaths."],
-      loc: ["U.S. newspapers", "1770–1963", "Chronicling America: millions of digitized U.S. newspaper pages, full-text searchable."]
+      loc: ["U.S. newspapers", "1770–1963", "Chronicling America: millions of digitized U.S. newspaper pages, full-text searchable."],
+      nara: ["U.S. Archives (NARA)", "Records", "U.S. National Archives: immigration, naturalization, military, census."],
+      archive: ["Internet Archive", "Books & directories", "Digitized books, city directories, yearbooks, Yizkor memorial books."],
+      books: ["Google Books", "Mentions", "Searches inside the text of millions of books, with the matching quote."],
+      wikipedia: ["Wikipedia", "Articles", "Russian and English articles mentioning this person or surname."],
+      commons: ["Wikimedia Commons", "Photos", "Free photos and scans: gravestones, documents, portraits."]
     }
   }
 };
 
 const SOURCES = [
-  { id: "wikitree", color: "var(--c-wikitree)" },
-  { id: "wikidata", color: "var(--c-wikidata)" },
-  { id: "openarch", color: "var(--c-openarch)" },
-  { id: "loc",      color: "var(--c-loc)" }
-];
+  { id: "wikitree",  color: "var(--c-wikitree)" },
+  { id: "wikidata",  color: "var(--c-wikidata)" },
+  { id: "openarch",  color: "var(--c-openarch)" },
+  { id: "nara",      color: "#e4574c", needs: () => NARA_ENABLED && !!PROXY_URL },
+  { id: "loc",       color: "var(--c-loc)", needs: () => !!PROXY_URL },
+  { id: "archive",   color: "#4fb3c8" },
+  { id: "books",     color: "#e07ac1" },
+  { id: "wikipedia", color: "#9aa3b5" },
+  { id: "commons",   color: "#53c2a0" }
+].filter(s => !s.needs || s.needs());
 
 /* ---------- утилиты ---------- */
 const $ = s => document.querySelector(s);
@@ -566,6 +596,12 @@ async function getJSON(url, opts = {}, ms = 20000){
     const txt = await r.text();
     return txt ? JSON.parse(txt) : null;
   } finally { clearTimeout(timer); }
+}
+const viaProxy = url => PROXY_URL.replace(/\/$/, "") + "/?url=" + encodeURIComponent(url);
+async function smartJSON(url, opts = {}, proxyFirst = false){
+  if (PROXY_URL && proxyFirst) return getJSON(viaProxy(url), opts);
+  try { return await getJSON(url, opts); }
+  catch(e){ if (!PROXY_URL || /HTTP 4(29|04)/.test(e.message)) throw e; return getJSON(viaProxy(url), opts); }
 }
 function jsonp(url, ms = 20000){
   return new Promise((res, rej) => {
@@ -596,7 +632,7 @@ function variants(name){
   const n = name.toLowerCase(); const out = new Set();
   const rules = [
     [/v/g,"w"],[/ov$/,"off"],[/ev$/,"eff"],[/ov$/,"ow"],[/kh/g,"h"],[/kh/g,"ch"],[/ts/g,"tz"],[/ch/g,"tsch"],
-    [/sh/g,"sch"],[/zh/g,"sch"],[/ya/g,"ia"],[/ya/g,"ja"],[/yu/g,"iu"],[/y/g,"j"],[/sky$/,"ski"],[/sky$/,"skiy"],
+    [/sh/g,"sch"],[/zh/g,"sch"],[/([aeiouy])h/,"$1kh"],[/([aeiouy])h/,"$1ch"],[/([aeiouy])h/,"$1sch"],[/^h/,"g"],[/^g/,"h"],[/ya/g,"ia"],[/ya/g,"ja"],[/yu/g,"iu"],[/y/g,"j"],[/sky$/,"ski"],[/sky$/,"skiy"],
     [/berg$/,"burg"],[/man$/,"mann"],[/stein$/,"shtein"],[/shtein$/,"stein"],[/e/g,"a"]
   ];
   for (const [re, rep] of rules){ if (re.test(n)) { re.lastIndex = 0; const v = n.replace(re, rep); if (v !== n) out.add(cap(v)); } if (out.size >= 7) break; }
@@ -613,8 +649,8 @@ const API = {
     p.set("LastName", q.latLast);
     const call = async params => {
       let data;
-      try { data = await getJSON("https://api.wikitree.com/api.php", { method: "POST", body: params }); }
-      catch(e){ data = await getJSON("https://api.wikitree.com/api.php?" + params.toString()); }
+      try { data = await smartJSON("https://api.wikitree.com/api.php", { method: "POST", body: params }); }
+      catch(e){ data = await smartJSON("https://api.wikitree.com/api.php?" + params.toString()); }
       const block = Array.isArray(data) ? data[0] : (data && (data[0] || data));
       return (block && block.matches) || [];
     };
@@ -679,7 +715,7 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
     if (q.place) p.set("eventplace", q.placeLat);
     const url = "https://api.openarchieven.nl/1.1/records/search.json?" + p.toString();
     let data;
-    try { data = await getJSON(url); } catch(e) { data = await jsonp(url); }
+    try { data = await smartJSON(url); } catch(e) { data = await jsonp(url); }
     const docs = (data && data.response && data.response.docs) || [];
     return docs.map(d => {
       const ed = d.eventdate || {};
@@ -705,9 +741,9 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
     const st = US_STATES.find(s => s === (q.place || "").toLowerCase().trim());
     if (st) p.set("location_state", st);
     const base = "https://www.loc.gov/collections/chronicling-america/?";
-    let data = await getJSON(base + p.toString());
+    let data = await smartJSON(base + p.toString(), {}, true);
     if (!(data && data.results && data.results.length) && p.has("start_date")){
-      p.delete("start_date"); p.delete("end_date"); data = await getJSON(base + p.toString());
+      p.delete("start_date"); p.delete("end_date"); data = await smartJSON(base + p.toString(), {}, true);
     }
     return ((data && data.results) || []).map(r => {
       const desc = Array.isArray(r.description) ? r.description.join(" ") : (r.description || "");
@@ -729,35 +765,177 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
   async census(q){
     const s = q.latLast.toUpperCase().replace(/[^A-Z]/g, "");
     if (!s) return null;
-    const data = await getJSON(`https://api.census.gov/data/2010/surname?get=NAME,COUNT,RANK,PROP100K&NAME=${enc(s)}`);
+    const data = await smartJSON(`https://api.census.gov/data/2010/surname?get=NAME,COUNT,RANK,PROP100K&NAME=${enc(s)}`);
     if (!data || data.length < 2) return { name: s, none: true };
     const h = data[0], v = data[1], o = {}; h.forEach((k, i) => o[k] = v[i]);
     return { name: s, count: +o.COUNT, rank: +o.RANK, prop: +o.PROP100K };
   }
 };
 
+const stripTags = s => String(s || "").replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+const fullLat = q => ((q.latFirst ? q.latFirst + " " : "") + q.latLast).trim();
+const fullOrig = q => ((q.first ? q.first + " " : "") + q.last).trim();
+// запросы: латиница и, если ввели кириллицей, ещё и оригинал
+const queryTerms = q => [...new Set([fullLat(q), hasCyr(fullOrig(q)) ? fullOrig(q) : null].filter(Boolean))];
+async function settledFlat(promises){
+  const res = await Promise.allSettled(promises);
+  const ok = res.filter(r => r.status === "fulfilled");
+  if (!ok.length) throw res[0].reason;
+  return ok.flatMap(r => r.value || []);
+}
+const dedupe = (arr, key) => { const seen = new Set(); return arr.filter(x => { const k = key(x); if (seen.has(k)) return false; seen.add(k); return true; }); };
+
+Object.assign(API, {
+  /* Internet Archive — книги, справочники, альбомы */
+  async archive(q){
+    const list = await settledFlat(queryTerms(q).map(async term => {
+      const p = new URLSearchParams({ q: `"${term}" AND -mediatype:collection AND -mediatype:account`, rows: "40", output: "json" });
+      ["identifier","title","year","date","mediatype","creator","description"].forEach(f => p.append("fl[]", f));
+      const data = await smartJSON("https://archive.org/advancedsearch.php?" + p.toString());
+      return ((data && data.response && data.response.docs) || []).map(d => ({
+        source: "archive", kind: "book",
+        name: Array.isArray(d.title) ? d.title[0] : (d.title || d.identifier),
+        eventYear: yearOf(d.year || d.date), eventDate: d.year || (d.date ? String(d.date).slice(0, 10) : ""),
+        place: Array.isArray(d.creator) ? d.creator.slice(0, 2).join(", ") : d.creator,
+        snippet: stripTags(Array.isArray(d.description) ? d.description[0] : d.description).slice(0, 300),
+        img: `https://archive.org/services/img/${enc(d.identifier)}`,
+        url: `https://archive.org/details/${enc(d.identifier)}`
+      }));
+    }));
+    return dedupe(list, r => r.url);
+  },
+  searchUrl_archive: q => `https://archive.org/search?query=${enc('"' + fullLat(q) + '"')}`,
+
+  /* Google Книги — поиск внутри текста книг (запрос идёт напрямую из браузера посетителя) */
+  async books(q){
+    const list = await settledFlat(queryTerms(q).map(async term => {
+      const data = await getJSON(`https://www.googleapis.com/books/v1/volumes?q=${enc('"' + term + '"')}&maxResults=40&printType=all`);
+      return ((data && data.items) || []).map(it => {
+        const v = it.volumeInfo || {};
+        const img = v.imageLinks && (v.imageLinks.thumbnail || v.imageLinks.smallThumbnail);
+        return {
+          source: "books", kind: "book",
+          name: [v.title, v.subtitle].filter(Boolean).join(": "),
+          eventYear: yearOf(v.publishedDate), eventDate: v.publishedDate,
+          place: (v.authors || []).slice(0, 2).join(", "),
+          snippet: stripTags((it.searchInfo && it.searchInfo.textSnippet) || v.description || "").slice(0, 300),
+          img: img ? img.replace("http://", "https://") : null,
+          url: v.infoLink || v.previewLink || `https://books.google.com/books?id=${it.id}`
+        };
+      });
+    }));
+    return dedupe(list, r => r.url);
+  },
+  searchUrl_books: q => `https://www.google.com/search?tbm=bks&q=${enc('"' + fullLat(q) + '"')}`,
+
+  /* Википедия — русская и английская */
+  async wikipedia(q){
+    const jobs = [];
+    const orig = fullOrig(q), lat = fullLat(q);
+    jobs.push(["ru", hasCyr(orig) ? orig : lat]);
+    jobs.push(["en", lat]);
+    if (hasCyr(orig)) jobs.push(["uk", orig]);
+    const list = await settledFlat(jobs.map(async ([lg, term]) => {
+      const data = await smartJSON(`https://${lg}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${enc('"' + term + '"')}&srlimit=15&format=json&origin=*`);
+      return ((data && data.query && data.query.search) || []).map(s => ({
+        source: "wikipedia", kind: "article",
+        name: s.title, eventDate: lg.toUpperCase() + " · " + (lg === "ru" ? "Википедия" : lg === "uk" ? "Вікіпедія" : "Wikipedia"),
+        snippet: stripTags(s.snippet),
+        url: `https://${lg}.wikipedia.org/wiki/${enc(s.title.replace(/ /g, "_"))}`
+      }));
+    }));
+    return dedupe(list, r => r.url);
+  },
+  searchUrl_wikipedia: q => `https://ru.wikipedia.org/w/index.php?search=${enc(fullOrig(q))}`,
+
+  /* Викисклад — фото и сканы */
+  async commons(q){
+    const list = await settledFlat(queryTerms(q).map(async term => {
+      const data = await smartJSON(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${enc('"' + term + '"')}&gsrlimit=30&prop=imageinfo&iiprop=url&iiurlwidth=480&format=json&origin=*`);
+      const pages = Object.values((data && data.query && data.query.pages) || {}).sort((a, b) => (a.index || 0) - (b.index || 0));
+      return pages.filter(pg => pg.imageinfo && pg.imageinfo[0]).map(pg => ({
+        source: "commons", kind: "image",
+        name: pg.title.replace(/^[^:]+:/, "").replace(/\.[a-z0-9]{2,4}$/i, "").replace(/_/g, " "),
+        img: pg.imageinfo[0].thumburl, url: pg.imageinfo[0].descriptionurl
+      }));
+    }));
+    return dedupe(list, r => r.url);
+  },
+  searchUrl_commons: q => `https://commons.wikimedia.org/w/index.php?search=${enc('"' + fullLat(q) + '"')}&ns6=1`,
+
+  /* NARA — только через посредника, который сам добавляет ключ */
+  async nara(q){
+    const p = new URLSearchParams({ q: `"${fullLat(q)}"`, rows: "40" });
+    const data = await smartJSON("https://catalog.archives.gov/api/v2/records/search?" + p.toString(), {}, true);
+    const hits = (data && data.body && data.body.hits && data.body.hits.hits) || (data && data.hits && data.hits.hits) || [];
+    return hits.map(hh => {
+      const r = (hh._source && (hh._source.record || hh._source)) || {};
+      const dates = r.productionDates || r.inclusiveDates || r.coverageDates;
+      const d0 = Array.isArray(dates) ? dates[0] : dates;
+      const dateStr = d0 ? (d0.logicalDate || [d0.year, d0.inclusiveStartDate && d0.inclusiveStartDate.year].filter(Boolean)[0] || (typeof d0 === "string" ? d0 : "")) : "";
+      const parent = Array.isArray(r.ancestors) && r.ancestors.length ? r.ancestors[r.ancestors.length - 1].title : "";
+      const obj = Array.isArray(r.digitalObjects) && r.digitalObjects.find(o => /\.(jpe?g|png|gif)$/i.test(o.objectUrl || ""));
+      return {
+        source: "nara", kind: "nara",
+        name: r.title || ("NAID " + r.naId),
+        eventYear: yearOf(dateStr), eventDate: dateStr ? String(dateStr) : "",
+        place: parent, snippet: stripTags(r.scopeAndContentNote || "").slice(0, 300),
+        img: obj ? obj.objectUrl : null,
+        url: `https://catalog.archives.gov/id/${r.naId}`
+      };
+    }).filter(r => !/undefined$/.test(r.url));
+  },
+  searchUrl_nara: q => `https://catalog.archives.gov/search?q=${enc('"' + fullLat(q) + '"')}`
+});
+
 const US_STATES = ["alabama","alaska","arizona","arkansas","california","colorado","connecticut","delaware","district of columbia","florida","georgia","hawaii","idaho","illinois","indiana","iowa","kansas","kentucky","louisiana","maine","maryland","massachusetts","michigan","minnesota","mississippi","missouri","montana","nebraska","nevada","new hampshire","new jersey","new mexico","new york","north carolina","north dakota","ohio","oklahoma","oregon","pennsylvania","rhode island","south carolina","south dakota","tennessee","texas","utah","vermont","virginia","washington","west virginia","wisconsin","wyoming","puerto rico"];
 
 const EXTERNAL = q => {
-  const f = q.latFirst, l = q.latLast, fc = q.first, lc = q.last;
+  const f = q.latFirst, l = q.latLast, fc = q.first, lc = q.last, full = (f + " " + l).trim();
   const ru = lang === "ru";
+  const G = { us: ru ? "США и иммиграция" : "U.S. & immigration", jw: ru ? "Холокост и еврейская генеалогия" : "Holocaust & Jewish genealogy",
+              ussr: ru ? "Россия и СССР" : "Russia & USSR", tree: ru ? "Древа и кладбища" : "Trees & cemeteries", eu: ru ? "Европа" : "Europe" };
   return [
-    { ico: "FS", c: "#86b049", name: "FamilySearch", d: ru ? "Крупнейшая бесплатная база записей (нужен бесплатный аккаунт)" : "Largest free record collection (free account required)",
+    { g: G.us, ico: "FS", c: "#86b049", name: "FamilySearch", d: ru ? "Крупнейшая бесплатная база записей (бесплатный аккаунт)" : "Largest free record collection (free account)",
       url: `https://www.familysearch.org/search/record/results?q.givenName=${enc(f)}&q.surname=${enc(l)}` + (q.yf ? `&q.birthLikeDate.from=${q.yf}` : "") + (q.yt ? `&q.birthLikeDate.to=${q.yt}` : "") },
-    { ico: "NA", c: "#5b9cff", name: "U.S. National Archives", d: ru ? "Каталог NARA: иммиграция, армия, натурализация" : "NARA catalog: immigration, military, naturalization",
-      url: `https://catalog.archives.gov/search?q=${enc((f + " " + l).trim())}` },
-    { ico: "ПН", c: "#e05252", name: ru ? "Память народа" : "Pamyat Naroda", d: ru ? "Участники Великой Отечественной войны" : "Soviet WWII soldiers and awards",
+    ...(NARA_ENABLED ? [] : [{ g: G.us, ico: "NA", c: "#e4574c", name: "U.S. National Archives", d: ru ? "Иммиграция, натурализация, армия" : "Immigration, naturalization, military",
+      url: `https://catalog.archives.gov/search?q=${enc(full)}` }]),
+    { g: G.us, ico: "EI", c: "#5b9cff", name: "Ellis Island", d: ru ? "Списки пассажиров, прибывших в Нью-Йорк" : "New York passenger arrival lists",
+      url: "https://heritage.statueofliberty.org/" },
+    { g: G.us, ico: "An", c: "#7cb342", name: "Ancestry", d: ru ? "Поиск бесплатный, просмотр записей — платный" : "Free search, paid record access",
+      url: `https://www.ancestry.com/search/?name=${enc(f)}_${enc(l)}` },
+    { g: G.jw, ico: "YV", c: "#d9a441", name: "Yad Vashem", d: ru ? "Центральная база имён жертв Холокоста" : "Central Database of Shoah Victims' Names",
+      url: "https://collections.yadvashem.org/en/names" },
+    { g: G.jw, ico: "AA", c: "#9a8cff", name: "Arolsen Archives", d: ru ? "Жертвы нацизма и перемещённые лица" : "Nazi victims and displaced persons",
+      url: `https://collections.arolsen-archives.org/en/search?s=${enc(full)}` },
+    { g: G.jw, ico: "JG", c: "#4cc38a", name: "JewishGen", d: ru ? "Еврейская генеалогия, в т.ч. Российская империя" : "Jewish genealogy incl. the Russian Empire",
+      url: "https://www.jewishgen.org/databases/" },
+    { g: G.jw, ico: "HM", c: "#c0a060", name: "USHMM", d: ru ? "База выживших и жертв Холокоста (Музей Холокоста США)" : "Holocaust Survivors and Victims Database",
+      url: "https://www.ushmm.org/online/hsv/" },
+    { g: G.jw, ico: "JR", c: "#6aa0d8", name: "JRI-Poland", d: ru ? "Метрики евреев Польши" : "Jewish vital records of Poland",
+      url: "https://jri-poland.org/" },
+    { g: G.ussr, ico: "ПН", c: "#e05252", name: ru ? "Память народа" : "Pamyat Naroda", d: ru ? "Участники Великой Отечественной войны" : "Soviet WWII soldiers and awards",
       url: `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}` },
-    { ico: "AA", c: "#9a8cff", name: "Arolsen Archives", d: ru ? "Документы о жертвах нацизма и перемещённых лицах" : "Records on Nazi victims and displaced persons",
-      url: `https://collections.arolsen-archives.org/en/search?s=${enc((f + " " + l).trim())}` },
-    { ico: "YV", c: "#d9a441", name: "Yad Vashem", d: ru ? "Центральная база имён жертв Холокоста" : "Central Database of Shoah Victims' Names",
-      url: `https://collections.yadvashem.org/en/names` },
-    { ico: "JG", c: "#4cc38a", name: "JewishGen", d: ru ? "Еврейская генеалогия, включая Российскую империю" : "Jewish genealogy incl. the Russian Empire",
-      url: `https://www.jewishgen.org/databases/` },
-    { ico: "FG", c: "#8a8a8a", name: "Find a Grave", d: ru ? "Захоронения и надгробия по всему миру" : "Graves and memorials worldwide",
+    { g: G.ussr, ico: "ОБ", c: "#b04848", name: ru ? "ОБД «Мемориал»" : "OBD Memorial", d: ru ? "Погибшие и пропавшие без вести в 1941–1945" : "Soviet soldiers killed or missing 1941–45",
+      url: "https://obd-memorial.ru/html/" },
+    { g: G.ussr, ico: "ПД", c: "#c06030", name: ru ? "Подвиг народа" : "Podvig Naroda", d: ru ? "Награды и наградные листы 1941–1945" : "WWII awards and citations",
+      url: "https://podvignaroda.ru/" },
+    { g: G.ussr, ico: "ОС", c: "#8d6e63", name: ru ? "Открытый список" : "Open List", d: ru ? "Пострадавшие от политического террора в СССР" : "Victims of Soviet political repression",
+      url: "https://ru.openlist.wiki/" },
+    { g: G.tree, ico: "Ge", c: "#4aa3df", name: "Geni", d: ru ? "Большое общее семейное древо" : "Large collaborative family tree",
+      url: `https://www.geni.com/search?search_type=people&names=${enc(full)}` },
+    { g: G.tree, ico: "MH", c: "#f08a24", name: "MyHeritage", d: ru ? "Древа и записи (частично платно)" : "Trees and records (partly paid)",
+      url: `https://www.myheritage.com/names/${enc((f || "").toLowerCase())}_${enc(l.toLowerCase())}` },
+    { g: G.tree, ico: "FG", c: "#8a8a8a", name: "Find a Grave", d: ru ? "Захоронения и надгробия по всему миру" : "Graves and memorials worldwide",
       url: `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (q.yf ? `&birthyear=${q.yf}&birthyearfilter=10` : "") },
-    { ico: "Ge", c: "#4aa3df", name: "Geni", d: ru ? "Большое общее семейное древо" : "Large collaborative family tree",
-      url: `https://www.geni.com/search?search_type=people&names=${enc((f + " " + l).trim())}` }
+    { g: G.tree, ico: "BG", c: "#6d9e4f", name: "BillionGraves", d: ru ? "Фото надгробий с GPS" : "Gravestone photos with GPS",
+      url: `https://billiongraves.com/search/results?given_names=${enc(f)}&family_names=${enc(l)}` },
+    { g: G.eu, ico: "Gn", c: "#2f7fd0", name: "Geneanet", d: ru ? "Европейские древа и записи" : "European trees and records",
+      url: `https://en.geneanet.org/fonds/individus/?nom=${enc(l)}&prenom=${enc(f)}` },
+    { g: G.eu, ico: "LV", c: "#a0303a", name: "Raduraksti", d: ru ? "Метрические книги Латвии" : "Latvian church and civil records",
+      url: "https://raduraksti.arhivi.lv/" },
+    { g: G.eu, ico: "UK", c: "#5a6fb0", name: "FreeBMD", d: ru ? "Рождения, браки и смерти в Англии и Уэльсе" : "Births, marriages, deaths in England & Wales",
+      url: "https://www.freebmd.org.uk/cgi/search.pl" }
   ];
 };
 
@@ -802,6 +980,12 @@ const ICON = {
   cal:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   ext:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg>'
 };
+function highlight(text){
+  const terms = state.q ? [state.q.latLast, state.q.last].filter(x => x && x.length > 2) : [];
+  let out = esc(text);
+  for (const tm of terms){ const re = new RegExp("(" + esc(tm).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi"); out = out.replace(re, "<mark>$1</mark>"); }
+  return out;
+}
 const colorOf = id => (SOURCES.find(s => s.id === id) || {}).color;
 const line = (icon, text) => text ? `<div>${ICON[icon]}<span>${esc(text)}</span></div>` : "";
 
@@ -821,10 +1005,10 @@ function cardHTML(r, i){
   } else {
     body = `${r.img ? `<div class="thumb"><img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>` : ""}
       <div><h3>${esc(r.name)}</h3></div>
-      <div class="meta">${line("cal", r.eventDate)}${line("pin", r.place)}</div>
-      ${r.snippet ? `<div class="snippet">${esc(r.snippet)}</div>` : ""}`;
+      <div class="meta">${line("cal", r.eventDate)}${line(r.kind === "book" ? "ppl" : r.kind === "nara" ? "arch" : "pin", r.place)}</div>
+      ${r.snippet ? `<div class="snippet">${highlight(r.snippet)}</div>` : ""}`;
   }
-  return `<article class="card" style="--c:${colorOf(r.source)};animation-delay:${Math.min(i % PAGE_SIZE, 12) * 30}ms">
+  return `<article class="card" data-kind="${r.kind}" style="--c:${colorOf(r.source)};animation-delay:${Math.min(i % PAGE_SIZE, 12) * 30}ms">
     <div class="card-top"><span class="badge"><i></i>${esc(src)}</span><span class="kind">${esc(kind)}</span></div>
     ${body}
     <div class="card-foot"><a class="open" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t("open"))} ${ICON.ext}</a>
@@ -883,7 +1067,12 @@ function renderStatus(){
 }
 
 function renderExternal(){
-  $("#extLinks").innerHTML = EXTERNAL(state.q).map(e => `<a href="${esc(e.url)}" target="_blank" rel="noopener"><span class="ico" style="color:${e.c}">${esc(e.ico)}</span><span><b>${esc(e.name)}</b><small>${esc(e.d)}</small></span></a>`).join("");
+  let last = "", html = "";
+  for (const e of EXTERNAL(state.q)){
+    if (e.g !== last){ html += `<div class="ext-group">${esc(e.g)}</div>`; last = e.g; }
+    html += `<a href="${esc(e.url)}" target="_blank" rel="noopener"><span class="ico" style="color:${e.c}">${esc(e.ico)}</span><span><b>${esc(e.name)}</b><small>${esc(e.d)}</small></span></a>`;
+  }
+  $("#extLinks").innerHTML = html;
 }
 
 function renderCensus(c){
