@@ -8,7 +8,7 @@ window.ISTOKI_CONFIG = {
   EUROPEANA_KEY: "alformoruinu",
 
   // DPLA (Цифровая публичная библиотека Америки) — бесплатный ключ. Пусто — источник скрыт
-  DPLA_KEY: "",
+  DPLA_KEY: "106ea0e6380f1ef94f52b65987ec9cfc",
 
   // Адрес вашего сайта для рекламных блоков
   AD_URL: "https://mystorytel.com",
