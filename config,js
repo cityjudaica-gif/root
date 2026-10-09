@@ -2,15 +2,17 @@
 // впишите сюда свои значения один раз.
 window.ISTOKI_CONFIG = {
   // Адрес посредника на Cloudflare, без слэша в конце
-  PROXY_URL: "",                 // например "https://istoki-proxy.ВАШ-ЛОГИН.workers.dev"
- 
-  // Ключ Google Books (ограниченный адресом вашего сайта)
-  GOOGLE_BOOKS_KEY: "",
- 
+  PROXY_URL: "https://istoki-proxy.aligiftstip.workers.dev/",   // ← ЗАМЕНИТЕ на адрес вашего воркера
+
+  // Europeana — бесплатный ключ (инструкция в README). Пусто — источник скрыт
+  EUROPEANA_KEY: "alformoruinu",
+
+  // DPLA (Цифровая публичная библиотека Америки) — бесплатный ключ. Пусто — источник скрыт
+  DPLA_KEY: "",
+
   // Адрес вашего сайта для рекламных блоков
   AD_URL: "https://mystorytel.com",
- 
+
   // Поиск по Национальному архиву США — true после добавления NARA_KEY в воркер
   NARA_ENABLED: false
 };
- 
