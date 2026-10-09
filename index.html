@@ -466,9 +466,8 @@ const PROXY_URL = CFG.PROXY_URL || "https://istoki-proxy.aligiftstip.workers.dev
 // Когда ключ добавлен в посредник, поставьте true.
 const NARA_ENABLED = !!CFG.NARA_ENABLED;   // ← задаётся в config.js
 
-// Ключ Google Books API (бесплатно, инструкция в README). Без ключа Google быстро
-// упирается в общий лимит и отвечает ошибкой. Ключ обязательно ограничьте адресом вашего сайта.
-const GOOGLE_BOOKS_KEY = CFG.GOOGLE_BOOKS_KEY || "";   // ← задаётся в config.js
+const EUROPEANA_KEY = CFG.EUROPEANA_KEY || "";   // ← задаётся в config.js
+const DPLA_KEY = CFG.DPLA_KEY || "";             // ← задаётся в config.js
 const PAGE_SIZE = 24;
 /* ===================================================================== */
 
@@ -498,21 +497,20 @@ const I18N = {
     born: "Рождение", died: "Смерть", parents: "Родители", event: "Событие", archive: "Архив", role: "Роль",
     open: "Открыть", copy: "Копировать", copied: "Скопировано",
     linkCopied: "Ссылка на поиск скопирована",
-    kinds: { person: "Профиль", record: "Архивная запись", news: "Газета", book: "Книга", article: "Статья", image: "Фото / документ", nara: "Архивный документ" },
+    kinds: { person: "Профиль", record: "Архивная запись", news: "Газета", book: "Книга", archive: "Документ / фото", article: "Статья", image: "Фото / документ", nara: "Архивный документ" },
     errSource: (s, url) => `${s} сейчас не отвечает. <a href="${url}" target="_blank" rel="noopener">Открыть поиск на сайте ${s} ↗</a>`,
-    openOnSite: "Открыть поиск на сайте источника",
+    openOnSite: "Источник не ответил — нажмите, чтобы открыть поиск на его сайте",
     bySurname: "по фамилии",
     surnameNote: (f, l, srcs) => `Точных совпадений с именем «${f}» нет в: ${srcs}. Там показаны все ${l} — в документах имя часто записано иначе (полная форма, на идиш, по-немецки).`,
     errReason: { "429": "Слишком много запросов подряд — подождите минуту и повторите.", blocked: "Браузер не получил ответ (сеть или запрет на запросы с других сайтов).",
       needProxy: "Этот сайт не принимает запросы из браузера напрямую. Владельцу сайта: настройте посредник на Cloudflare (PROXY_URL, см. README).",
-      booksKey: "Закончился общий лимит Google без ключа. Владельцу сайта: добавьте GOOGLE_BOOKS_KEY (см. README).",
       "403": "Источник отклонил запрос посредника. Владельцу сайта: обновите код воркера на Cloudflare последней версией worker.js." },
     emptyTitle: "Ничего не нашлось",
     emptyText: "Попробуйте убрать годы, место или проверьте написание фамилии латиницей — в старых документах фамилии часто записывали по-разному.",
     needLast: "Введите фамилию",
     aboutTitle: "О проекте",
     aboutText: "Истоки — бесплатный инструмент поиска по открытым генеалогическим базам. Мы не являемся владельцами данных: все результаты принадлежат их источникам и открываются на их сайтах.",
-    attrib: 'Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://books.google.com" target="_blank" rel="noopener">Google Books</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Википедия</a> и <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Викисклад</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.',
+    attrib: 'Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://www.nli.org.il" target="_blank" rel="noopener">Национальная библиотека Израиля</a>, <a href="https://gallica.bnf.fr" target="_blank" rel="noopener">Gallica (BnF)</a>, <a href="https://www.europeana.eu" target="_blank" rel="noopener">Europeana</a>, <a href="https://dp.la" target="_blank" rel="noopener">DPLA</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Википедия</a> и <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Викисклад</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.',
     privacyTitle: "Конфиденциальность",
     privacyText: "Без регистрации, без cookies и без хранения запросов. Поиск выполняется прямо в вашем браузере.",
     src: {
@@ -522,7 +520,10 @@ const I18N = {
       loc: ["Газеты США", "1770–1963", "Chronicling America: миллионы оцифрованных страниц американских газет с полнотекстовым поиском."],
       nara: ["Архив США (NARA)", "Документы", "Национальный архив США: иммиграция, натурализация, армия, переписи."],
       archive: ["Internet Archive", "Книги и справочники", "Оцифрованные книги, адресные книги, школьные альбомы, книги памяти (Yizkor)."],
-      books: ["Google Книги", "Упоминания", "Поиск фамилии внутри текста миллионов книг — с цитатой, где она встречается."],
+      nli: ["Нац. библиотека Израиля", "Еврейское наследие", "Крупнейшее собрание еврейских документов, газет, фото и архивов (в т.ч. на идиш, иврите, русском)."],
+      gallica: ["Gallica", "Пресса Франции", "Национальная библиотека Франции: газеты, книги, в т.ч. русская эмигрантская пресса."],
+      europeana: ["Europeana", "Архивы Европы", "50+ млн объектов из музеев, архивов и библиотек Европы: фото, документы, газеты."],
+      dpla: ["DPLA", "Библиотеки США", "Цифровая публичная библиотека Америки: фото, документы, архивы штатов и университетов."],
       wikipedia: ["Википедия", "Статьи", "Статьи на русском и английском, где упоминается этот человек или фамилия."],
       commons: ["Викисклад", "Фото", "Свободные фотографии и сканы: надгробия, документы, портреты."]
     }
@@ -552,21 +553,20 @@ const I18N = {
     born: "Born", died: "Died", parents: "Parents", event: "Event", archive: "Archive", role: "Role",
     open: "Open", copy: "Copy", copied: "Copied",
     linkCopied: "Search link copied",
-    kinds: { person: "Profile", record: "Archive record", news: "Newspaper", book: "Book", article: "Article", image: "Photo / document", nara: "Archival record" },
+    kinds: { person: "Profile", record: "Archive record", news: "Newspaper", book: "Book", archive: "Document / photo", article: "Article", image: "Photo / document", nara: "Archival record" },
     errSource: (s, url) => `${s} is not responding right now. <a href="${url}" target="_blank" rel="noopener">Open search on ${s} ↗</a>`,
-    openOnSite: "Open search on the source's website",
+    openOnSite: "The source didn't respond — click to open search on its website",
     bySurname: "surname only",
     surnameNote: (f, l, srcs) => `No exact matches for the first name “${f}” in: ${srcs}. Showing all ${l} records there — old records often spell first names differently.`,
     errReason: { "429": "Too many requests — wait a minute and try again.", blocked: "No response (network or cross-site request blocked).",
       needProxy: "This site doesn't accept direct browser requests. Site owner: set up the Cloudflare proxy (PROXY_URL, see README).",
-      booksKey: "Google's shared keyless quota is exhausted. Site owner: add GOOGLE_BOOKS_KEY (see README).",
       "403": "The source rejected the proxy request. Site owner: update the Cloudflare worker with the latest worker.js." },
     emptyTitle: "Nothing found",
     emptyText: "Try removing years or place, or check the Latin spelling — old records often spelled names differently.",
     needLast: "Enter a last name",
     aboutTitle: "About",
     aboutText: "Istoki is a free search tool for open genealogy databases. We do not own the data: all results belong to their sources and open on their websites.",
-    attrib: 'Data: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://books.google.com" target="_blank" rel="noopener">Google Books</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a> and <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.',
+    attrib: 'Data: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://www.nli.org.il" target="_blank" rel="noopener">National Library of Israel</a>, <a href="https://gallica.bnf.fr" target="_blank" rel="noopener">Gallica (BnF)</a>, <a href="https://www.europeana.eu" target="_blank" rel="noopener">Europeana</a>, <a href="https://dp.la" target="_blank" rel="noopener">DPLA</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a> and <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.',
     privacyTitle: "Privacy",
     privacyText: "No sign-up, no cookies, no stored queries. Searches run right in your browser.",
     src: {
@@ -576,7 +576,10 @@ const I18N = {
       loc: ["U.S. newspapers", "1770–1963", "Chronicling America: millions of digitized U.S. newspaper pages, full-text searchable."],
       nara: ["U.S. Archives (NARA)", "Records", "U.S. National Archives: immigration, naturalization, military, census."],
       archive: ["Internet Archive", "Books & directories", "Digitized books, city directories, yearbooks, Yizkor memorial books."],
-      books: ["Google Books", "Mentions", "Searches inside the text of millions of books, with the matching quote."],
+      nli: ["National Library of Israel", "Jewish heritage", "The largest collection of Jewish documents, newspapers, photos and archives (Yiddish, Hebrew, Russian…)."],
+      gallica: ["Gallica", "French press", "National Library of France: newspapers and books, incl. Russian émigré press."],
+      europeana: ["Europeana", "European archives", "50M+ items from European museums, archives and libraries: photos, documents, newspapers."],
+      dpla: ["DPLA", "U.S. libraries", "Digital Public Library of America: photos, documents, state and university archives."],
       wikipedia: ["Wikipedia", "Articles", "Russian and English articles mentioning this person or surname."],
       commons: ["Wikimedia Commons", "Photos", "Free photos and scans: gravestones, documents, portraits."]
     }
@@ -590,7 +593,10 @@ const SOURCES = [
   { id: "nara",      color: "#e4574c", needs: () => NARA_ENABLED && !!PROXY_URL },
   { id: "loc",       color: "var(--c-loc)", needs: () => !!PROXY_URL },
   { id: "archive",   color: "#4fb3c8" },
-  { id: "books",     color: "#e07ac1" },
+  { id: "nli",       color: "#3d7be0" },
+  { id: "gallica",   color: "#c9536b", needs: () => !!PROXY_URL },
+  { id: "europeana", color: "#e0a030", needs: () => !!EUROPEANA_KEY },
+  { id: "dpla",      color: "#2f9fa8", needs: () => !!DPLA_KEY },
   { id: "wikipedia", color: "#9aa3b5" },
   { id: "commons",   color: "#53c2a0" }
 ].filter(s => !s.needs || s.needs());
@@ -623,6 +629,11 @@ async function smartJSON(url, opts = {}, proxyFirst = false){
   if (PROXY_URL && proxyFirst) return getJSON(viaProxy(url), opts);
   try { return await getJSON(url, opts); }
   catch(e){ if (!PROXY_URL || /HTTP 4(29|04)/.test(e.message)) throw e; return getJSON(viaProxy(url), opts); }
+}
+async function getText(url, ms = 20000){
+  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), ms);
+  try { const r = await fetch(url, { signal: ctl.signal }); if (!r.ok) throw new Error("HTTP " + r.status); return await r.text(); }
+  finally { clearTimeout(timer); }
 }
 function jsonp(url, ms = 20000){
   return new Promise((res, rej) => {
@@ -827,27 +838,98 @@ Object.assign(API, {
   },
   searchUrl_archive: q => `https://archive.org/search?query=${enc('"' + fullLat(q) + '"')}`,
 
-  /* Google Книги — поиск внутри текста книг (запрос идёт напрямую из браузера посетителя) */
-  async books(q){
+  /* Национальная библиотека Израиля — каталог Primo, без ключа */
+  async nli(q){
     const list = await settledFlat(queryTerms(q).map(async term => {
-      const data = await getJSON(`https://www.googleapis.com/books/v1/volumes?q=${enc('"' + term + '"')}&maxResults=40&printType=all` + (GOOGLE_BOOKS_KEY ? "&key=" + enc(GOOGLE_BOOKS_KEY) : ""));
-      return ((data && data.items) || []).map(it => {
-        const v = it.volumeInfo || {};
-        const img = v.imageLinks && (v.imageLinks.thumbnail || v.imageLinks.smallThumbnail);
+      const u = "https://merhav.nli.org.il/PrimoWebServices/xservice/search/brief?institution=NNL&loc=local,scope:(NNL)&indx=1&bulkSize=40&json=true&query=" + enc(`any,exact,"${term}"`);
+      const data = await smartJSON(u);
+      let docs = (((((data || {}).SEGMENTS || {}).JAGROOT || {}).RESULT || {}).DOCSET || {}).DOC || [];
+      if (!Array.isArray(docs)) docs = [docs];
+      const v = x => Array.isArray(x) ? x[0] : x;
+      return docs.map(d => {
+        const rec = (d.PrimoNMBib || {}).record || {};
+        const disp = rec.display || {}, ctrl = rec.control || {};
+        const id = v(ctrl.recordid) || "";
+        const date = String(v(disp.creationdate) || "");
         return {
-          source: "books", kind: "book",
-          name: [v.title, v.subtitle].filter(Boolean).join(": "),
-          eventYear: yearOf(v.publishedDate), eventDate: v.publishedDate,
-          place: (v.authors || []).slice(0, 2).join(", "),
-          snippet: stripTags((it.searchInfo && it.searchInfo.textSnippet) || v.description || "").slice(0, 300),
-          img: img ? img.replace("http://", "https://") : null,
-          url: v.infoLink || v.previewLink || `https://books.google.com/books?id=${it.id}`
+          source: "nli", kind: "archive",
+          name: stripTags(v(disp.title) || id),
+          eventYear: yearOf(date), eventDate: date,
+          place: stripTags(v(disp.creator) || v(disp.contributor) || ""),
+          event: v(disp.type) ? String(v(disp.type)).replace(/_/g, " ") : "",
+          url: `https://www.nli.org.il/en/search?projectName=NLI&query=any,contains,${enc(id || term)}`
         };
       });
     }));
+    return dedupe(list, r => r.url + r.name);
+  },
+  searchUrl_nli: q => `https://www.nli.org.il/en/search?projectName=NLI&query=any,contains,${enc(fullLat(q))}`,
+
+  /* Gallica (Национальная библиотека Франции) — SRU, ответ в XML, через посредника */
+  async gallica(q){
+    const list = await settledFlat(queryTerms(q).map(async term => {
+      const u = "https://gallica.bnf.fr/SRU?version=1.2&operation=searchRetrieve&maximumRecords=40&query=" + enc(`gallica all "${term}"`);
+      const xml = await getText(viaProxy(u));
+      const doc = new DOMParser().parseFromString(xml, "application/xml");
+      const recs = [...doc.getElementsByTagNameNS("*", "recordData")];
+      return recs.map(rd => {
+        const f = n => [...rd.getElementsByTagNameNS("*", n)].map(e => e.textContent.trim()).filter(Boolean);
+        const id = f("identifier").find(x => /gallica\.bnf\.fr\/ark:/.test(x)) || f("identifier")[0] || "";
+        const date = f("date")[0] || "";
+        return {
+          source: "gallica", kind: "book",
+          name: f("title")[0] || id,
+          eventYear: yearOf(date), eventDate: date,
+          place: f("creator").slice(0, 2).join(", ") || f("publisher")[0] || "",
+          snippet: (f("type")[0] || "") + (f("description")[0] ? " · " + f("description")[0] : ""),
+          img: id ? id.replace(/\/$/, "") + ".thumbnail" : null,
+          url: id
+        };
+      }).filter(r => r.url);
+    }));
     return dedupe(list, r => r.url);
   },
-  searchUrl_books: q => `https://www.google.com/search?tbm=bks&q=${enc('"' + fullLat(q) + '"')}`,
+  searchUrl_gallica: q => `https://gallica.bnf.fr/services/engine/search/sru?operation=searchRetrieve&query=${enc('(gallica all "' + fullLat(q) + '")')}`,
+
+  /* Europeana — нужен бесплатный ключ */
+  async europeana(q){
+    const list = await settledFlat(queryTerms(q).map(async term => {
+      const data = await smartJSON(`https://api.europeana.eu/record/v2/search.json?wskey=${enc(EUROPEANA_KEY)}&query=${enc('"' + term + '"')}&rows=40&profile=standard`);
+      const a = x => Array.isArray(x) ? x[0] : x;
+      return ((data && data.items) || []).map(it => ({
+        source: "europeana", kind: "archive",
+        name: stripTags(a(it.title) || a(it.dcTitleLangAware && Object.values(it.dcTitleLangAware)[0]) || it.id),
+        eventYear: yearOf(a(it.year)), eventDate: a(it.year) || "",
+        place: [a(it.dataProvider), a(it.country)].filter(Boolean).join(" · "),
+        event: it.type ? String(it.type).toLowerCase() : "",
+        snippet: stripTags(a(it.dcDescription) || "").slice(0, 300),
+        img: a(it.edmPreview) || null,
+        url: it.guid || `https://www.europeana.eu/item${it.id}`
+      }));
+    }));
+    return dedupe(list, r => r.url);
+  },
+  searchUrl_europeana: q => `https://www.europeana.eu/en/search?query=${enc('"' + fullLat(q) + '"')}`,
+
+  /* DPLA — нужен бесплатный ключ */
+  async dpla(q){
+    const data = await smartJSON(`https://api.dp.la/v2/items?api_key=${enc(DPLA_KEY)}&q=${enc('"' + fullLat(q) + '"')}&page_size=40`);
+    const a = x => Array.isArray(x) ? x[0] : x;
+    return ((data && data.docs) || []).map(d => {
+      const sr = d.sourceResource || {};
+      const date = (a(sr.date) || {}).displayText || "";
+      return {
+        source: "dpla", kind: "archive",
+        name: stripTags(a(sr.title) || d.id),
+        eventYear: yearOf(date), eventDate: date,
+        place: [(d.dataProvider && (d.dataProvider.name || d.dataProvider)) || "", (a(sr.spatial) || {}).name || ""].filter(Boolean).join(" · "),
+        snippet: stripTags(a(sr.description) || "").slice(0, 300),
+        img: d.object || null,
+        url: d.isShownAt || `https://dp.la/item/${d.id}`
+      };
+    });
+  },
+  searchUrl_dpla: q => `https://dp.la/search?q=${enc('"' + fullLat(q) + '"')}`,
 
   /* Википедия — русская и английская */
   async wikipedia(q){
@@ -1026,7 +1108,7 @@ function cardHTML(r, i){
   } else {
     body = `${r.img ? `<div class="thumb"><img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>` : ""}
       <div><h3>${esc(r.name)}</h3></div>
-      <div class="meta">${line("cal", r.eventDate)}${line(r.kind === "book" ? "ppl" : r.kind === "nara" ? "arch" : "pin", r.place)}</div>
+      <div class="meta">${line("cal", r.eventDate)}${line(r.kind === "book" ? "ppl" : (r.kind === "nara" || r.kind === "archive") ? "arch" : "pin", r.place)}${r.kind === "archive" ? line("doc", r.event) : ""}</div>
       ${r.snippet ? `<div class="snippet">${highlight(r.snippet)}</div>` : ""}`;
   }
   return `<article class="card" data-kind="${r.kind}" style="--c:${colorOf(r.source)};animation-delay:${Math.min(i % PAGE_SIZE, 12) * 30}ms">
@@ -1080,7 +1162,7 @@ function renderStatus(){
     const st = state.status[s.id]; if (!st) continue;
     const cnt = state.items.filter(r => r.source === s.id).length;
     if (st.state === "link"){
-      html += `<a class="status" style="--c:${s.color};text-decoration:none" href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener" title="${esc(t("openOnSite"))}"><span class="dot"></span>${esc(t("src")[s.id][0])} <span class="n">↗</span></a>`;
+      html += `<a class="status" style="--c:${s.color};text-decoration:none" href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener" title="${esc(t("openOnSite") + (st.reason ? " — " + (t("errReason")[st.reason] || st.reason) : ""))}"><span class="dot"></span>${esc(t("src")[s.id][0])} <span class="n">↗</span></a>`;
       continue;
     }
     const inner = st.state === "loading" ? '<span class="spin"></span>' : st.state === "error" ? '<span class="n">!</span>' : `<span class="n">${cnt}</span>`;
@@ -1163,10 +1245,9 @@ async function runSearch(){
       if (run !== state.runId) return;
       console.warn(s.id, e);
       let reason = /HTTP 429/.test(e.message) ? "429" : /HTTP/.test(e.message) ? e.message : "blocked";
-      if (s.id === "books" && !GOOGLE_BOOKS_KEY && /HTTP (403|429)/.test(e.message)) reason = "booksKey";
       if (reason === "blocked" && !PROXY_URL) reason = "needProxy";
-      if (/HTTP 403/.test(e.message) && s.id !== "books") reason = "403";
-      state.status[s.id] = s.id === "loc" ? { state: "link" } : { state: "error", reason };
+      if (/HTTP 403/.test(e.message)) reason = "403";
+      state.status[s.id] = { state: "link", reason };
     }
     // сохраняем порядок источников
     const order = SOURCES.map(x => x.id);
