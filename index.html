@@ -1,17 +1,159 @@
 <!doctype html>
-<html lang="ru">
-<head>
+<html lang="ru"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Истоки — поиск предков в открытых архивах</title>
-<meta name="description" content="Бесплатный поиск предков одновременно в WikiTree, Wikidata, европейских архивах и исторических газетах США.">
-<meta property="og:title" content="Истоки — поиск предков в открытых архивах">
-<meta property="og:description" content="Один поиск — несколько открытых генеалогических баз сразу.">
+<title>Поиск предков по фамилии бесплатно — архивы и генеалогия | Истоки</title>
+<meta name="description" content="Бесплатный поиск предков и родственников по фамилии сразу в 10+ открытых базах: родословные древа, метрические записи, газеты США, Национальная библиотека Израиля, архивы Европы.">
+<meta name="keywords" content="поиск предков, поиск предков по фамилии, найти предков бесплатно, генеалогия, родословная, поиск родственников, найти родственников по фамилии, генеалогическое древо, архивы, метрические книги, ревизские сказки, поиск родственников в США, эмиграция в Америку, Эллис Айленд, еврейская генеалогия, Российская империя, Бессарабия, жертвы Холокоста, участники войны, история семьи">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://root-five-pi.vercel.app/">
+<link rel="alternate" hreflang="ru" href="https://root-five-pi.vercel.app/">
+<link rel="alternate" hreflang="en" href="https://root-five-pi.vercel.app/en/">
+<link rel="alternate" hreflang="x-default" href="https://root-five-pi.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Истоки">
+<meta property="og:url" content="https://root-five-pi.vercel.app/">
+<meta property="og:title" content="Истоки — найдите своих предков в открытых архивах мира">
+<meta property="og:description" content="Один бесплатный поиск по фамилии — сразу в родословных древах, архивах, газетах и фотоархивах. Без регистрации.">
+<meta property="og:image" content="https://root-five-pi.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Истоки — найдите своих предков в открытых архивах мира">
+<meta name="twitter:description" content="Один бесплатный поиск по фамилии — сразу в родословных древах, архивах, газетах и фотоархивах. Без регистрации.">
+<meta name="twitter:image" content="https://root-five-pi.vercel.app/og-image.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://root-five-pi.vercel.app/#website",
+   "url": "https://root-five-pi.vercel.app/",
+   "name": "Истоки",
+   "alternateName": [
+    "Истоки",
+    "Istoki",
+    "Istoki genealogy search"
+   ],
+   "description": "Бесплатный поиск предков и родственников по фамилии сразу в 10+ открытых базах: родословные древа, метрические записи, газеты США, Национальная библиотека Израиля, архивы Европы.",
+   "inLanguage": "ru",
+   "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+     "@type": "EntryPoint",
+     "urlTemplate": "https://root-five-pi.vercel.app/?ln={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+   }
+  },
+  {
+   "@type": "WebApplication",
+   "@id": "https://root-five-pi.vercel.app/#app",
+   "name": "Истоки",
+   "url": "https://root-five-pi.vercel.app/",
+   "description": "Бесплатный поиск предков и родственников по фамилии сразу в 10+ открытых базах: родословные древа, метрические записи, газеты США, Национальная библиотека Израиля, архивы Европы.",
+   "inLanguage": "ru",
+   "applicationCategory": "ReferenceApplication",
+   "operatingSystem": "Any",
+   "isAccessibleForFree": true,
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "image": "https://root-five-pi.vercel.app/og-image.png"
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://root-five-pi.vercel.app/#faq",
+   "inLanguage": "ru",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Поиск предков на сайте бесплатный?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Да, полностью бесплатный и без регистрации. Мы ищем только в открытых базах данных, а все результаты открываются на сайтах источников."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как найти родственников по фамилии?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Введите фамилию (можно кириллицей) и, если знаете, имя, годы рождения и место. Истоки одновременно проверят родословные древа, архивные записи, газеты и фотоархивы. Если точных совпадений по имени нет, поиск автоматически покажет всех носителей фамилии и подскажет другие варианты её написания."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как найти предков, эмигрировавших в Америку?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ищите фамилию латиницей в разных написаниях: американские клерки записывали её на слух. Полезны списки пассажиров Эллис Айленда, переписи США 1900–1950 годов, документы о натурализации в Национальном архиве США и старые американские газеты — ссылки на эти базы появляются рядом с результатами поиска."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Где найти метрические книги Российской империи?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Многие метрические книги оцифрованы и проиндексированы на FamilySearch, JewishGen и JRI-Poland, а также в региональных архивах Украины, Беларуси, Молдовы, Литвы и Латвии. Ссылки на них есть в разделе «Ищите также здесь» после поиска."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как узнать о дедушке — участнике Великой Отечественной войны?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Используйте базы «Память народа», ОБД «Мемориал» и «Подвиг народа»: там собраны данные о призыве, наградах, ранениях и местах захоронения. Ищите по фамилии, имени и году рождения."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как найти родственников, погибших в Холокост?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Проверьте Центральную базу имён жертв Холокоста Яд ва-Шем, Arolsen Archives и базу Музея Холокоста США. Также ищите название родного местечка в книгах памяти (Yizkor) — многие из них есть в Национальной библиотеке Израиля и Internet Archive."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Почему результаты на латинице?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Большинство мировых архивов хранит записи латиницей. Мы автоматически переводим русскую фамилию в латиницу и ищем в оригинальном написании там, где это возможно, например в Википедии и Национальной библиотеке Израиля."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Вы храните мои запросы и данные?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Нет. Поиск выполняется прямо в вашем браузере, без регистрации и cookies. Мы не храним ни запросы, ни результаты."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Как сохранить найденное и составить семейное древо?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Выгрузите результаты в CSV или скопируйте ссылки на находки. Чтобы собрать древо, воспоминания, фотографии и напечатать книгу памяти семьи, воспользуйтесь Mystorytel."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+
 <meta name="theme-color" content="#0d0f17">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23e8b25c'/%3E%3Cpath d='M32 50V30M32 30l-10-10M32 30l10-10M32 38l-8-6M32 38l8-6' stroke='%230d0f17' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,500&amp;display=swap" rel="stylesheet">
 
 <style>
 /* ============ ТЕМА ============ */
@@ -214,6 +356,59 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .err-box{border:1px solid color-mix(in srgb,#ff6b6b 40%,transparent);background:color-mix(in srgb,#ff6b6b 8%,transparent);border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;color:var(--muted);margin-bottom:12px}
 .err-box a{color:var(--text);font-weight:700}
 
+/* выдача списком */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:10px;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;font-size:14.5px;font-weight:700;color:var(--muted);cursor:pointer;display:inline-flex;gap:8px;align-items:center;margin-bottom:-1px}
+.tab .n{font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums;font-size:13px}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.src-line{font-size:12.5px;color:var(--faint);margin:0 0 18px;line-height:1.9}
+.src-line b{color:var(--muted);font-weight:700}
+.src-line .s{white-space:nowrap;margin-right:12px}
+.src-line .s i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
+.src-line .s.zero{opacity:.6}
+.src-line a{color:var(--muted)}
+.src-line .spin{display:inline-block;width:9px;height:9px;vertical-align:-1px;margin-left:4px}
+.rgroups{display:flex;flex-direction:column;gap:26px}
+.rgroup h3{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font-family:var(--serif);font-size:21px;font-weight:700}
+.rgroup h3 .n{font-family:var(--font);font-size:13px;font-weight:700;color:var(--faint)}
+.rlist{list-style:none;margin:0;padding:0;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);overflow:hidden}
+.rlist li+li{border-top:1px solid var(--border)}
+.row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 16px;text-decoration:none;color:inherit;transition:background .15s}
+.row:hover{background:var(--surface-2)}
+.r-thumb{position:relative;width:44px;height:44px;border-radius:10px;background:color-mix(in srgb,var(--c) 16%,var(--bg-2));display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:16px;color:var(--c);overflow:hidden}
+.r-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--bg-2)}
+.r-main{min-width:0;display:flex;flex-direction:column;gap:2px}
+.r-title{font-weight:700;font-size:15.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.r-title .y{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;margin-left:8px;white-space:nowrap}
+.r-meta{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-snip{font-size:12.5px;color:var(--faint);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.45}
+.r-snip mark,.r-title mark{background:color-mix(in srgb,var(--accent) 18%,transparent);color:inherit;border-radius:3px;padding:0 1px}
+.r-side{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;color:var(--c);white-space:nowrap}
+.r-side .k{color:var(--faint);font-weight:600}
+.r-side svg{width:15px;height:15px;color:var(--faint)}
+.row:hover .r-side svg{color:var(--text)}
+.r-more{margin-top:8px}
+.r-more summary{cursor:pointer;font-size:13.5px;font-weight:700;color:var(--muted);padding:6px 2px;list-style:none}
+.r-more summary::-webkit-details-marker{display:none}
+.r-more summary::before{content:"▸ ";color:var(--accent)}
+.r-more[open] summary::before{content:"▾ "}
+.r-more .rlist{margin-top:6px}
+.g-more{background:none;border:0;color:var(--accent);font-weight:700;font-size:13.5px;cursor:pointer;padding:8px 2px}
+.mention{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);margin:0 0 8px;padding:2px}
+.rlist+.mention,.r-more+.mention,.g-more+.mention{margin-top:10px}
+.mention a{color:var(--text);font-weight:700}
+.row.ad{grid-template-columns:44px minmax(0,1fr) auto;background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+.row.ad .r-thumb{background:var(--accent);color:var(--accent-ink)}
+.skel-row{height:68px;border-top:1px solid var(--border);background:linear-gradient(100deg,var(--surface) 30%,var(--surface-2) 50%,var(--surface) 70%);background-size:300% 100%;animation:sh 1.4s infinite}
+.skel-row:first-child{border-top:0}
+@media (max-width:640px){
+  .row{grid-template-columns:38px minmax(0,1fr);padding:11px 12px;gap:11px}
+  .r-thumb{width:38px;height:38px}
+  .r-side{grid-column:2;gap:8px}
+  .r-meta{white-space:normal}
+}
 .more{display:flex;justify-content:center;margin-top:18px}
 .more[hidden]{display:none}
 #results{scroll-margin-top:70px}
@@ -245,6 +440,27 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .side-ad li::before{content:"✓";color:var(--accent);font-weight:800;margin-right:8px}
 .side-ad .cta{display:block;text-align:center;background:var(--accent);color:var(--accent-ink);font-weight:800;border-radius:12px;padding:11px}
 
+
+/* путеводитель и FAQ */
+.guide{padding:30px 0 20px}
+.guide-h2{margin-top:44px}
+.guide-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.guide-card{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);padding:22px;position:relative}
+.guide-num{position:absolute;top:18px;right:20px;font-family:var(--serif);font-size:34px;font-weight:700;color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.guide-card h3,.topics h3{margin:0 0 8px;font-size:17px;font-weight:800;padding-right:34px}
+.guide-card p,.topics p{margin:0;color:var(--muted);font-size:15px}
+.guide-card a{color:var(--accent);font-weight:700}
+.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 28px}
+.topics article{border-left:3px solid color-mix(in srgb,var(--accent) 45%,transparent);padding-left:16px}
+.faq{display:flex;flex-direction:column;gap:10px;max-width:880px}
+.faq details{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-sm);padding:4px 18px}
+.faq summary{cursor:pointer;font-weight:700;font-size:16px;padding:12px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--accent);font-size:22px;line-height:1;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 14px;color:var(--muted)}
+@media (max-width:900px){.topics{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.guide-grid,.topics{grid-template-columns:1fr}}
 /* подвал */
 footer{border-top:1px solid var(--border);padding:34px 0 50px;margin-top:40px;color:var(--muted);font-size:13.5px}
 footer .cols{display:grid;grid-template-columns:2fr 1fr;gap:30px}
@@ -263,18 +479,18 @@ footer a{color:var(--text)}
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="./" aria-label="Главная">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--accent)"/><path d="M32 50V30M32 30l-10-10M32 30l10-10M32 38l-8-6M32 38l8-6" stroke="var(--bg)" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+    <a class="logo" href="/" aria-label="Главная">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--accent)"></circle><path d="M32 50V30M32 30l-10-10M32 30l10-10M32 38l-8-6M32 38l8-6" stroke="var(--bg)" stroke-width="4" stroke-linecap="round" fill="none"></path></svg>
       <span id="siteName">Истоки</span>
     </a>
     <nav>
-      <button class="pill-btn" id="langBtn" type="button" aria-label="Language">EN</button>
+      <a class="pill-btn" id="langBtn" href="/en/" hreflang="en" lang="en">EN</a>
       <button class="pill-btn" id="themeBtn" type="button" aria-label="Тема">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
       </button>
-      <a class="pill-btn ad-link" id="topAd" href="#" target="_blank" rel="noopener sponsored">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5L12 17l-6.5 4 2-7.5L2 9h7z"/></svg>
-        <span data-ad="topCta"></span>
+      <a class="pill-btn ad-link" id="topAd" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=banner&amp;utm_campaign=genealogy_search&amp;utm_content=header" target="_blank" rel="noopener sponsored">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5L12 17l-6.5 4 2-7.5L2 9h7z"></path></svg>
+        <span data-ad="topCta">Mystorytel</span>
       </a>
     </nav>
   </div>
@@ -283,111 +499,111 @@ footer a{color:var(--text)}
 <main>
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow"><b></b><span data-i18n="eyebrow"></span></span>
-      <h1 data-i18n-html="title"></h1>
-      <p class="lead" data-i18n="lead"></p>
+      <span class="eyebrow"><b></b><span data-i18n="eyebrow">Бесплатно · без регистрации</span></span>
+      <h1 data-i18n-html="title">Найдите своих предков<br>в <em>открытых архивах</em> мира</h1>
+      <p class="lead" data-i18n="lead">Бесплатный поиск предков и родственников по фамилии — сразу в родословных древах, метрических записях, архивах, старых газетах и фотоархивах. Кириллица переводится в латиницу автоматически.</p>
 
       <form class="search" id="form" autocomplete="off">
         <div class="row-main">
           <div class="field">
-            <label for="fn" data-i18n="firstName"></label>
-            <input id="fn" name="fn" data-i18n-ph="firstNamePh">
+            <label for="fn" data-i18n="firstName">Имя</label>
+            <input id="fn" name="fn" data-i18n-ph="firstNamePh" placeholder="Например, Иван">
           </div>
           <div class="field">
-            <label for="ln" data-i18n="lastName"></label>
-            <input id="ln" name="ln" data-i18n-ph="lastNamePh" required>
+            <label for="ln" data-i18n="lastName">Фамилия</label>
+            <input id="ln" name="ln" data-i18n-ph="lastNamePh" required="" placeholder="Например, Гольдберг">
           </div>
           <button class="go" type="submit">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <span data-i18n="searchBtn"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <span data-i18n="searchBtn">Найти</span>
           </button>
         </div>
 
         <div class="adv-toggle">
           <button type="button" class="link-btn" id="advBtn" aria-expanded="false" aria-controls="adv">
-            <span data-i18n="advanced"></span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+            <span data-i18n="advanced">Годы, место и латинское написание</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"></path></svg>
           </button>
         </div>
 
-        <div class="adv" id="adv" hidden>
-          <div class="field"><label for="yf" data-i18n="yearFrom"></label><input id="yf" name="yf" inputmode="numeric" maxlength="4" placeholder="1850"></div>
-          <div class="field"><label for="yt" data-i18n="yearTo"></label><input id="yt" name="yt" inputmode="numeric" maxlength="4" placeholder="1920"></div>
-          <div class="field wide"><label for="pl" data-i18n="place"></label><input id="pl" name="pl" data-i18n-ph="placePh"></div>
-          <div class="field wide"><label for="lfn" data-i18n="latFirst"></label><input id="lfn" name="lfn" placeholder="Ivan"></div>
-          <div class="field wide"><label for="lln" data-i18n="latLast"></label><input id="lln" name="lln" placeholder="Ivanov"></div>
+        <div class="adv" id="adv" hidden="">
+          <div class="field"><label for="yf" data-i18n="yearFrom">Родился с</label><input id="yf" name="yf" inputmode="numeric" maxlength="4" placeholder="1850"></div>
+          <div class="field"><label for="yt" data-i18n="yearTo">по</label><input id="yt" name="yt" inputmode="numeric" maxlength="4" placeholder="1920"></div>
+          <div class="field wide"><label for="pl" data-i18n="place">Место</label><input id="pl" name="pl" data-i18n-ph="placePh" placeholder="Город, область или страна"></div>
+          <div class="field wide"><label for="lfn" data-i18n="latFirst">Имя латиницей</label><input id="lfn" name="lfn" placeholder="Ivan"></div>
+          <div class="field wide"><label for="lln" data-i18n="latLast">Фамилия латиницей</label><input id="lln" name="lln" placeholder="Ivanov"></div>
           <div class="translit-note">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
-            <span data-i18n="translitNote"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M11 12h1v5h1"></path></svg>
+            <span data-i18n="translitNote">Американские и европейские базы ищут латиницей. Мы заполним эти поля сами — исправьте, если в документах фамилия писалась иначе.</span>
           </div>
         </div>
 
-        <div class="variants" id="variants" hidden></div>
+        <div class="variants" id="variants" hidden=""></div>
 
-        <div class="sources" id="sourceChips" role="group" aria-label="Sources"></div>
+        <div class="sources" id="sourceChips" role="group" aria-label="Sources"><button type="button" class="chip" style="--c:var(--c-wikitree)" data-src="wikitree" aria-pressed="true"><span class="dot"></span>WikiTree</button><button type="button" class="chip" style="--c:var(--c-wikidata)" data-src="wikidata" aria-pressed="true"><span class="dot"></span>Wikidata</button><button type="button" class="chip" style="--c:var(--c-openarch)" data-src="openarch" aria-pressed="true"><span class="dot"></span>Open Archives</button><button type="button" class="chip" style="--c:#4fb3c8" data-src="archive" aria-pressed="true"><span class="dot"></span>Internet Archive</button><button type="button" class="chip" style="--c:#3d7be0" data-src="nli" aria-pressed="true"><span class="dot"></span>Нац. библиотека Израиля</button><button type="button" class="chip" style="--c:#9aa3b5" data-src="wikipedia" aria-pressed="true"><span class="dot"></span>Википедия</button><button type="button" class="chip" style="--c:#53c2a0" data-src="commons" aria-pressed="true"><span class="dot"></span>Викисклад</button></div>
       </form>
 
-      <p class="examples"><span data-i18n="tryEx"></span>
+      <p class="examples"><span data-i18n="tryEx">Попробуйте:</span>
         <button type="button" data-ex="Albert|Einstein">Albert Einstein</button>,
         <button type="button" data-ex="Марк|Шагал">Марк Шагал</button>,
         <button type="button" data-ex="|Goldberg|1860|1910">Goldberg 1860–1910</button>
       </p>
 
-      <a class="promo" id="heroAd" href="#" target="_blank" rel="noopener sponsored">
-        <span class="ad-label" data-i18n="adLabel"></span>
-        <span class="mark" data-ad="initial"></span>
-        <span><h3 data-ad="title"></h3><p data-ad="text"></p></span>
-        <span class="cta" data-ad="cta"></span>
+      <a class="promo" id="heroAd" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=banner&amp;utm_campaign=genealogy_search&amp;utm_content=hero" target="_blank" rel="noopener sponsored">
+        <span class="ad-label" data-i18n="adLabel">Реклама</span>
+        <span class="mark" data-ad="initial">M</span>
+        <span><h3 data-ad="title">Нашли предков? Сохраните их историю</h3><p data-ad="text">Mystorytel — семейное древо, летопись, фото и печатная книга памяти на русском.</p></span>
+        <span class="cta" data-ad="cta">Попробовать</span>
       </a>
     </div>
   </section>
 
   <!-- Результаты -->
-  <section class="results" id="results" hidden>
+  <section class="results" id="results" hidden="">
     <div class="wrap">
       <div class="res-head">
         <h2 id="resTitle"></h2>
         <div class="res-tools">
           <select class="select" id="sort" aria-label="Sort">
-            <option value="rel" data-i18n="sortRel"></option>
-            <option value="year" data-i18n="sortYear"></option>
-            <option value="name" data-i18n="sortName"></option>
+            <option value="rel" data-i18n="sortRel">По точности</option>
+            <option value="year" data-i18n="sortYear">По году</option>
+            <option value="name" data-i18n="sortName">По имени</option>
           </select>
           <button class="pill-btn" id="shareBtn" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
-            <span data-i18n="share"></span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>
+            <span data-i18n="share">Ссылка</span>
           </button>
           <button class="pill-btn" id="csvBtn" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"></path></svg>
             CSV
           </button>
         </div>
       </div>
-      <div class="status-row" id="statusRow"></div>
+      <div class="tabs" id="statusRow" role="tablist"></div>
+      <div class="src-line" id="srcLine"></div>
 
       <div class="layout">
         <div>
           <div id="errors"></div>
-          <div id="note"></div>
-          <div class="grid" id="grid"></div>
-          <div class="more" id="moreWrap" hidden><button class="pill-btn" id="moreBtn" type="button" data-i18n="showMore"></button></div>
+          <div class="rgroups" id="grid"></div>
+          <div class="more" id="moreWrap" hidden=""><button class="pill-btn" id="moreBtn" type="button" data-i18n="showMore">Показать ещё</button></div>
         </div>
         <aside class="side">
-          <div class="panel" id="censusPanel" hidden>
-            <h4 data-i18n="censusTitle"></h4>
+          <div class="panel" id="censusPanel" hidden="">
+            <h4 data-i18n="censusTitle">Фамилия в переписи США</h4>
             <p class="sub" id="censusSub"></p>
             <div class="stat" id="censusStat"></div>
           </div>
-          <a class="side-ad" id="sideAd" href="#" target="_blank" rel="noopener sponsored">
-            <span class="ad-label" data-i18n="adLabel"></span>
-            <h4 data-ad="sideTitle"></h4>
-            <p data-ad="sideText"></p>
-            <ul id="sideAdList"></ul>
-            <span class="cta" data-ad="cta"></span>
+          <a class="side-ad" id="sideAd" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=banner&amp;utm_campaign=genealogy_search&amp;utm_content=sidebar" target="_blank" rel="noopener sponsored">
+            <span class="ad-label" data-i18n="adLabel">Реклама</span>
+            <h4 data-ad="sideTitle">Превратите находки в семейную книгу</h4>
+            <p data-ad="sideText">Соберите всё, что нашли, в одном месте — для детей и внуков.</p>
+            <ul id="sideAdList"><li>Семейное древо</li><li>Летопись и воспоминания</li><li>Фотоархив и рецепты</li><li>Печатная книга памяти</li></ul>
+            <span class="cta" data-ad="cta">Попробовать</span>
           </a>
           <div class="panel">
-            <h4 data-i18n="extTitle"></h4>
-            <p class="sub" data-i18n="extSub"></p>
+            <h4 data-i18n="extTitle">Ищите также здесь</h4>
+            <p class="sub" data-i18n="extSub">У этих баз нет открытого API — ссылка откроет их поиск (где возможно — сразу с вашим запросом).</p>
             <div class="ext" id="extLinks"></div>
           </div>
         </aside>
@@ -398,31 +614,105 @@ footer a{color:var(--text)}
   <!-- О источниках -->
   <section class="intro" id="intro">
     <div class="wrap">
-      <h2 class="section-title" data-i18n="introTitle"></h2>
-      <p class="section-sub" data-i18n="introSub"></p>
-      <div class="cards-4" id="srcCards"></div>
+      <h2 class="section-title" data-i18n="introTitle">Где мы ищем</h2>
+      <p class="section-sub" data-i18n="introSub">Только открытые и законные источники. Мы ничего не храним — запрос уходит напрямую в базы.</p>
+      <div class="cards-4" id="srcCards"><div class="src-card" style="--c:var(--c-wikitree)"><span class="tag">Общее древо</span><h4>WikiTree</h4><p>Бесплатное мировое семейное древо: более 30 млн профилей с источниками и связями.</p></div><div class="src-card" style="--c:var(--c-wikidata)"><span class="tag">Энциклопедия</span><h4>Wikidata</h4><p>Известные люди: даты, места, родители, фото. Хорошо ищет и на кириллице.</p></div><div class="src-card" style="--c:var(--c-openarch)"><span class="tag">Архивы Европы</span><h4>Open Archives</h4><p>Сотни миллионов метрических записей: рождения, браки, смерти — Нидерланды, Бельгия и др.</p></div><div class="src-card" style="--c:#4fb3c8"><span class="tag">Книги и справочники</span><h4>Internet Archive</h4><p>Оцифрованные книги, адресные книги, школьные альбомы, книги памяти (Yizkor).</p></div><div class="src-card" style="--c:#3d7be0"><span class="tag">Еврейское наследие</span><h4>Нац. библиотека Израиля</h4><p>Крупнейшее собрание еврейских документов, газет, фото и архивов (в т.ч. на идиш, иврите, русском).</p></div><div class="src-card" style="--c:#9aa3b5"><span class="tag">Статьи</span><h4>Википедия</h4><p>Статьи на русском и английском, где упоминается этот человек или фамилия.</p></div><div class="src-card" style="--c:#53c2a0"><span class="tag">Фото</span><h4>Викисклад</h4><p>Свободные фотографии и сканы: надгробия, документы, портреты.</p></div></div>
     </div>
   </section>
+
+
+<section class="guide" id="guide" aria-labelledby="guide-title">
+  <div class="wrap">
+    <h2 class="section-title" id="guide-title">Как найти своих предков: пошаговый путеводитель</h2>
+    <p class="section-sub">Поиск предков по фамилии — это не одна кнопка, а маленькое расследование. Вот проверенный порядок действий, который подходит для семей из Российской империи, СССР, Восточной Европы и для тех, чьи родные эмигрировали в США, Израиль и другие страны.</p>
+
+    <div class="guide-grid">
+      <article class="guide-card">
+        <span class="guide-num">1</span>
+        <h3>Начните с семьи и домашних документов</h3>
+        <p>Запишите всё, что помнят старшие родственники: полные имена, отчества, девичьи фамилии, годы и места рождения, переезды. Соберите свидетельства о рождении и браке, военные билеты, письма и фотографии с подписями на обороте — это ключи к архивным записям.</p>
+      </article>
+      <article class="guide-card">
+        <span class="guide-num">2</span>
+        <h3>Проверьте все варианты написания фамилии</h3>
+        <p>В документах фамилии записывали по-разному: Гольдберг — Goldberg, Holdberg, Goldburg; Иванов — Ivanov, Iwanow, Ivanoff. Наш поиск сам переводит кириллицу в латиницу и подсказывает другие написания. Имена тоже менялись: Шейндл могла стать Шейной, Sheindel или Jane.</p>
+      </article>
+      <article class="guide-card">
+        <span class="guide-num">3</span>
+        <h3>Ищите сразу в нескольких базах</h3>
+        <p>Одного человека можно найти в родословном древе, метрической записи, газетной заметке и фотоархиве. Введите фамилию и, если знаете, имя и годы — Истоки проверят WikiTree, Wikidata, Open Archives, Internet Archive, Национальную библиотеку Израиля, Gallica, газеты США, Europeana, DPLA, Википедию и Викисклад одновременно.</p>
+      </article>
+      <article class="guide-card">
+        <span class="guide-num">4</span>
+        <h3>Сохраните находки и постройте древо</h3>
+        <p>Выгрузите результаты в CSV, сохраните ссылки на источники и запишите, кто кому кем приходится. Для семейной летописи, древа и книги памяти подойдёт <a href="https://mystorytel.com" target="_blank" rel="noopener">Mystorytel</a>.</p>
+      </article>
+    </div>
+
+    <h2 class="section-title guide-h2">Где искать предков: по странам и темам</h2>
+    <div class="topics">
+      <article>
+        <h3>Предки, эмигрировавшие в США</h3>
+        <p>Списки пассажиров Эллис Айленда (1892–1924), переписи населения США 1900–1950, документы о натурализации и призыве в Национальном архиве (NARA), а также некрологи и объявления в старых американских газетах. На кладбищенских сайтах Find a Grave и BillionGraves часто есть фото надгробий с датами и именами родителей.</p>
+      </article>
+      <article>
+        <h3>Российская империя: Украина, Беларусь, Молдова, Литва, Польша</h3>
+        <p>Основные источники — метрические книги (рождения, браки, смерти), ревизские сказки и переписи 1897 года. Многие записи уже оцифрованы и проиндексированы волонтёрами JewishGen, JRI-Poland, FamilySearch и региональных архивов. Для Бессарабии и Подолии особенно полезны еврейские метрические книги и списки избирателей.</p>
+      </article>
+      <article>
+        <h3>Участники Великой Отечественной войны</h3>
+        <p>Сведения о солдатах и офицерах, наградах и местах захоронения собраны в базах «Память народа», ОБД «Мемориал» и «Подвиг народа». Ищите по фамилии, имени и году рождения — и проверяйте разные варианты написания отчества.</p>
+      </article>
+      <article>
+        <h3>Жертвы Холокоста и политических репрессий</h3>
+        <p>Центральная база имён жертв Холокоста Яд ва-Шем, Arolsen Archives (документы о перемещённых лицах и узниках лагерей) и база Музея Холокоста США. О пострадавших от репрессий в СССР — проект «Открытый список».</p>
+      </article>
+      <article>
+        <h3>Еврейская генеалогия</h3>
+        <p>Национальная библиотека Израиля хранит газеты, книги памяти общин (Yizkor), фотографии и архивы на идиш, иврите и русском. Книги памяти местечек часто содержат списки жителей и их судьбы — ищите по фамилии и названию города.</p>
+      </article>
+      <article>
+        <h3>Европа и Израиль</h3>
+        <p>Метрические записи Нидерландов, Бельгии и Франции доступны в Open Archives; газеты Франции, в том числе русская эмигрантская пресса, — в Gallica; музеи и архивы Европы — в Europeana. Израильские архивы и пресса — в Национальной библиотеке Израиля.</p>
+      </article>
+    </div>
+
+    <h2 class="section-title guide-h2" id="faq">Частые вопросы</h2>
+    <div class="faq">
+      <details><summary>Поиск предков на сайте бесплатный?</summary><p>Да, полностью бесплатный и без регистрации. Мы ищем только в открытых базах данных, а все результаты открываются на сайтах источников.</p></details>
+      <details><summary>Как найти родственников по фамилии?</summary><p>Введите фамилию (можно кириллицей) и, если знаете, имя, годы рождения и место. Истоки одновременно проверят родословные древа, архивные записи, газеты и фотоархивы. Если точных совпадений по имени нет, поиск автоматически покажет всех носителей фамилии и подскажет другие варианты её написания.</p></details>
+      <details><summary>Как найти предков, эмигрировавших в Америку?</summary><p>Ищите фамилию латиницей в разных написаниях: американские клерки записывали её на слух. Полезны списки пассажиров Эллис Айленда, переписи США 1900–1950 годов, документы о натурализации в Национальном архиве США и старые американские газеты — ссылки на эти базы появляются рядом с результатами поиска.</p></details>
+      <details><summary>Где найти метрические книги Российской империи?</summary><p>Многие метрические книги оцифрованы и проиндексированы на FamilySearch, JewishGen и JRI-Poland, а также в региональных архивах Украины, Беларуси, Молдовы, Литвы и Латвии. Ссылки на них есть в разделе «Ищите также здесь» после поиска.</p></details>
+      <details><summary>Как узнать о дедушке — участнике Великой Отечественной войны?</summary><p>Используйте базы «Память народа», ОБД «Мемориал» и «Подвиг народа»: там собраны данные о призыве, наградах, ранениях и местах захоронения. Ищите по фамилии, имени и году рождения.</p></details>
+      <details><summary>Как найти родственников, погибших в Холокост?</summary><p>Проверьте Центральную базу имён жертв Холокоста Яд ва-Шем, Arolsen Archives и базу Музея Холокоста США. Также ищите название родного местечка в книгах памяти (Yizkor) — многие из них есть в Национальной библиотеке Израиля и Internet Archive.</p></details>
+      <details><summary>Почему результаты на латинице?</summary><p>Большинство мировых архивов хранит записи латиницей. Мы автоматически переводим русскую фамилию в латиницу и ищем в оригинальном написании там, где это возможно, например в Википедии и Национальной библиотеке Израиля.</p></details>
+      <details><summary>Вы храните мои запросы и данные?</summary><p>Нет. Поиск выполняется прямо в вашем браузере, без регистрации и cookies. Мы не храним ни запросы, ни результаты.</p></details>
+      <details><summary>Как сохранить найденное и составить семейное древо?</summary><p>Выгрузите результаты в CSV или скопируйте ссылки на находки. Чтобы собрать древо, воспоминания, фотографии и напечатать книгу памяти семьи, воспользуйтесь Mystorytel.</p></details>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>
   <div class="wrap cols">
     <div>
-      <h5 data-i18n="aboutTitle"></h5>
-      <p data-i18n="aboutText"></p>
-      <p data-i18n-html="attrib"></p>
+      <h5 data-i18n="aboutTitle">О проекте</h5>
+      <p data-i18n="aboutText">Истоки — бесплатный инструмент поиска по открытым генеалогическим базам. Мы не являемся владельцами данных: все результаты принадлежат их источникам и открываются на их сайтах.</p>
+      <p data-i18n-html="attrib">Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://www.nli.org.il" target="_blank" rel="noopener">Национальная библиотека Израиля</a>, <a href="https://gallica.bnf.fr" target="_blank" rel="noopener">Gallica (BnF)</a>, <a href="https://www.europeana.eu" target="_blank" rel="noopener">Europeana</a>, <a href="https://dp.la" target="_blank" rel="noopener">DPLA</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Википедия</a> и <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Викисклад</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.</p>
     </div>
     <div>
-      <h5 data-i18n="privacyTitle"></h5>
-      <p data-i18n="privacyText"></p>
-      <p>© <span id="year"></span> <span class="siteNameFoot">Истоки</span></p>
+      <h5 data-i18n="privacyTitle">Конфиденциальность</h5>
+      <p data-i18n="privacyText">Без регистрации, без cookies и без хранения запросов. Поиск выполняется прямо в вашем браузере.</p>
+      <p>© <span id="year">2026</span> <span class="siteNameFoot">Истоки</span></p>
     </div>
   </div>
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js"></script>
+<script>window.PAGE_LANG = "ru";</script>
+<script src="/config.js"></script>
 <script>
 const CFG = window.ISTOKI_CONFIG || {};
 /* =====================================================================
@@ -459,7 +749,7 @@ const WIKITREE_APP_ID = "IstokiGenealogySearch";   // любое имя ваше
 // Адрес вашего посредника на Cloudflare Workers (файл worker.js, инструкция в README).
 // Пока пусто — газеты США работать не будут: loc.gov не принимает запросы с чужих сайтов.
 // Пример: "https://istoki-proxy.ВАШ-ЛОГИН.workers.dev"
-const PROXY_URL = CFG.PROXY_URL || "https://istoki-proxy.aligiftstip.workers.dev/";   // ← задаётся в config.js
+const PROXY_URL = CFG.PROXY_URL || "";   // ← задаётся в config.js
 
 // Национальный архив США (NARA). Нужен бесплатный ключ: письмо на Catalog_API@nara.gov.
 // Ключ кладётся НЕ сюда, а в посредник на Cloudflare (переменная NARA_KEY) — так его никто не увидит.
@@ -475,7 +765,7 @@ const I18N = {
   ru: {
     eyebrow: "Бесплатно · без регистрации",
     title: "Найдите своих предков<br>в <em>открытых архивах</em> мира",
-    lead: "Один запрос — поиск сразу в родословных древах, архивах, газетах, книгах и фотоархивах. Кириллица переводится в латиницу автоматически.",
+    lead: "Бесплатный поиск предков и родственников по фамилии — сразу в родословных древах, метрических записях, архивах, старых газетах и фотоархивах. Кириллица переводится в латиницу автоматически.",
     firstName: "Имя", firstNamePh: "Например, Иван", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
     searchBtn: "Найти", advanced: "Годы, место и латинское написание",
     yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
@@ -486,7 +776,14 @@ const I18N = {
     adLabel: "Реклама",
     results: n => `${n} ${plural(n, ["находка","находки","находок"])}`,
     resultsFor: q => `по запросу «${q}»`,
-    sortRel: "По источнику", sortYear: "По году рождения", sortName: "По имени",
+    sortRel: "По точности", sortYear: "По году", sortName: "По имени",
+    groups: { people: "Люди", records: "Документы и архивы", press: "Газеты и книги", web: "Статьи и фото" },
+    others: (n, s) => `Ещё ${n} — совпала только фамилия ${s}`,
+    showMoreN: n => `Показать ещё ${n}`,
+    onlySurname: s => `Точных совпадений по имени нет — найдены записи с фамилией ${s}:`,
+    sourcesChecked: "Источники:",
+    mention: (src, n, s) => `${src}: «${s}» встречается в тексте ${n} ${plural(n, ["издания","изданий","изданий"])}`,
+    mentionOpen: "открыть на сайте ↗",
     share: "Ссылка", showMore: "Показать ещё",
     all: "Все",
     censusTitle: "Фамилия в переписи США",
@@ -531,7 +828,7 @@ const I18N = {
   en: {
     eyebrow: "Free · no sign-up",
     title: "Find your ancestors<br>in the world's <em>open archives</em>",
-    lead: "One search across family trees, archives, newspapers, books and photo collections. Cyrillic names are transliterated automatically.",
+    lead: "Free ancestor search by surname — family trees, vital records, archives, old newspapers and photo collections in one search. Cyrillic names are transliterated automatically.",
     firstName: "First name", firstNamePh: "e.g. John", lastName: "Last name", lastNamePh: "e.g. Goldberg",
     searchBtn: "Search", advanced: "Years, place and Latin spelling",
     yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
@@ -542,7 +839,14 @@ const I18N = {
     adLabel: "Ad",
     results: n => `${n} ${n === 1 ? "result" : "results"}`,
     resultsFor: q => `for “${q}”`,
-    sortRel: "By source", sortYear: "By birth year", sortName: "By name",
+    sortRel: "Best match", sortYear: "By year", sortName: "By name",
+    groups: { people: "People", records: "Records & archives", press: "Newspapers & books", web: "Articles & photos" },
+    others: (n, s) => `${n} more — surname ${s} only`,
+    showMoreN: n => `Show ${n} more`,
+    onlySurname: s => `No exact first-name matches — records with the surname ${s}:`,
+    sourcesChecked: "Sources:",
+    mention: (src, n, s) => `${src}: “${s}” appears in the text of ${n} ${n === 1 ? "publication" : "publications"}`,
+    mentionOpen: "open on site ↗",
     share: "Link", showMore: "Show more",
     all: "All",
     censusTitle: "Surname in the U.S. Census",
@@ -608,8 +912,7 @@ const enc = encodeURIComponent;
 function plural(n, f){ const a = Math.abs(n) % 100, b = a % 10; if (a > 10 && a < 20) return f[2]; if (b > 1 && b < 5) return f[1]; if (b === 1) return f[0]; return f[2]; }
 const hasCyr = s => /[\u0400-\u04FF]/.test(s || "");
 const yearOf = v => { if (v == null) return null; const m = String(v).match(/-?\d{3,4}/); if (!m) return null; const y = parseInt(m[0], 10); return y > 0 ? y : null; };
-let lang = (navigator.language || "ru").toLowerCase().startsWith("en") ? "en" : "ru";
-try { lang = localStorage.getItem("lang") || lang; } catch(e){}
+let lang = window.PAGE_LANG === "en" ? "en" : "ru";   // язык задаётся адресом страницы: / — русский, /en/ — английский
 const t = (k, ...a) => { const v = I18N[lang][k]; return typeof v === "function" ? v(...a) : v; };
 
 function toast(msg){ const el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove("show"), 2200); }
@@ -867,27 +1170,17 @@ Object.assign(API, {
 
   /* Gallica (Национальная библиотека Франции) — SRU, ответ в XML, через посредника */
   async gallica(q){
-    const list = await settledFlat(queryTerms(q).map(async term => {
-      const u = "https://gallica.bnf.fr/SRU?version=1.2&operation=searchRetrieve&maximumRecords=40&query=" + enc(`gallica all "${term}"`);
+    // Gallica ищет по распознанному тексту газет, но возвращает целые издания (например, «La Dépêche, 1870–1944»),
+    // а не конкретный номер. Поэтому показываем только число совпадений и ссылку на поиск Gallica.
+    let total = 0;
+    for (const term of queryTerms(q)){
+      const u = "https://gallica.bnf.fr/SRU?version=1.2&operation=searchRetrieve&maximumRecords=1&query=" + enc(`gallica adj "${term}"`);
       const xml = await getText(viaProxy(u));
       const doc = new DOMParser().parseFromString(xml, "application/xml");
-      const recs = [...doc.getElementsByTagNameNS("*", "recordData")];
-      return recs.map(rd => {
-        const f = n => [...rd.getElementsByTagNameNS("*", n)].map(e => e.textContent.trim()).filter(Boolean);
-        const id = f("identifier").find(x => /gallica\.bnf\.fr\/ark:/.test(x)) || f("identifier")[0] || "";
-        const date = f("date")[0] || "";
-        return {
-          source: "gallica", kind: "book",
-          name: f("title")[0] || id,
-          eventYear: yearOf(date), eventDate: date,
-          place: f("creator").slice(0, 2).join(", ") || f("publisher")[0] || "",
-          snippet: (f("type")[0] || "") + (f("description")[0] ? " · " + f("description")[0] : ""),
-          img: id ? id.replace(/\/$/, "") + ".thumbnail" : null,
-          url: id
-        };
-      }).filter(r => r.url);
-    }));
-    return dedupe(list, r => r.url);
+      const n = doc.getElementsByTagNameNS("*", "numberOfRecords")[0];
+      total += n ? parseInt(n.textContent, 10) || 0 : 0;
+    }
+    return { mentions: total };
   },
   searchUrl_gallica: q => `https://gallica.bnf.fr/services/engine/search/sru?operation=searchRetrieve&query=${enc('(gallica all "' + fullLat(q) + '")')}`,
 
@@ -1043,7 +1336,7 @@ const EXTERNAL = q => {
 };
 
 /* ---------- состояние ---------- */
-const state = { q: null, items: [], status: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id)), runId: 0 };
+const state = { q: null, items: [], status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id)), runId: 0 };
 
 /* ---------- интерфейс ---------- */
 function applyI18n(){
@@ -1089,90 +1382,145 @@ function highlight(text){
   for (const tm of terms){ const re = new RegExp("(" + esc(tm).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi"); out = out.replace(re, "<mark>$1</mark>"); }
   return out;
 }
+const GROUP_OF = { wikitree: "people", wikidata: "people", openarch: "records", nli: "records", nara: "records", europeana: "records", dpla: "records", loc: "press", gallica: "press", archive: "press", wikipedia: "web", commons: "web" };
+const GROUP_ORDER = ["people", "records", "press", "web"];
+const PERSON_SOURCES = new Set(["wikitree", "wikidata", "openarch"]);       // ищут по полям имени — им доверяем
+const VERIFY_SOURCES = new Set(["archive", "nli", "europeana", "dpla", "commons", "wikipedia"]); // полнотекстовые — проверяем совпадение
+const norm = s => String(s || "").toLowerCase().replace(/ё/g, "е");
+
+function scoreResult(r, q){
+  const surnames = [...new Set([q.latLast, q.last, ...(q.extraSurnames || [])].filter(x => x && x.length > 1).map(norm))];
+  const firsts = [...new Set([q.latFirst, q.first].filter(x => x && x.length > 1).map(norm))];
+  const name = norm(r.name);
+  const all = norm([r.name, r.desc, r.place, r.snippet, r.event, r.archive, r.birthPlace, r.deathPlace].join(" "));
+  const inName = surnames.some(s => name.includes(s));
+  const inAny = inName || surnames.some(s => all.includes(s));
+  const firstOk = !firsts.length || firsts.some(f => all.includes(f));
+  r.score = (inName ? 50 : 0) + (inAny ? 20 : 0) + (firsts.length && firstOk ? 40 : 0) + (r.img ? 2 : 0) - (r.bySurname ? 30 : 0);
+  r.weak = !!(r.bySurname || (firsts.length && !firstOk));
+  return VERIFY_SOURCES.has(r.source) ? inAny : true;
+}
 const colorOf = id => (SOURCES.find(s => s.id === id) || {}).color;
 const line = (icon, text) => text ? `<div>${ICON[icon]}<span>${esc(text)}</span></div>` : "";
 
-function cardHTML(r, i){
-  const src = t("src")[r.source][0];
-  const kind = t("kinds")[r.kind];
-  const initials = (r.name || "?").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
-  let body = "";
+function yearsOf(r){
   if (r.kind === "person"){
-    const yrs = (r.birth || r.death) ? `${r.birth || "?"} — ${r.death || (r.birth && r.birth > new Date().getFullYear() - 110 ? "" : "?")}` : "";
-    body = `<div class="person"><div class="avatar">${r.img ? `<img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}${r.img ? "" : esc(initials)}</div>
-      <div style="min-width:0"><h3>${esc(r.name)}</h3>${yrs ? `<div class="years">${esc(yrs)}</div>` : ""}</div></div>
-      <div class="meta">${r.desc ? `<div>${ICON.doc}<span>${esc(r.desc)}</span></div>` : ""}${line("born", r.birthPlace)}${line("died", r.deathPlace)}${r.parents && r.parents.length ? line("ppl", t("parents") + ": " + r.parents.join(", ")) : ""}</div>`;
-  } else if (r.kind === "record"){
-    body = `<div class="person"><div class="avatar">${esc(initials)}</div><div style="min-width:0"><h3>${esc(r.name)}</h3>${r.eventYear ? `<div class="years">${esc(r.eventDate || r.eventYear)}</div>` : ""}</div></div>
-      <div class="meta">${line("doc", r.event)}${line("ppl", r.role ? t("role") + ": " + r.role : "")}${line("pin", r.place)}${line("arch", r.archive)}</div>`;
-  } else {
-    body = `${r.img ? `<div class="thumb"><img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>` : ""}
-      <div><h3>${esc(r.name)}</h3></div>
-      <div class="meta">${line("cal", r.eventDate)}${line(r.kind === "book" ? "ppl" : (r.kind === "nara" || r.kind === "archive") ? "arch" : "pin", r.place)}${r.kind === "archive" ? line("doc", r.event) : ""}</div>
-      ${r.snippet ? `<div class="snippet">${highlight(r.snippet)}</div>` : ""}`;
+    if (!r.birth && !r.death) return "";
+    const alive = r.birth && r.birth > new Date().getFullYear() - 110;
+    return `${r.birth || "?"}–${r.death || (alive ? "" : "?")}`;
   }
-  return `<article class="card" data-kind="${r.kind}" style="--c:${colorOf(r.source)};animation-delay:${Math.min(i % PAGE_SIZE, 12) * 30}ms">
-    <div class="card-top"><span class="badge"><i></i>${esc(src)}</span><span class="kind">${r.bySurname ? `<span class="by-surname">${esc(t("bySurname"))}</span>` : ""}${esc(kind)}</span></div>
-    ${body}
-    <div class="card-foot"><a class="open" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t("open"))} ${ICON.ext}</a>
-    <button class="copy" type="button" data-copy="${esc(r.name + (r.birth ? " (" + r.birth + (r.death ? "–" + r.death : "") + ")" : "") + " — " + r.url)}">${esc(t("copy"))}</button></div>
-  </article>`;
+  return r.eventYear ? String(r.eventYear) : "";
 }
-
-function inlineAdHTML(){
+function metaOf(r){
+  const parts = [];
+  if (r.kind === "person"){
+    if (r.desc) parts.push(r.desc);
+    const pl = [r.birthPlace, r.deathPlace].filter(Boolean);
+    if (pl.length) parts.push(pl.join(" → "));
+    if (r.parents && r.parents.length) parts.push(t("parents") + ": " + r.parents.join(", "));
+  } else {
+    if (r.kind === "record" && r.eventDate && String(r.eventDate) !== String(r.eventYear)) parts.push(r.eventDate);
+    if (r.kind === "news" && r.eventDate) parts.push(r.eventDate);
+    if (r.event) parts.push(r.event);
+    if (r.role) parts.push(t("role") + ": " + r.role);
+    if (r.place) parts.push(r.place);
+    if (r.archive) parts.push(r.archive);
+  }
+  return [...new Set(parts.map(x => String(x).trim()).filter(Boolean))].join(" · ");
+}
+function rowHTML(r){
+  const initials = (r.name || "?").replace(/[^\p{L}\s]/gu, "").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase() || "•";
+  const img = r.img ? `<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" onload="if(this.naturalWidth<48)this.remove()">` : "";
+  const yrs = yearsOf(r), meta = metaOf(r);
+  const showSnip = r.snippet && (r.kind === "news" || r.kind === "article" || r.kind === "book");
+  return `<li><a class="row" style="--c:${colorOf(r.source)}" href="${esc(r.url)}" target="_blank" rel="noopener">
+    <span class="r-thumb">${esc(initials)}${img}</span>
+    <span class="r-main">
+      <span class="r-title">${highlight(r.name || "")}${yrs ? `<span class="y">${esc(yrs)}</span>` : ""}</span>
+      ${meta ? `<span class="r-meta">${esc(meta)}</span>` : ""}
+      ${showSnip ? `<span class="r-snip">${highlight(r.snippet)}</span>` : ""}
+    </span>
+    <span class="r-side"><span>${esc(t("src")[r.source][0])}</span>${ICON.ext}</span>
+  </a></li>`;
+}
+function adRowHTML(){
   const ad = AD[lang];
   const url = AD.url + (AD.url.includes("?") ? "&" : "?") + AD.utm + "&utm_content=results";
-  return `<a class="card ad-card" href="${esc(url)}" target="_blank" rel="noopener sponsored">
-    <div class="card-top"><span class="badge"><i></i>${esc(AD.name)}</span><span class="kind">${esc(t("adLabel"))}</span></div>
-    <h3>${esc(ad.title)}</h3><div class="meta"><span>${esc(ad.text)}</span></div>
-    <div class="card-foot"><span class="open">${esc(ad.cta)} ${ICON.ext}</span></div></a>`;
+  return `<ul class="rlist"><li><a class="row ad" href="${esc(url)}" target="_blank" rel="noopener sponsored">
+    <span class="r-thumb">${esc(AD.name.charAt(0))}</span>
+    <span class="r-main"><span class="r-title">${esc(ad.title)}</span><span class="r-meta">${esc(ad.text)}</span></span>
+    <span class="r-side"><span class="k">${esc(t("adLabel"))}</span>${ICON.ext}</span>
+  </a></li></ul>`;
 }
 
-function filteredItems(){
-  let list = state.items.filter(r => state.filter === "all" || r.source === state.filter);
+function sortList(list){
   const sort = $("#sort").value;
-  if (sort === "year") list = [...list].sort((a, b) => (a.birth || a.eventYear || 9999) - (b.birth || b.eventYear || 9999));
-  if (sort === "name") list = [...list].sort((a, b) => String(a.name).localeCompare(String(b.name), lang));
-  return list;
+  const by = sort === "year" ? (a, b) => (a.birth || a.eventYear || 9999) - (b.birth || b.eventYear || 9999)
+           : sort === "name" ? (a, b) => String(a.name).localeCompare(String(b.name), lang)
+           : (a, b) => (b.score || 0) - (a.score || 0);
+  return [...list].sort(by);
+}
+function filteredItems(){
+  return sortList(state.items.filter(r => state.filter === "all" || GROUP_OF[r.source] === state.filter));
 }
 
+const GROUP_LIMIT = 8;
 function renderGrid(){
-  const list = filteredItems();
   const loading = Object.values(state.status).some(s => s.state === "loading");
   const grid = $("#grid");
   const n = state.items.length;
-  $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", [state.q.first, state.q.last].filter(Boolean).join(" ")))}</small>`;
+  const query = [state.q.first, state.q.last].filter(Boolean).join(" ");
+  $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", query))}</small>`;
 
-  if (!list.length && loading){ grid.innerHTML = Array.from({ length: 6 }, () => '<div class="skel"></div>').join(""); $("#moreWrap").hidden = true; return; }
-  if (!list.length){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`; $("#moreWrap").hidden = true; return; }
-
-  const slice = list.slice(0, state.shown);
-  let html = "";
-  slice.forEach((r, i) => { html += cardHTML(r, i); if (i === 5) html += inlineAdHTML(); });
-  if (slice.length < 6) html += inlineAdHTML();
-  if (loading) html += '<div class="skel"></div><div class="skel"></div>';
+  const groups = GROUP_ORDER.filter(g => state.filter === "all" || state.filter === g);
+  const mentions = Object.entries(state.mentions || {}).filter(([, v]) => v > 0);
+  let html = "", adPlaced = false;
+  for (const g of groups){
+    const items = sortList(state.items.filter(r => GROUP_OF[r.source] === g));
+    const strong = items.filter(r => !r.weak), weak = items.filter(r => r.weak);
+    const gMentions = mentions.filter(([id]) => GROUP_OF[id] === g);
+    if (!items.length && !gMentions.length) continue;
+    const limit = state.expanded[g] ? Infinity : GROUP_LIMIT;
+    html += `<section class="rgroup"><h3>${esc(t("groups")[g])} <span class="n">${items.length}</span></h3>`;
+    if (strong.length){
+      html += `<ul class="rlist">${strong.slice(0, limit).map(rowHTML).join("")}</ul>`;
+      if (strong.length > limit) html += `<button class="g-more" type="button" data-expand="${g}">${esc(t("showMoreN", strong.length - limit))}</button>`;
+    }
+    if (weak.length){
+      const surname = state.q.latLast || state.q.last;
+      const body = `<ul class="rlist">${weak.slice(0, 50).map(rowHTML).join("")}</ul>`;
+      html += strong.length ? `<details class="r-more"><summary>${esc(t("others", weak.length, surname))}</summary>${body}</details>`
+                            : `<p class="mention">${esc(t("onlySurname", surname))}</p>${body}`;
+    }
+    for (const [id, cnt] of gMentions){
+      html += `<p class="mention"><span>${esc(t("mention", t("src")[id][0], cnt, state.q.latLast))}</span><a href="${esc(API["searchUrl_" + id](state.q))}" target="_blank" rel="noopener">${esc(t("mentionOpen"))}</a></p>`;
+    }
+    html += `</section>`;
+    if (!adPlaced){ html += adRowHTML(); adPlaced = true; }
+  }
+  if (loading) html += `<div class="rlist">${'<div class="skel-row"></div>'.repeat(state.items.length ? 2 : 5)}</div>`;
+  if (!html){
+    html = `<div class="empty"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`;
+  }
   grid.innerHTML = html;
-  $("#moreWrap").hidden = list.length <= state.shown;
+  $("#moreWrap").hidden = true;
 }
 
 function renderStatus(){
-  const total = state.items.length;
-  let html = `<button type="button" class="status ${state.filter === "all" ? "active" : ""}" style="--c:var(--accent)" data-filter="all"><span class="dot"></span>${esc(t("all"))} <span class="n">${total}</span></button>`;
+  const count = g => state.items.filter(r => g === "all" || GROUP_OF[r.source] === g).length;
+  const tabs = ["all", ...GROUP_ORDER].filter(g => g === "all" || count(g) || Object.entries(state.mentions || {}).some(([id, v]) => v && GROUP_OF[id] === g));
+  $("#statusRow").innerHTML = tabs.map(g => `<button type="button" class="tab ${state.filter === g ? "active" : ""}" data-filter="${g}" role="tab">${esc(g === "all" ? t("all") : t("groups")[g])} <span class="n">${count(g)}</span></button>`).join("");
+  let line = `<b>${esc(t("sourcesChecked"))}</b> `;
   for (const s of SOURCES){
     const st = state.status[s.id]; if (!st) continue;
-    const cnt = state.items.filter(r => r.source === s.id).length;
-    if (st.state === "link"){
-      html += `<a class="status" style="--c:${s.color};text-decoration:none" href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener" title="${esc(t("openOnSite") + (st.reason ? " — " + (t("errReason")[st.reason] || st.reason) : ""))}"><span class="dot"></span>${esc(t("src")[s.id][0])} <span class="n">↗</span></a>`;
-      continue;
-    }
-    const inner = st.state === "loading" ? '<span class="spin"></span>' : st.state === "error" ? '<span class="n">!</span>' : `<span class="n">${cnt}</span>`;
-    html += `<button type="button" class="status ${state.filter === s.id ? "active" : ""} ${st.state === "error" ? "err" : ""}" style="--c:${s.color}" data-filter="${s.id}"><span class="dot"></span>${esc(t("src")[s.id][0])} ${inner}</button>`;
+    const name = esc(t("src")[s.id][0]);
+    const cnt = s.id === "gallica" ? (state.mentions.gallica || 0) : state.items.filter(r => r.source === s.id).length;
+    if (st.state === "loading") line += `<span class="s" style="--c:${s.color}"><i></i>${name}<span class="spin"></span></span>`;
+    else if (st.state === "link") line += `<span class="s" style="--c:${s.color}"><i></i><a href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener" title="${esc(t("openOnSite"))}">${name} ↗</a></span>`;
+    else line += `<span class="s ${cnt ? "" : "zero"}" style="--c:${s.color}"><i></i>${name} ${cnt}</span>`;
   }
-  $("#statusRow").innerHTML = html;
-  const fb = SOURCES.filter(s => state.items.some(r => r.source === s.id && r.bySurname)).map(s => t("src")[s.id][0]);
-  $("#note").innerHTML = fb.length && state.q.first ? `<div class="note">${esc(t("surnameNote", state.q.first, state.q.latLast, fb.join(", ")))}</div>` : "";
-  $("#errors").innerHTML = SOURCES.filter(s => state.status[s.id] && state.status[s.id].state === "error")
-    .map(s => `<div class="err-box">${t("errSource", t("src")[s.id][0], API["searchUrl_" + s.id](state.q))}<br><small>${esc(t("errReason")[state.status[s.id].reason] || state.status[s.id].reason)}</small></div>`).join("");
+  $("#srcLine").innerHTML = line;
+  $("#errors").innerHTML = "";
 }
 
 function renderExternal(){
@@ -1219,7 +1567,7 @@ async function runSearch(){
   const q = readQuery();
   if (!q.last){ $("#ln").focus(); toast(t("needLast")); return; }
   const run = ++state.runId;
-  Object.assign(state, { q, items: [], status: {}, filter: "all", shown: PAGE_SIZE, census: null });
+  Object.assign(state, { q, items: [], status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, census: null });
   $("#results").hidden = false; $("#intro").hidden = true;
   syncUrl(q);
   renderExternal(); renderCensus(null);
@@ -1233,13 +1581,14 @@ async function runSearch(){
   await Promise.all(active.map(async s => {
     try {
       let res = await API[s.id](q);
-      // Имя в документах часто записано иначе — если по имени и фамилии ничего нет, ищем по фамилии
-      if (!res.length && (q.first || q.latFirst)){
+      if (res && !Array.isArray(res)){ if (run === state.runId) state.mentions[s.id] = res.mentions || 0; res = []; }
+      // Имя в документах часто записано иначе: для баз с людьми и записями, если по имени ничего нет, ищем по фамилии
+      else if (!res.length && (q.first || q.latFirst) && PERSON_SOURCES.has(s.id)){
         res = await API[s.id]({ ...q, first: "", latFirst: "" });
         res.forEach(r => r.bySurname = true);
       }
       if (run !== state.runId) return;
-      state.items.push(...res.filter(r => keep(r, q)));
+      state.items.push(...res.filter(r => keep(r, q) && scoreResult(r, q)));
       state.status[s.id] = { state: "done" };
     } catch(e){
       if (run !== state.runId) return;
@@ -1249,9 +1598,6 @@ async function runSearch(){
       if (/HTTP 403/.test(e.message)) reason = "403";
       state.status[s.id] = { state: "link", reason };
     }
-    // сохраняем порядок источников
-    const order = SOURCES.map(x => x.id);
-    state.items.sort((a, b) => order.indexOf(a.source) - order.indexOf(b.source));
     renderStatus(); renderGrid();
   }));
 }
@@ -1302,8 +1648,8 @@ $("#statusRow").addEventListener("click", e => { const b = e.target.closest("[da
 $("#sort").addEventListener("change", renderGrid);
 $("#moreBtn").addEventListener("click", () => { state.shown += PAGE_SIZE; renderGrid(); });
 $("#grid").addEventListener("click", e => {
-  const b = e.target.closest("[data-copy]"); if (!b) return;
-  navigator.clipboard && navigator.clipboard.writeText(b.dataset.copy).then(() => { b.textContent = t("copied"); setTimeout(() => b.textContent = t("copy"), 1500); });
+  const b = e.target.closest("[data-expand]"); if (!b) return;
+  state.expanded[b.dataset.expand] = true; renderGrid();
 });
 $("#shareBtn").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(location.href).then(() => toast(t("linkCopied"))); });
 $("#csvBtn").addEventListener("click", toCSV);
@@ -1314,7 +1660,7 @@ document.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", 
   if (yf){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
   updateVariants(); runSearch();
 }));
-$("#langBtn").addEventListener("click", () => { lang = lang === "ru" ? "en" : "ru"; try { localStorage.setItem("lang", lang); } catch(e){} applyI18n(); });
+$("#langBtn").addEventListener("click", e => { e.preventDefault(); location.href = (lang === "ru" ? "/en/" : "/") + location.search; });
 $("#themeBtn").addEventListener("click", () => {
   const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
   const next = cur === "light" ? "dark" : "light";
@@ -1335,5 +1681,6 @@ applyI18n();
   updateVariants(); runSearch();
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
