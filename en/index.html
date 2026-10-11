@@ -398,6 +398,22 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .r-crit .c.no{color:#d0534f;border-color:color-mix(in srgb,#d0534f 35%,transparent);background:color-mix(in srgb,#d0534f 7%,transparent)}
 .pct{font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;color:#fff;font-variant-numeric:tabular-nums}
 .pct.high{background:#2f9e6a}.pct.medium{background:#c9962b}.pct.low{background:#9aa0b8}
+.verdict,.prov{font-size:12px;font-weight:600}
+.verdict.ok{color:#2f9e6a}.verdict.part{color:#b8860b}.verdict.na{color:var(--faint)}.verdict.no{color:#d0534f}
+.prov{color:var(--faint);font-weight:500}.prov.ok{color:#2f7fb0}
+.prov{flex-basis:100%}
+.prov::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--faint);margin-right:7px;vertical-align:1px}
+.prov.ok::before{background:#2f7fb0}
+.r-why{padding:0 16px 8px 74px;margin-top:-6px}
+.r-why summary{cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:var(--accent);display:inline-block}
+.r-why summary::-webkit-details-marker{display:none}
+.r-why summary::after{content:" ▸"}
+.r-why[open] summary::after{content:" ▾"}
+.r-why ul{list-style:none;margin:6px 0 4px;padding:10px 12px;border-radius:10px;background:var(--bg-2);border:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+.r-why li{font-size:12.5px;color:var(--muted);display:flex;gap:8px;align-items:baseline}
+.r-why li b{flex:0 0 14px;text-align:center;font-weight:800}
+.r-why li.ok b{color:#2f9e6a}.r-why li.part b{color:#b8860b}.r-why li.no b{color:#d0534f}.r-why li.na b{color:var(--faint)}
+.r-why li a{color:var(--text);font-weight:700}
 .r-also{font-size:12px;color:var(--faint);padding:0 16px 10px 74px;margin-top:-4px}
 .r-also a{color:var(--muted);font-weight:700}
 .hint{font-size:13.5px;color:var(--muted);background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:var(--radius-sm);padding:9px 13px;margin:0}
@@ -412,7 +428,7 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .cov li.fail span{color:#d0534f}.cov li.nc,.cov li.off{opacity:.6}
 .cov li a{color:inherit;font-weight:700}
 .cov-ext{font-size:12px;color:var(--faint);margin:8px 2px 0}
-@media (max-width:640px){.cov ul{grid-template-columns:1fr}.r-also{padding-left:61px}.r-side{flex-direction:row;align-items:center;gap:8px}}
+@media (max-width:640px){.cov ul{grid-template-columns:1fr}.r-also,.r-why{padding-left:61px}.r-side{flex-direction:row;align-items:center;gap:8px}}
 .r-side svg{width:15px;height:15px;color:var(--faint)}
 .row:hover .r-side svg{color:var(--text)}
 .r-more{margin-top:8px}
@@ -803,6 +819,48 @@ const I18N = {
     results: n => `${n} ${plural(n, ["находка","находки","находок"])}`,
     resultsFor: q => `по запросу «${q}»`,
     sortRel: "По точности",
+    whyTitle: "Почему найдено",
+    openRecord: "открыть запись",
+    why: {
+      surname: s => `Совпадение фамилии: ${s}`,
+      surnameVariant: s => `Фамилия в другом написании: ${s}`,
+      surnameInText: s => `Фамилия ${s} упомянута в описании, а не в имени`,
+      surnameNone: "Фамилия в записи не найдена",
+      first: s => `Имя совпадает: ${s}`,
+      firstVariant: s => `Имя совпадает в другой форме: ${s}`,
+      firstInitial: s => `Имя совпадает только по инициалу: ${s}`,
+      firstInText: s => `Имя ${s} упомянуто в описании, а не в имени`,
+      firstOther: s => `Другое имя в записи: ${s}`,
+      firstNone: "Имени в записи нет",
+      birthIn: (y, r) => `Год рождения ${y} — в заданном диапазоне ${r}`,
+      birthNear: (y, r) => `Год рождения ${y} — близко к диапазону ${r} (±5 лет)`,
+      birthOut: (y, r) => `Год рождения ${y} — вне диапазона ${r}`,
+      eventFits: y => `Дата записи ${y} согласуется с годами жизни`,
+      eventOut: (y, r) => `Дата записи ${y} не согласуется с годами рождения ${r}`,
+      yearsNone: "Дат в записи нет — проверить по годам нельзя",
+      pubYear: y => `Год издания ${y} — по нему нельзя проверить годы жизни`,
+      pubYearFits: y => `Год издания ${y} в пределах жизни искомого человека`,
+      photoYear: y => `Дата снимка ${y} — по ней нельзя проверить годы жизни`,
+      photoYearFits: y => `Дата снимка ${y} в пределах жизни искомого человека`,
+      place: s => `Место совпадает: ${s}`,
+      placeOther: s => `Другое место в записи: ${s}`,
+      placeNone: "Места в записи нет",
+      vStrong: (m, a) => `Совпадают ${m} из ${a} признаков`,
+      vPartial: (m, a) => `Частичное совпадение: ${m} из ${a} признаков`,
+      vUnconfirmed: "Личность не подтверждена",
+      vSurnameOnly: "Личность не подтверждена — совпадает только фамилия",
+      vContradiction: "Скорее другой человек — данные расходятся"
+    },
+    prov: {
+      primary: { civil: "Первичный источник доступен — запись актов гражданского состояния", archive: "Первичный источник доступен — архивный документ", news: "Первичный источник — газета того времени" },
+      primaryVia: s => `Первичный источник доступен в базе ${s}`,
+      tree: "Вторичный источник — древо, составленное пользователями; проверьте источники в профиле",
+      reference: "Справочный источник (энциклопедия) — не первичный документ",
+      publication: "Публикация — вторичный источник",
+      imageArchive: "Изображение из архива или музея",
+      imageCommons: "Изображение из свободной медиатеки",
+      searchOnly: "Только ссылка на поиск — конкретная запись не указана"
+    },
     cats: { docs: "Архивные документы", trees: "Семейные древа", bios: "Биографии", pubs: "Исторические публикации", images: "Изображения" },
     crit: { surname: "фамилия", first: "имя", years: "годы", place: "место" },
     critHelp: { ok: "совпадает", part: "частично совпадает", na: "в записи нет данных", no: "не совпадает" },
@@ -887,6 +945,48 @@ const I18N = {
     results: n => `${n} ${n === 1 ? "result" : "results"}`,
     resultsFor: q => `for “${q}”`,
     sortRel: "Best match",
+    whyTitle: "Why this result",
+    openRecord: "open record",
+    why: {
+      surname: s => `Surname match: ${s}`,
+      surnameVariant: s => `Surname in a different spelling: ${s}`,
+      surnameInText: s => `Surname ${s} appears in the description, not the name`,
+      surnameNone: "Surname not found in the record",
+      first: s => `First name matches: ${s}`,
+      firstVariant: s => `First name matches in another form: ${s}`,
+      firstInitial: s => `First name matches by initial only: ${s}`,
+      firstInText: s => `First name ${s} appears in the description, not the name`,
+      firstOther: s => `Different first name in the record: ${s}`,
+      firstNone: "No first name in the record",
+      birthIn: (y, r) => `Born ${y} — within the range ${r}`,
+      birthNear: (y, r) => `Born ${y} — close to the range ${r} (±5 years)`,
+      birthOut: (y, r) => `Born ${y} — outside the range ${r}`,
+      eventFits: y => `Record date ${y} fits the lifespan`,
+      eventOut: (y, r) => `Record date ${y} doesn't fit birth years ${r}`,
+      yearsNone: "No dates in the record — can't check years",
+      pubYear: y => `Published ${y} — can't be used to check the lifespan`,
+      pubYearFits: y => `Published ${y}, within the person's lifetime`,
+      photoYear: y => `Photo dated ${y} — can't be used to check the lifespan`,
+      photoYearFits: y => `Photo dated ${y}, within the person's lifetime`,
+      place: s => `Place matches: ${s}`,
+      placeOther: s => `Different place in the record: ${s}`,
+      placeNone: "No place in the record",
+      vStrong: (m, a) => `${m} of ${a} details match`,
+      vPartial: (m, a) => `Partial match: ${m} of ${a} details`,
+      vUnconfirmed: "Identity not confirmed",
+      vSurnameOnly: "Identity not confirmed — surname match only",
+      vContradiction: "Likely a different person — details conflict"
+    },
+    prov: {
+      primary: { civil: "Primary source available — civil registration record", archive: "Primary source available — archival document", news: "Primary source — contemporary newspaper" },
+      primaryVia: s => `Primary source available in ${s}`,
+      tree: "Secondary source — user-compiled family tree; check the sources cited in the profile",
+      reference: "Reference source (encyclopedia) — not a primary document",
+      publication: "Publication — secondary source",
+      imageArchive: "Image from an archive or museum",
+      imageCommons: "Image from a free media library",
+      searchOnly: "Search link only — no specific record"
+    },
     cats: { docs: "Archival records", trees: "Family trees", bios: "Biographies", pubs: "Historical publications", images: "Images" },
     crit: { surname: "surname", first: "first name", years: "years", place: "place" },
     critHelp: { ok: "matches", part: "partial match", na: "no data in record", no: "does not match" },
@@ -1209,7 +1309,7 @@ Object.assign(API, {
         cat: /^(image|movies)$/.test(d.mediatype) ? "images" : "pubs",
         name: Array.isArray(d.title) ? d.title[0] : (d.title || d.identifier),
         eventYear: yearOf(d.year || d.date), eventDate: d.year || (d.date ? String(d.date).slice(0, 10) : ""),
-        place: Array.isArray(d.creator) ? d.creator.slice(0, 2).join(", ") : d.creator,
+        creator: Array.isArray(d.creator) ? d.creator.slice(0, 2).join(", ") : d.creator,
         snippet: stripTags(Array.isArray(d.description) ? d.description[0] : d.description).slice(0, 300),
         img: `https://archive.org/services/img/${enc(d.identifier)}`,
         url: `https://archive.org/details/${enc(d.identifier)}`
@@ -1239,7 +1339,7 @@ Object.assign(API, {
           source: "nli", kind: "archive", cat, ref: id,
           name: stripTags(v(disp.title) || id),
           eventYear: yearOf(date), eventDate: date,
-          place: stripTags(v(disp.creator) || v(disp.contributor) || ""),
+          creator: stripTags(v(disp.creator) || v(disp.contributor) || ""),
           event: v(disp.type) ? String(v(disp.type)).replace(/_/g, " ") : "",
           url: id ? `https://www.nli.org.il/en/${seg}/${enc(id)}/NLI` : `https://www.nli.org.il/en/search?projectName=NLI&query=any,contains,${enc(term)}`
         };
@@ -1274,7 +1374,7 @@ Object.assign(API, {
         source: "europeana", kind: "archive", ref: it.id, cat: it.type === "IMAGE" ? "images" : "docs",
         name: stripTags(a(it.title) || a(it.dcTitleLangAware && Object.values(it.dcTitleLangAware)[0]) || it.id),
         eventYear: yearOf(a(it.year)), eventDate: a(it.year) || "",
-        place: [a(it.dataProvider), a(it.country)].filter(Boolean).join(" · "),
+        archive: [a(it.dataProvider), a(it.country)].filter(Boolean).join(" · "),
         event: it.type ? String(it.type).toLowerCase() : "",
         snippet: stripTags(a(it.dcDescription) || "").slice(0, 300),
         img: a(it.edmPreview) || null,
@@ -1297,7 +1397,7 @@ Object.assign(API, {
         source: "dpla", kind: "archive", ref: d.id, cat: /image/.test(types) ? "images" : "docs",
         name: stripTags(a(sr.title) || d.id),
         eventYear: yearOf(date), eventDate: date,
-        place: [(d.dataProvider && (d.dataProvider.name || d.dataProvider)) || "", (a(sr.spatial) || {}).name || ""].filter(Boolean).join(" · "),
+        archive: (d.dataProvider && (d.dataProvider.name || d.dataProvider)) || "", place: (a(sr.spatial) || {}).name || "",
         snippet: stripTags(a(sr.description) || "").slice(0, 300),
         img: d.object || null,
         url: d.isShownAt || `https://dp.la/item/${d.id}`
@@ -1484,60 +1584,123 @@ function tokMatch(tok, pat){
   return 0;
 }
 function bestMatch(toks, pats){ let b = 0; for (const t of toks) for (const p of pats) b = Math.max(b, tokMatch(t, p)); return b; }
+// то же, но возвращает и найденное слово — чтобы показать пользователю, ЧТО совпало
+function bestHit(toks, pats){ let b = { v: 0, tok: "" }; for (const t of toks) for (const p of pats){ const v = tokMatch(t, p); if (v > b.v) b = { v, tok: t, pat: p }; } return b; }
+const capW = s => String(s || "").replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + c.toUpperCase());
 
-// Оценка: насколько запись соответствует искомому человеку (фамилия, имя, годы, место), а не просто содержит имя
+// Оценка: насколько запись соответствует искомому человеку (фамилия, имя, годы, место) + объяснение «почему найдено»
 function assess(r, q){
   const surn = [...new Set([q.latLast, q.last, ...variants(q.latLast)].flatMap(tokens).filter(x => x.length > 1))];
+  const exactSurn = new Set([q.latLast, q.last].flatMap(tokens));
   const firsts = [...new Set([q.latFirst, q.first].flatMap(tokens).filter(x => x.length > 1))];
   // сравниваем и оригинал, и транслитерацию: «Гольдберг» в записи = «Goldberg» в запросе
   const withLat = s => s + " " + translit(s);
-  const nameT = tokens(withLat(String(r.name || "")));
-  const otherT = tokens(withLat([r.desc, r.place, r.snippet, r.event, r.archive, r.birthPlace, r.deathPlace].filter(Boolean).join(" ")));
-  const crit = [];
+  const nameRaw = String(r.name || "");
+  const nameT = tokens(withLat(nameRaw));
+  const otherT = tokens(withLat([r.desc, r.place, r.creator, r.snippet, r.event, r.archive, r.birthPlace, r.deathPlace].filter(Boolean).join(" ")));
+  const W = t("why");
+  const crit = [], why = [];
 
   // фамилия
-  const sIn = bestMatch(nameT, surn), sOther = bestMatch(otherT, surn);
-  const sVal = sIn ? sIn : sOther ? 0.5 : 0;
+  const sName = bestHit(nameT, surn), sOther = bestHit(otherT, surn);
+  let sVal = 0;
+  if (sName.v){
+    sVal = sName.v;
+    const variantOnly = !exactSurn.has(sName.pat);
+    why.push({ s: sName.v === 1 && !variantOnly ? "ok" : "part",
+               text: sName.v === 1 && !variantOnly ? W.surname(capW(sName.tok)) : W.surnameVariant(capW(sName.tok)) });
+  } else if (sOther.v){
+    sVal = 0.5; why.push({ s: "part", text: W.surnameInText(capW(sOther.tok)) });
+  } else why.push({ s: "no", text: W.surnameNone });
   crit.push({ k: "surname", v: sVal, w: 40 });
 
-  // имя — только для записей о людях; для публикаций имя в названии бывает редко
+  // имя
+  let firstState = null;
   if (firsts.length){
     const peopleLike = r.kind === "person" || r.kind === "record";
-    const fIn = Math.max(bestMatch(nameT, firsts), nameT.some(t => t.length === 1 && firsts.some(f => f[0] === t)) ? 0.6 : 0);
-    const fOther = bestMatch(otherT, firsts);
-    const otherNames = nameT.filter(t => !surn.some(s => tokMatch(t, s)) && t.length > 1);
-    let v = fIn || (fOther ? 0.6 : 0);
-    if (!v && !(peopleLike && otherNames.length)) v = 0.4;          // имени в записи нет — неизвестно
+    const fHit = bestHit(nameT, firsts);
+    const initial = nameT.find(tk => tk.length === 1 && firsts.some(f => f[0] === tk));
+    const fOther = bestHit(otherT, firsts);
+    const otherNames = tokens(nameRaw).filter(tk => !surn.some(s => tokMatch(tk, s)) && tk.length > 1);
+    let v;
+    if (fHit.v === 1){ v = 1; why.push({ s: "ok", text: W.first(capW(fHit.tok)) }); firstState = "ok"; }
+    else if (fHit.v){ v = 0.85; why.push({ s: "ok", text: W.firstVariant(capW(fHit.tok)) }); firstState = "ok"; }
+    else if (initial){ v = 0.6; why.push({ s: "part", text: W.firstInitial(initial.toUpperCase() + ".") }); firstState = "part"; }
+    else if (fOther.v){ v = 0.6; why.push({ s: "part", text: W.firstInText(capW(fOther.tok)) }); firstState = "part"; }
+    else if (peopleLike && otherNames.length){ v = 0; why.push({ s: "no", text: W.firstOther(capW(otherNames.slice(0, 2).join(" "))) }); firstState = "no"; }
+    else { v = 0.4; why.push({ s: "na", text: W.firstNone }); firstState = "na"; }
     crit.push({ k: "first", v, w: 30 });
   }
 
   // годы
+  let yearsState = null;
   if (q.yf || q.yt){
     const from = q.yf || q.yt, to = q.yt || q.yf;
-    let v = 0.4;                                                     // нет данных
+    const range = from === to ? String(from) : `${from}–${to}`;
+    let v = 0.4;
     if (r.kind === "person" && r.birth){
-      v = r.birth >= from && r.birth <= to ? 1 : (r.birth >= from - 5 && r.birth <= to + 5) ? 0.6 : 0;
+      if (r.birth >= from && r.birth <= to){ v = 1; why.push({ s: "ok", text: W.birthIn(r.birth, range) }); }
+      else if (r.birth >= from - 5 && r.birth <= to + 5){ v = 0.6; why.push({ s: "part", text: W.birthNear(r.birth, range) }); }
+      else { v = 0; why.push({ s: "no", text: W.birthOut(r.birth, range) }); }
+    } else if (r.eventYear && !(r.kind === "record" || r.kind === "nara" || r.cat === "docs")){
+      // год издания книги или снимка не обязан совпадать с годами жизни — это не противоречие
+      const img = r.cat === "images";
+      if (r.eventYear >= from - 2 && r.eventYear <= to + 100){ v = 0.6; why.push({ s: "part", text: (img ? W.photoYearFits : W.pubYearFits)(r.eventYear) }); }
+      else { v = 0.4; why.push({ s: "na", text: (img ? W.photoYear : W.pubYear)(r.eventYear) }); }
     } else if (r.eventYear){
-      v = r.eventYear >= from - 2 && r.eventYear <= to + 100 ? 0.8 : 0; // событие должно быть в пределах жизни
-    }
+      if (r.eventYear >= from - 2 && r.eventYear <= to + 100){ v = 0.8; why.push({ s: "ok", text: W.eventFits(r.eventYear) }); }
+      else { v = 0; why.push({ s: "no", text: W.eventOut(r.eventYear, range) }); }
+    } else why.push({ s: "na", text: W.yearsNone });
+    yearsState = v >= 0.8 ? "ok" : v === 0.4 ? "na" : v > 0 ? "part" : "no";
     crit.push({ k: "years", v, w: 20 });
   }
 
   // место
+  let placeState = null;
   if (q.place){
     const pl = [...new Set([q.place, q.placeLat].flatMap(tokens).filter(x => x.length > 3))];
-    const itemPl = tokens(withLat([r.name, r.birthPlace, r.deathPlace, r.place, r.desc, r.snippet].filter(Boolean).join(" ")));
-    const v = !itemPl.length ? 0.4 : bestMatch(itemPl, pl) ? 1 : 0.15;
+    const placeText = [r.birthPlace, r.deathPlace, r.place].filter(Boolean).join(", ");
+    const itemPl = tokens(withLat([r.name, placeText, r.desc, r.snippet].filter(Boolean).join(" ")));
+    const hit = bestHit(itemPl, pl);
+    let v;
+    if (hit.v){ v = 1; why.push({ s: "ok", text: W.place(capW(hit.tok)) }); }
+    else if (placeText){ v = 0.15; why.push({ s: "no", text: W.placeOther(placeText.slice(0, 60)) }); }
+    else { v = 0.4; why.push({ s: "na", text: W.placeNone }); }
+    placeState = v === 1 ? "ok" : v === 0.4 ? "na" : "no";
     crit.push({ k: "place", v, w: 10 });
   }
 
   const wsum = crit.reduce((a, c) => a + c.w, 0);
   let pct = Math.round(100 * crit.reduce((a, c) => a + c.v * c.w, 0) / wsum);
   if (isSearchUrl(r.url)) pct = Math.min(pct, 40);
-  r.crit = crit; r.pct = pct;
+  r.crit = crit; r.why = why; r.pct = pct;
   r.level = pct >= 80 ? "high" : pct >= 55 ? "medium" : "low";
   r.score = pct + (r.img ? 1 : 0);
-  return VERIFY_SOURCES.has(r.source) ? (sIn > 0 || sOther > 0) : true;
+
+  // вывод о личности — осторожно: подтвердить личность может только первоисточник
+  const asked = 1 + (firsts.length ? 1 : 0) + (yearsState !== null ? 1 : 0) + (placeState !== null ? 1 : 0);
+  const matched = (sVal >= 0.85 ? 1 : 0) + (firstState === "ok" ? 1 : 0) + (yearsState === "ok" ? 1 : 0) + (placeState === "ok" ? 1 : 0);
+  const contradicts = firstState === "no" || yearsState === "no";
+  if (contradicts) r.verdict = { cls: "no", text: W.vContradiction };
+  else if (asked === 1) r.verdict = { cls: "na", text: W.vSurnameOnly };
+  else if (matched >= 3 || (matched === asked && asked >= 2)) r.verdict = { cls: "ok", text: W.vStrong(matched, asked) };
+  else if (matched >= 2) r.verdict = { cls: "part", text: W.vPartial(matched, asked) };
+  else r.verdict = { cls: "na", text: W.vUnconfirmed };
+
+  return VERIFY_SOURCES.has(r.source) ? (sName.v > 0 || sOther.v > 0) : true;
+}
+
+// Тип источника: первичный (архивная запись, газета того времени) или вторичный (древо, энциклопедия, книга)
+const PRIMARY = { openarch: "civil", nara: "archive", loc: "news" };
+function provenanceOf(r){
+  const P = t("prov");
+  if (isSearchUrl(r.url)) return { cls: "na", text: P.searchOnly };
+  if (PRIMARY[r.source]) return { cls: "ok", text: P.primary[PRIMARY[r.source]] };
+  if ((r.source === "nli" || r.source === "europeana" || r.source === "dpla") && r.cat === "docs") return { cls: "ok", text: P.primary.archive };
+  if (r.cat === "images") return { cls: "part", text: r.source === "commons" ? P.imageCommons : P.imageArchive };
+  if (r.source === "wikitree") return { cls: "part", text: P.tree };
+  if (r.source === "wikidata" || r.source === "wikipedia") return { cls: "part", text: P.reference };
+  return { cls: "part", text: P.publication };
 }
 
 // Объединение дубликатов: прямые связи (Wikidata → WikiTree, Википедия) и совпадение имени/названия и года
@@ -1569,9 +1732,14 @@ function mergeDuplicates(list){
     for (const o of g.slice(1)){
       for (const f of ["birth", "death", "birthPlace", "deathPlace", "img", "desc", "eventYear", "eventDate", "place"]) if (!m[f] && o[f]) m[f] = o[f];
       if (normUrl(o.url) !== normUrl(m.url)) m.also.push({ source: o.source, url: o.url, ref: o.ref });
-      if (o.pct > m.pct){ m.pct = o.pct; m.crit = o.crit; m.level = o.level; m.score = o.score; }
+      if (o.pct > m.pct){ m.pct = o.pct; m.crit = o.crit; m.why = o.why; m.verdict = o.verdict; m.level = o.level; m.score = o.score; }
     }
     m.dupes = g.length - 1;
+    m.prov = provenanceOf(m);
+    if (m.prov.cls !== "ok"){
+      const prim = g.find(o => provenanceOf(o).cls === "ok");
+      if (prim) m.prov = { cls: "ok", text: t("prov").primaryVia(t("src")[prim.source][0]), url: prim.url };
+    }
     out.push(m);
   }
   return out;
@@ -1603,6 +1771,7 @@ function metaOf(r){
     if (r.kind === "news" && r.eventDate) parts.push(r.eventDate);
     if (r.event) parts.push(r.event);
     if (r.role) parts.push(t("role") + ": " + r.role);
+    if (r.creator) parts.push(r.creator);
     if (r.place) parts.push(r.place);
     if (r.archive) parts.push(r.archive);
   }
@@ -1630,10 +1799,15 @@ function rowHTML(r){
         <span class="r-title">${highlight(r.name || "")}${yrs ? `<span class="y">${esc(yrs)}</span>` : ""}</span>
         ${meta ? `<span class="r-meta">${esc(meta)}</span>` : ""}
         ${showSnip ? `<span class="r-snip">${highlight(r.snippet)}</span>` : ""}
-        <span class="r-crit"><span class="pct ${r.level}" title="${esc(t("levels")[r.level])}">${r.pct}%</span>${critHTML(r)}</span>
+        <span class="r-crit"><span class="pct ${r.level}" title="${esc(t("levels")[r.level])}">${r.pct}%</span><span class="verdict ${r.verdict.cls}">${esc(r.verdict.text)}</span><span class="prov ${r.prov.cls}">${esc(r.prov.text)}</span></span>
       </span>
       <span class="r-side"><span class="r-src">${esc(srcName)}</span>${r.ref ? `<span class="r-ref" title="${esc(t("recordId"))}">${esc(String(r.ref).slice(0, 34))}</span>` : ""}${searchLink ? `<span class="r-ref warn">${esc(t("searchLinkLabel"))}</span>` : ""}${ICON.ext}</span>
     </a>
+    <details class="r-why"><summary>${esc(t("whyTitle"))}</summary><ul>
+      ${(r.why || []).map(w => `<li class="${w.s}"><b>${{ ok: "✓", part: "≈", na: "?", no: "✗" }[w.s]}</b>${esc(w.text)}</li>`).join("")}
+      <li class="${r.prov.cls === "ok" ? "ok" : "na"}"><b>${r.prov.cls === "ok" ? "✓" : "i"}</b>${esc(r.prov.text)}${r.prov.url ? ` — <a href="${esc(r.prov.url)}" target="_blank" rel="noopener">${esc(t("openRecord"))}</a>` : ""}</li>
+      ${r.ref ? `<li class="na"><b>#</b>${esc(t("recordId"))}: ${esc(r.ref)}</li>` : ""}
+    </ul></details>
     ${also ? `<div class="r-also">${esc(t("alsoIn"))} ${also}</div>` : ""}
   </li>`;
 }
@@ -1841,8 +2015,8 @@ function updateVariants(){
 }
 
 function toCSV(){
-  const rows = [["match_%","category","source","record_id","name","birth","death","birth_place","death_place","event","date","place","archive","url","also_found_in"]];
-  for (const r of filteredItems()) rows.push([r.pct, t("cats")[r.cat], t("src")[r.source][0], r.ref, r.name, r.birth, r.death, r.birthPlace, r.deathPlace, r.event, r.eventDate, r.place, r.archive, r.url, (r.also || []).map(a => t("src")[a.source][0] + " " + a.url).join(" | ")]);
+  const rows = [["match_%","category","source","record_id","name","birth","death","birth_place","death_place","event","date","place","archive","url","also_found_in","verdict","source_type","why"]];
+  for (const r of filteredItems()) rows.push([r.pct, t("cats")[r.cat], t("src")[r.source][0], r.ref, r.name, r.birth, r.death, r.birthPlace, r.deathPlace, r.event, r.eventDate, r.place, r.archive, r.url, (r.also || []).map(a => t("src")[a.source][0] + " " + a.url).join(" | "), r.verdict && r.verdict.text, r.prov && r.prov.text, (r.why || []).map(w => w.text).join("; ")]);
   const csv = "\ufeff" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
