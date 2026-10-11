@@ -838,6 +838,7 @@ const I18N = {
       surnameNone: "Фамилия в записи не найдена",
       first: s => `Имя совпадает: ${s}`,
       firstVariant: s => `Имя совпадает в другой форме: ${s}`,
+      firstForm: (s, q) => `Имя ${s} — другая форма имени ${q}`,
       firstInitial: s => `Имя совпадает только по инициалу: ${s}`,
       firstInText: s => `Имя ${s} упомянуто в описании, а не в имени`,
       firstOther: s => `Другое имя в записи: ${s}`,
@@ -969,6 +970,7 @@ const I18N = {
       surnameNone: "Surname not found in the record",
       first: s => `First name matches: ${s}`,
       firstVariant: s => `First name matches in another form: ${s}`,
+      firstForm: (s, q) => `${s} is another form of the name ${q}`,
       firstInitial: s => `First name matches by initial only: ${s}`,
       firstInText: s => `First name ${s} appears in the description, not the name`,
       firstOther: s => `Different first name in the record: ${s}`,
@@ -1601,6 +1603,42 @@ function tokMatch(tok, pat){
 function bestMatch(toks, pats){ let b = 0; for (const t of toks) for (const p of pats) b = Math.max(b, tokMatch(t, p)); return b; }
 // то же, но возвращает и найденное слово — чтобы показать пользователю, ЧТО совпало
 function bestHit(toks, pats){ let b = { v: 0, tok: "" }; for (const t of toks) for (const p of pats){ const v = tokMatch(t, p); if (v > b.v) b = { v, tok: t, pat: p }; } return b; }
+// Формы одного имени: русские, еврейские (идиш/иврит), европейские. Arik = Arie = Aryeh = Leib = Лев…
+const NAME_GROUPS = [
+  "arik arie arieh aryeh arye ari leib leyb lejb lev leo leon lyova lova лев лейб арье арик",
+  "moisei moisey moishe moshe moses movsha moise mojzesz моисей мойше моше мовша",
+  "isaak isaac itzhak yitzhak itzik itsik izak isak icek ицхак исаак ицик изя",
+  "abram avraham abraham avrum abrasha avrom аврам абрам авраам",
+  "aron aaron aharon arn арон аарон",
+  "yakov jacob jakob yankel yaakov jacques jakub iakov яков янкель",
+  "iosif josef joseph yosef yossel jozef осип иосиф йосеф",
+  "mikhail michael mikhel michal михаил михель",
+  "grigory grigori hirsh hersh gersh hirsch tsvi zvi grisha григорий гирш герш цви",
+  "boris ber berl dov baer berko борис бер дов",
+  "solomon shlomo zalman salomon соломон шломо залман",
+  "samuel shmuel semyon semen shmil szmul самуил шмуэль семен шмиль",
+  "naum nachum nahum naim наум нахум",
+  "ruvim reuven ruben robert рувим реувен",
+  "david dovid dawid давид довид",
+  "zakhar zecharia zachariah захар",
+  "efim chaim haim khaim hyman ефим хаим",
+  "sara sarah sura sore sura сара сура",
+  "rivka rebecca riva rebeka rywka ривка ревекка рива",
+  "khaya chaya haya ida ita хая ида",
+  "ester esther etya etel эстер эсфирь этя",
+  "leya leah lea leja лея лия",
+  "feiga feige fanny fanya фейга фаня",
+  "basya batya bashe bertha бася батья",
+  "dvora deborah dora dvoira двойра дебора дора",
+  "malka malke manya маля малка",
+  "golda golde голда",
+  "rachel rokhl rakhil rochel рахиль рохл"
+].map(s => s.split(" "));
+function nameForms(first){
+  const f = norm(first), tf = norm(translit(first));
+  const g = NAME_GROUPS.find(gr => gr.includes(f) || gr.includes(tf));
+  return g ? g.flatMap(x => [x, norm(translit(x))]) : [];
+}
 const capW = s => String(s || "").replace(/(^|[\s-])(\p{L})/gu, (m, a, c) => a + c.toUpperCase());
 
 // Оценка: насколько запись соответствует искомому человеку (фамилия, имя, годы, место) + объяснение «почему найдено»
@@ -1608,6 +1646,7 @@ function assess(r, q){
   const surn = [...new Set([q.latLast, q.last, ...variants(q.latLast)].flatMap(tokens).filter(x => x.length > 1))];
   const exactSurn = new Set([q.latLast, q.last].flatMap(tokens));
   const firsts = [...new Set([q.latFirst, q.first].flatMap(tokens).filter(x => x.length > 1))];
+  const firstForms = [...new Set(firsts.flatMap(nameForms))].filter(x => !firsts.includes(x));
   // сравниваем и оригинал, и транслитерацию: «Гольдберг» в записи = «Goldberg» в запросе
   const withLat = s => s + " " + translit(s);
   const nameRaw = String(r.name || "");
@@ -1636,10 +1675,11 @@ function assess(r, q){
     const fHit = bestHit(nameT, firsts);
     const initial = nameT.find(tk => tk.length === 1 && firsts.some(f => f[0] === tk));
     const fOther = bestHit(otherT, firsts);
-    const otherNames = tokens(nameRaw).filter(tk => !surn.some(s => tokMatch(tk, s)) && tk.length > 1);
+    const otherNames = tokens(nameRaw).filter(tk => !surn.some(s => tokMatch(tk, s)) && tk.length > 1 && !/^(van|von|de|der|den|ben|bat|bar)$/.test(tk));
     let v;
     if (fHit.v === 1){ v = 1; why.push({ s: "ok", text: W.first(capW(fHit.tok)) }); firstState = "ok"; }
     else if (fHit.v){ v = 0.85; why.push({ s: "ok", text: W.firstVariant(capW(fHit.tok)) }); firstState = "ok"; }
+    else if (bestHit(nameT, firstForms).v){ const fh = bestHit(nameT, firstForms); v = 0.8; why.push({ s: "ok", text: W.firstForm(capW(fh.tok), capW(firsts[0])) }); firstState = "ok"; }
     else if (initial){ v = 0.6; why.push({ s: "part", text: W.firstInitial(initial.toUpperCase() + ".") }); firstState = "part"; }
     else if (fOther.v){ v = 0.6; why.push({ s: "part", text: W.firstInText(capW(fOther.tok)) }); firstState = "part"; }
     else if (peopleLike && otherNames.length){ v = 0; why.push({ s: "no", text: W.firstOther(capW(otherNames.slice(0, 2).join(" "))) }); firstState = "no"; }
@@ -1688,6 +1728,9 @@ function assess(r, q){
   const wsum = crit.reduce((a, c) => a + c.w, 0);
   let pct = Math.round(100 * crit.reduce((a, c) => a + c.v * c.w, 0) / wsum);
   if (isSearchUrl(r.url)) pct = Math.min(pct, 40);
+  // процент не должен противоречить выводу: инициал — максимум «возможное», расхождение данных — «слабое»
+  if (firstState === "part") pct = Math.min(pct, 70);
+  if (firstState === "no" || yearsState === "no") pct = Math.min(pct, 45);
   r.crit = crit; r.why = why; r.pct = pct;
   r.level = pct >= 80 ? "high" : pct >= 55 ? "medium" : "low";
   r.score = pct + (r.img ? 1 : 0);
@@ -1735,8 +1778,15 @@ function mergeDuplicates(list){
     if (t.length < 2) return;
     const yr = r.kind === "person" ? r.birth : r.eventYear;
     if (!yr && r.kind !== "person") return;                          // без года публикации не склеиваем
-    const key = (r.kind === "person" || r.kind === "record" ? "p:" + [...t].sort().join(" ") : "t:" + t.join(" ").slice(0, 80)) + "|" + (yr || "");
-    if (byKey.has(key)) unite(byKey.get(key), i); else byKey.set(key, i);
+    if (r.kind === "person" && !yr) return;                           // без года рождения людей не склеиваем
+    const where = r.kind === "record" ? "|" + tokens(r.place).join(" ") + "|" + tokens(r.event).join(" ") : "";
+    const key = (r.kind === "person" || r.kind === "record" ? "p:" + [...t].sort().join(" ") : "t:" + t.join(" ").slice(0, 80)) + "|" + (yr || "") + where;
+    // разные записи одной базы — это разные документы, их не склеиваем
+    if (!byKey.has(key)) byKey.set(key, []);
+    const bucket = byKey.get(key);
+    const other = bucket.find(j => list[j].source !== r.source);
+    if (other !== undefined) unite(other, i);
+    bucket.push(i);
   });
   const groups = new Map();
   list.forEach((r, i) => { const g = find(i); if (!groups.has(g)) groups.set(g, []); groups.get(g).push(r); });
