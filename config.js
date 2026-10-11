@@ -2,7 +2,7 @@
 // впишите сюда свои значения один раз.
 window.ISTOKI_CONFIG = {
   // Адрес посредника на Cloudflare, без слэша в конце
-  PROXY_URL: "https://istoki-proxy.aligiftstip.workers.dev/",   // ← ЗАМЕНИТЕ на адрес вашего воркера
+  PROXY_URL: "https://istoki-proxy.aligiftstip.workers.dev",   // ← ЗАМЕНИТЕ на адрес вашего воркера
 
   // Europeana — бесплатный ключ (инструкция в README). Пусто — источник скрыт
   EUROPEANA_KEY: "alformoruinu",
