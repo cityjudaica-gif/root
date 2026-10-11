@@ -363,7 +363,7 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .tab .n{font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums;font-size:13px}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--text);border-bottom-color:var(--accent)}
-.src-line{font-size:12.5px;color:var(--faint);margin:0 0 18px;line-height:1.9}
+.src-line{font-size:12.5px;color:var(--faint);margin:0 0 18px;line-height:1.6}
 .src-line b{color:var(--muted);font-weight:700}
 .src-line .s{white-space:nowrap;margin-right:12px}
 .src-line .s i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
@@ -374,9 +374,10 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .rgroup h3{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font-family:var(--serif);font-size:21px;font-weight:700}
 .rgroup h3 .n{font-family:var(--font);font-size:13px;font-weight:700;color:var(--faint)}
 .rlist{list-style:none;margin:0;padding:0;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);overflow:hidden}
-.rlist li+li{border-top:1px solid var(--border)}
+.rlist > li + li{border-top:1px solid var(--border)}
+.rrow:hover{background:var(--surface-2)}
 .row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 16px;text-decoration:none;color:inherit;transition:background .15s}
-.row:hover{background:var(--surface-2)}
+.row:hover .r-title{color:var(--c)}
 .r-thumb{position:relative;width:44px;height:44px;border-radius:10px;background:color-mix(in srgb,var(--c) 16%,var(--bg-2));display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:16px;color:var(--c);overflow:hidden}
 .r-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--bg-2)}
 .r-main{min-width:0;display:flex;flex-direction:column;gap:2px}
@@ -385,8 +386,33 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .r-meta{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r-snip{font-size:12.5px;color:var(--faint);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.45}
 .r-snip mark,.r-title mark{background:color-mix(in srgb,var(--accent) 18%,transparent);color:inherit;border-radius:3px;padding:0 1px}
-.r-side{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;color:var(--c);white-space:nowrap}
-.r-side .k{color:var(--faint);font-weight:600}
+.r-side{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-size:12px;font-weight:700;color:var(--c);white-space:nowrap;text-align:right}
+.r-side svg{margin-top:2px}
+.r-ref{font-size:11px;font-weight:600;color:var(--faint);max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.r-ref.warn{color:#c47a2c}
+.r-crit{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:5px;align-items:center}
+.r-crit .c{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid var(--border)}
+.r-crit .c.ok{color:#2f9e6a;border-color:color-mix(in srgb,#2f9e6a 35%,transparent);background:color-mix(in srgb,#2f9e6a 8%,transparent)}
+.r-crit .c.part{color:#b8860b;border-color:color-mix(in srgb,#b8860b 35%,transparent)}
+.r-crit .c.na{color:var(--faint)}
+.r-crit .c.no{color:#d0534f;border-color:color-mix(in srgb,#d0534f 35%,transparent);background:color-mix(in srgb,#d0534f 7%,transparent)}
+.pct{font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;color:#fff;font-variant-numeric:tabular-nums}
+.pct.high{background:#2f9e6a}.pct.medium{background:#c9962b}.pct.low{background:#9aa0b8}
+.r-also{font-size:12px;color:var(--faint);padding:0 16px 10px 74px;margin-top:-4px}
+.r-also a{color:var(--muted);font-weight:700}
+.hint{font-size:13.5px;color:var(--muted);background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:var(--radius-sm);padding:9px 13px;margin:0}
+.cov summary{cursor:pointer;list-style:none;font-size:13px;font-weight:600;color:var(--muted)}
+.cov summary::-webkit-details-marker{display:none}
+.cov summary::before{content:"ⓘ ";color:var(--accent)}
+.cov ul{list-style:none;margin:10px 0 0;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px}
+.cov li{display:flex;gap:8px;align-items:baseline;font-size:12.5px;min-width:0}
+.cov li i{flex:0 0 7px;height:7px;border-radius:50%;background:var(--c);transform:translateY(-1px)}
+.cov li b{color:var(--text);font-weight:700;white-space:nowrap}
+.cov li span{color:var(--muted)}
+.cov li.fail span{color:#d0534f}.cov li.nc,.cov li.off{opacity:.6}
+.cov li a{color:inherit;font-weight:700}
+.cov-ext{font-size:12px;color:var(--faint);margin:8px 2px 0}
+@media (max-width:640px){.cov ul{grid-template-columns:1fr}.r-also{padding-left:61px}.r-side{flex-direction:row;align-items:center;gap:8px}}
 .r-side svg{width:15px;height:15px;color:var(--faint)}
 .row:hover .r-side svg{color:var(--text)}
 .r-more{margin-top:8px}
@@ -776,7 +802,28 @@ const I18N = {
     adLabel: "Реклама",
     results: n => `${n} ${plural(n, ["находка","находки","находок"])}`,
     resultsFor: q => `по запросу «${q}»`,
-    sortRel: "По точности", sortYear: "По году", sortName: "По имени",
+    sortRel: "По точности",
+    cats: { docs: "Архивные документы", trees: "Семейные древа", bios: "Биографии", pubs: "Исторические публикации", images: "Изображения" },
+    crit: { surname: "фамилия", first: "имя", years: "годы", place: "место" },
+    critHelp: { ok: "совпадает", part: "частично совпадает", na: "в записи нет данных", no: "не совпадает" },
+    levels: { high: "Высокое совпадение с искомым человеком", medium: "Возможное совпадение", low: "Слабое совпадение" },
+    likely: n => `вероятных: ${n}`,
+    lowMatch: n => `Менее вероятные совпадения (${n})`,
+    onlyLow: "Найдены только слабые совпадения — проверьте данные в записях:",
+    refineHint: "Совпадение оценено только по фамилии. Добавьте имя, годы рождения или место — оценка станет точнее.",
+    alsoIn: "Эта же запись также в:",
+    recordId: "Номер записи в базе",
+    searchLinkLabel: "ссылка на поиск",
+    cov: {
+      summary: s => `Проверено ${s.ok} из ${s.total} баз` + (s.pending ? ` · идёт поиск: ${s.pending}` : "") + (s.failed ? ` · не ответили: ${s.failed}` : "") + (s.notConf ? ` · не подключены: ${s.notConf}` : "") + ` · только по ссылке: ${s.ext}` + (s.merged ? ` · объединено дубликатов: ${s.merged}` : ""),
+      found: n => `проверено · ${n} ${plural(n, ["запись","записи","записей"])}`,
+      merged: n => `${n} ${plural(n, ["дубликат объединён","дубликата объединено","дубликатов объединено"])}`,
+      mentions: n => `проверено · упоминаний в текстах: ${n} (только ссылка на поиск)`,
+      failed: "не ответила", openSearch: "открыть поиск на сайте ↗",
+      checking: "идёт проверка…", disabled: "отключена вами", notConfigured: "не подключена (нужен ключ или посредник)",
+      extNote: n => `Ещё ${n} баз не дают открытого доступа к данным — в них можно искать только по ссылкам в панели «Ищите также здесь».`
+    },
+ sortYear: "По году", sortName: "По имени",
     groups: { people: "Люди", records: "Документы и архивы", press: "Газеты и книги", web: "Статьи и фото" },
     others: (n, s) => `Ещё ${n} — совпала только фамилия ${s}`,
     showMoreN: n => `Показать ещё ${n}`,
@@ -839,7 +886,28 @@ const I18N = {
     adLabel: "Ad",
     results: n => `${n} ${n === 1 ? "result" : "results"}`,
     resultsFor: q => `for “${q}”`,
-    sortRel: "Best match", sortYear: "By year", sortName: "By name",
+    sortRel: "Best match",
+    cats: { docs: "Archival records", trees: "Family trees", bios: "Biographies", pubs: "Historical publications", images: "Images" },
+    crit: { surname: "surname", first: "first name", years: "years", place: "place" },
+    critHelp: { ok: "matches", part: "partial match", na: "no data in record", no: "does not match" },
+    levels: { high: "Strong match with the person you're looking for", medium: "Possible match", low: "Weak match" },
+    likely: n => `likely: ${n}`,
+    lowMatch: n => `Less likely matches (${n})`,
+    onlyLow: "Only weak matches found — check the details in each record:",
+    refineHint: "Matches are rated by surname only. Add a first name, birth years or a place for a more precise rating.",
+    alsoIn: "Same record also in:",
+    recordId: "Record ID in the database",
+    searchLinkLabel: "search link",
+    cov: {
+      summary: s => `Checked ${s.ok} of ${s.total} databases` + (s.pending ? ` · in progress: ${s.pending}` : "") + (s.failed ? ` · not responding: ${s.failed}` : "") + (s.notConf ? ` · not connected: ${s.notConf}` : "") + ` · link-only: ${s.ext}` + (s.merged ? ` · duplicates merged: ${s.merged}` : ""),
+      found: n => `checked · ${n} ${n === 1 ? "record" : "records"}`,
+      merged: n => `${n} ${n === 1 ? "duplicate" : "duplicates"} merged`,
+      mentions: n => `checked · text mentions: ${n} (search link only)`,
+      failed: "not responding", openSearch: "open search on site ↗",
+      checking: "checking…", disabled: "turned off by you", notConfigured: "not connected (needs a key or proxy)",
+      extNote: n => `${n} more databases offer no open data access — search them via the links in “Also search here”.`
+    },
+ sortYear: "By year", sortName: "By name",
     groups: { people: "People", records: "Records & archives", press: "Newspapers & books", web: "Articles & photos" },
     others: (n, s) => `${n} more — surname ${s} only`,
     showMoreN: n => `Show ${n} more`,
@@ -903,7 +971,9 @@ const SOURCES = [
   { id: "dpla",      color: "#2f9fa8", needs: () => !!DPLA_KEY },
   { id: "wikipedia", color: "#9aa3b5" },
   { id: "commons",   color: "#53c2a0" }
-].filter(s => !s.needs || s.needs());
+];
+const ALL_SOURCES = SOURCES.slice();
+SOURCES.splice(0, SOURCES.length, ...ALL_SOURCES.filter(s => !s.needs || s.needs()));
 
 /* ---------- утилиты ---------- */
 const $ = s => document.querySelector(s);
@@ -993,7 +1063,7 @@ const API = {
     if (q.latFirst){ const p1 = new URLSearchParams(p); p1.set("FirstName", q.latFirst); list = await call(p1); }
     else list = await call(p);
     return list.map(m => ({
-      source: "wikitree", kind: "person",
+      source: "wikitree", kind: "person", cat: "trees", ref: m.Name,
       name: [m.FirstName, m.MiddleName, m.LastNameAtBirth].filter(Boolean).join(" ") + (m.LastNameCurrent && m.LastNameCurrent !== m.LastNameAtBirth ? ` (${m.LastNameCurrent})` : ""),
       birth: yearOf(m.BirthDate), death: yearOf(m.DeathDate),
       birthPlace: m.BirthLocation, deathPlace: m.DeathLocation,
@@ -1008,7 +1078,7 @@ const API = {
     const safe = term.replace(/["\\]/g, " ");
     const lg = hasCyr(term) ? "ru" : "en";
     const sparql = `
-SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image ?fatherLabel ?motherLabel WHERE {
+SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image ?fatherLabel ?motherLabel ?wt ?ruArt ?enArt ?ukArt WHERE {
   SERVICE wikibase:mwapi {
     bd:serviceParam wikibase:api "EntitySearch" ; wikibase:endpoint "www.wikidata.org" ;
                     mwapi:search "${safe}" ; mwapi:language "${lg}" ; wikibase:limit 150 .
@@ -1022,6 +1092,10 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
   OPTIONAL { ?item wdt:P18 ?image }
   OPTIONAL { ?item wdt:P22 ?father }
   OPTIONAL { ?item wdt:P25 ?mother }
+  OPTIONAL { ?item wdt:P2949 ?wt }
+  OPTIONAL { ?ruArt schema:about ?item ; schema:isPartOf <https://ru.wikipedia.org/> }
+  OPTIONAL { ?enArt schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> }
+  OPTIONAL { ?ukArt schema:about ?item ; schema:isPartOf <https://uk.wikipedia.org/> }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "${lang},ru,en,uk,de,he,pl" . }
 } LIMIT 400`;
     const data = await getJSON("https://query.wikidata.org/sparql?format=json&query=" + enc(sparql), { headers: { Accept: "application/sparql-results+json" } });
@@ -1029,7 +1103,7 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
     for (const b of (data && data.results && data.results.bindings) || []){
       const id = b.item.value;
       if (!map.has(id)) map.set(id, {
-        source: "wikidata", kind: "person",
+        source: "wikidata", kind: "person", cat: "bios", ref: id.split("/").pop(), sameAs: new Set(),
         name: b.itemLabel && b.itemLabel.value, desc: b.itemDescription && b.itemDescription.value,
         birth: b.birth ? yearOf(b.birth.value) : null, death: b.death ? yearOf(b.death.value) : null,
         birthPlace: b.bpLabel && b.bpLabel.value, deathPlace: b.dpLabel && b.dpLabel.value,
@@ -1039,8 +1113,11 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
       const r = map.get(id);
       if (b.fatherLabel) r.parents.add(b.fatherLabel.value);
       if (b.motherLabel) r.parents.add(b.motherLabel.value);
+      // прямые связи Wikidata: профиль WikiTree и статьи Википедии об этом же человеке
+      if (b.wt) r.sameAs.add("https://www.wikitree.com/wiki/" + b.wt.value);
+      for (const k of ["ruArt", "enArt", "ukArt"]) if (b[k]) r.sameAs.add(b[k].value);
     }
-    return [...map.values()].filter(r => r.name && !/^Q\d+$/.test(r.name)).map(r => ({ ...r, parents: [...r.parents].filter(p => !/^Q\d+$/.test(p)) }));
+    return [...map.values()].filter(r => r.name && !/^Q\d+$/.test(r.name)).map(r => ({ ...r, sameAs: [...r.sameAs], parents: [...r.parents].filter(p => !/^Q\d+$/.test(p)) }));
   },
   searchUrl_wikidata: q => `https://www.wikidata.org/w/index.php?search=${enc((q.first + " " + q.last).trim())}`,
 
@@ -1058,7 +1135,7 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
       const dateStr = typeof ed === "object" ? [ed.day, ed.month, ed.year].filter(Boolean).join(".") : String(ed || "");
       const place = Array.isArray(d.eventplace) ? d.eventplace.join(", ") : d.eventplace;
       return {
-        source: "openarch", kind: "record",
+        source: "openarch", kind: "record", cat: "docs", ref: d.identifier ? `${d.archive_code}:${d.identifier}` : "",
         name: d.personname || d.name || name,
         eventYear: y ? parseInt(y, 10) : null, eventDate: dateStr,
         event: [d.eventtype, d.sourcetype].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(" · "),
@@ -1086,7 +1163,7 @@ SELECT ?item ?itemLabel ?itemDescription ?birth ?death ?bpLabel ?dpLabel ?image 
       const st = Array.isArray(r.location_state) ? r.location_state.join(", ") : r.location_state;
       const paper = Array.isArray(r.partof_title) ? r.partof_title[0] : r.partof_title;
       return {
-        source: "loc", kind: "news",
+        source: "loc", kind: "news", cat: "pubs", ref: String(r.url || r.id || "").replace(/^https?:\/\/[^/]+\/resource\//, "").replace(/\/$/, ""),
         name: paper || String(r.title || "").replace(/^Image \d+ of /, ""),
         eventYear: yearOf(r.date), eventDate: r.date, place: st ? st.replace(/\b\w/g, c => c.toUpperCase()) : "",
         snippet: desc.slice(0, 400),
@@ -1128,7 +1205,8 @@ Object.assign(API, {
       ["identifier","title","year","date","mediatype","creator","description"].forEach(f => p.append("fl[]", f));
       const data = await smartJSON("https://archive.org/advancedsearch.php?" + p.toString());
       return ((data && data.response && data.response.docs) || []).map(d => ({
-        source: "archive", kind: "book",
+        source: "archive", kind: "book", ref: d.identifier,
+        cat: /^(image|movies)$/.test(d.mediatype) ? "images" : "pubs",
         name: Array.isArray(d.title) ? d.title[0] : (d.title || d.identifier),
         eventYear: yearOf(d.year || d.date), eventDate: d.year || (d.date ? String(d.date).slice(0, 10) : ""),
         place: Array.isArray(d.creator) ? d.creator.slice(0, 2).join(", ") : d.creator,
@@ -1154,13 +1232,16 @@ Object.assign(API, {
         const disp = rec.display || {}, ctrl = rec.control || {};
         const id = v(ctrl.recordid) || "";
         const date = String(v(disp.creationdate) || "");
+        const type = String(v(disp.type) || "").toLowerCase();
+        const cat = /image|photo|poster|map/.test(type) ? "images" : /archiv|manuscript|letter|document/.test(type) || /ARCHIVE/.test(id) ? "docs" : "pubs";
+        const seg = /ARCHIVE/.test(id) || cat === "docs" ? "archives" : cat === "images" ? "images" : /journal|newspaper/.test(type) ? "newspapers" : "books";
         return {
-          source: "nli", kind: "archive",
+          source: "nli", kind: "archive", cat, ref: id,
           name: stripTags(v(disp.title) || id),
           eventYear: yearOf(date), eventDate: date,
           place: stripTags(v(disp.creator) || v(disp.contributor) || ""),
           event: v(disp.type) ? String(v(disp.type)).replace(/_/g, " ") : "",
-          url: `https://www.nli.org.il/en/search?projectName=NLI&query=any,contains,${enc(id || term)}`
+          url: id ? `https://www.nli.org.il/en/${seg}/${enc(id)}/NLI` : `https://www.nli.org.il/en/search?projectName=NLI&query=any,contains,${enc(term)}`
         };
       });
     }));
@@ -1190,7 +1271,7 @@ Object.assign(API, {
       const data = await smartJSON(`https://api.europeana.eu/record/v2/search.json?wskey=${enc(EUROPEANA_KEY)}&query=${enc('"' + term + '"')}&rows=40&profile=standard`);
       const a = x => Array.isArray(x) ? x[0] : x;
       return ((data && data.items) || []).map(it => ({
-        source: "europeana", kind: "archive",
+        source: "europeana", kind: "archive", ref: it.id, cat: it.type === "IMAGE" ? "images" : "docs",
         name: stripTags(a(it.title) || a(it.dcTitleLangAware && Object.values(it.dcTitleLangAware)[0]) || it.id),
         eventYear: yearOf(a(it.year)), eventDate: a(it.year) || "",
         place: [a(it.dataProvider), a(it.country)].filter(Boolean).join(" · "),
@@ -1211,8 +1292,9 @@ Object.assign(API, {
     return ((data && data.docs) || []).map(d => {
       const sr = d.sourceResource || {};
       const date = (a(sr.date) || {}).displayText || "";
+      const types = [].concat(sr.type || []).join(" ").toLowerCase();
       return {
-        source: "dpla", kind: "archive",
+        source: "dpla", kind: "archive", ref: d.id, cat: /image/.test(types) ? "images" : "docs",
         name: stripTags(a(sr.title) || d.id),
         eventYear: yearOf(date), eventDate: date,
         place: [(d.dataProvider && (d.dataProvider.name || d.dataProvider)) || "", (a(sr.spatial) || {}).name || ""].filter(Boolean).join(" · "),
@@ -1234,7 +1316,7 @@ Object.assign(API, {
     const list = await settledFlat(jobs.map(async ([lg, term]) => {
       const data = await smartJSON(`https://${lg}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${enc('"' + term + '"')}&srlimit=15&format=json&origin=*`);
       return ((data && data.query && data.query.search) || []).map(s => ({
-        source: "wikipedia", kind: "article",
+        source: "wikipedia", kind: "article", cat: "bios", ref: lg + ":" + s.title,
         name: s.title, eventDate: lg.toUpperCase() + " · " + (lg === "ru" ? "Википедия" : lg === "uk" ? "Вікіпедія" : "Wikipedia"),
         snippet: stripTags(s.snippet),
         url: `https://${lg}.wikipedia.org/wiki/${enc(s.title.replace(/ /g, "_"))}`
@@ -1250,7 +1332,7 @@ Object.assign(API, {
       const data = await smartJSON(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${enc('"' + term + '"')}&gsrlimit=30&prop=imageinfo&iiprop=url&iiurlwidth=480&format=json&origin=*`);
       const pages = Object.values((data && data.query && data.query.pages) || {}).sort((a, b) => (a.index || 0) - (b.index || 0));
       return pages.filter(pg => pg.imageinfo && pg.imageinfo[0]).map(pg => ({
-        source: "commons", kind: "image",
+        source: "commons", kind: "image", cat: "images", ref: pg.title,
         name: pg.title.replace(/^[^:]+:/, "").replace(/\.[a-z0-9]{2,4}$/i, "").replace(/_/g, " "),
         img: pg.imageinfo[0].thumburl, url: pg.imageinfo[0].descriptionurl
       }));
@@ -1272,7 +1354,7 @@ Object.assign(API, {
       const parent = Array.isArray(r.ancestors) && r.ancestors.length ? r.ancestors[r.ancestors.length - 1].title : "";
       const obj = Array.isArray(r.digitalObjects) && r.digitalObjects.find(o => /\.(jpe?g|png|gif)$/i.test(o.objectUrl || ""));
       return {
-        source: "nara", kind: "nara",
+        source: "nara", kind: "nara", cat: "docs", ref: r.naId ? "NAID " + r.naId : "",
         name: r.title || ("NAID " + r.naId),
         eventYear: yearOf(dateStr), eventDate: dateStr ? String(dateStr) : "",
         place: parent, snippet: stripTags(r.scopeAndContentNote || "").slice(0, 300),
@@ -1336,7 +1418,7 @@ const EXTERNAL = q => {
 };
 
 /* ---------- состояние ---------- */
-const state = { q: null, items: [], status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id)), runId: 0 };
+const state = { q: null, raw: [], items: [], merged: 0, status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id)), runId: 0 };
 
 /* ---------- интерфейс ---------- */
 function applyI18n(){
@@ -1382,27 +1464,125 @@ function highlight(text){
   for (const tm of terms){ const re = new RegExp("(" + esc(tm).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi"); out = out.replace(re, "<mark>$1</mark>"); }
   return out;
 }
-const GROUP_OF = { wikitree: "people", wikidata: "people", openarch: "records", nli: "records", nara: "records", europeana: "records", dpla: "records", loc: "press", gallica: "press", archive: "press", wikipedia: "web", commons: "web" };
-const GROUP_ORDER = ["people", "records", "press", "web"];
-const PERSON_SOURCES = new Set(["wikitree", "wikidata", "openarch"]);       // ищут по полям имени — им доверяем
-const VERIFY_SOURCES = new Set(["archive", "nli", "europeana", "dpla", "commons", "wikipedia"]); // полнотекстовые — проверяем совпадение
-const norm = s => String(s || "").toLowerCase().replace(/ё/g, "е");
+/* ===================== категории, точность, дубликаты ===================== */
+const CAT_ORDER = ["docs", "trees", "bios", "pubs", "images"];
+const PERSON_SOURCES = new Set(["wikitree", "wikidata", "openarch"]);   // ищут по полям имени
+const VERIFY_SOURCES = new Set(["archive", "nli", "europeana", "dpla", "commons", "wikipedia"]); // полнотекстовые — проверяем, что фамилия реально есть
+const SOURCE_PRIORITY = ["openarch", "nara", "wikitree", "nli", "europeana", "dpla", "loc", "archive", "wikidata", "wikipedia", "commons"];
+const colorOf = id => (ALL_SOURCES.find(s => s.id === id) || {}).color;
 
-function scoreResult(r, q){
-  const surnames = [...new Set([q.latLast, q.last, ...(q.extraSurnames || [])].filter(x => x && x.length > 1).map(norm))];
-  const firsts = [...new Set([q.latFirst, q.first].filter(x => x && x.length > 1).map(norm))];
-  const name = norm(r.name);
-  const all = norm([r.name, r.desc, r.place, r.snippet, r.event, r.archive, r.birthPlace, r.deathPlace].join(" "));
-  const inName = surnames.some(s => name.includes(s));
-  const inAny = inName || surnames.some(s => all.includes(s));
-  const firstOk = !firsts.length || firsts.some(f => all.includes(f));
-  r.score = (inName ? 50 : 0) + (inAny ? 20 : 0) + (firsts.length && firstOk ? 40 : 0) + (r.img ? 2 : 0) - (r.bySurname ? 30 : 0);
-  r.weak = !!(r.bySurname || (firsts.length && !firstOk));
-  return VERIFY_SOURCES.has(r.source) ? inAny : true;
+const norm = s => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replace(/ё/g, "е");
+const tokens = s => norm(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+const normUrl = u => { try { return decodeURIComponent(String(u)).replace(/^https?:\/\/(www\.)?/, "").replace(/[#?].*$/, "").replace(/\/$/, "").toLowerCase(); } catch(e){ return String(u).toLowerCase(); } };
+const isSearchUrl = u => /\/search|[?&](q|query|search)=|Special:Search/i.test(String(u || ""));
+
+// совпадение токена с образцом: точно, со склонением/суффиксом (Гольдберга, Goldbergs) или по инициалу
+function tokMatch(tok, pat){
+  if (tok === pat) return 1;
+  if (pat.length >= 4 && tok.startsWith(pat) && tok.length - pat.length <= 2) return 0.85;
+  if (tok.length >= 4 && pat.startsWith(tok) && pat.length - tok.length <= 2) return 0.85;
+  return 0;
 }
-const colorOf = id => (SOURCES.find(s => s.id === id) || {}).color;
-const line = (icon, text) => text ? `<div>${ICON[icon]}<span>${esc(text)}</span></div>` : "";
+function bestMatch(toks, pats){ let b = 0; for (const t of toks) for (const p of pats) b = Math.max(b, tokMatch(t, p)); return b; }
 
+// Оценка: насколько запись соответствует искомому человеку (фамилия, имя, годы, место), а не просто содержит имя
+function assess(r, q){
+  const surn = [...new Set([q.latLast, q.last, ...variants(q.latLast)].flatMap(tokens).filter(x => x.length > 1))];
+  const firsts = [...new Set([q.latFirst, q.first].flatMap(tokens).filter(x => x.length > 1))];
+  // сравниваем и оригинал, и транслитерацию: «Гольдберг» в записи = «Goldberg» в запросе
+  const withLat = s => s + " " + translit(s);
+  const nameT = tokens(withLat(String(r.name || "")));
+  const otherT = tokens(withLat([r.desc, r.place, r.snippet, r.event, r.archive, r.birthPlace, r.deathPlace].filter(Boolean).join(" ")));
+  const crit = [];
+
+  // фамилия
+  const sIn = bestMatch(nameT, surn), sOther = bestMatch(otherT, surn);
+  const sVal = sIn ? sIn : sOther ? 0.5 : 0;
+  crit.push({ k: "surname", v: sVal, w: 40 });
+
+  // имя — только для записей о людях; для публикаций имя в названии бывает редко
+  if (firsts.length){
+    const peopleLike = r.kind === "person" || r.kind === "record";
+    const fIn = Math.max(bestMatch(nameT, firsts), nameT.some(t => t.length === 1 && firsts.some(f => f[0] === t)) ? 0.6 : 0);
+    const fOther = bestMatch(otherT, firsts);
+    const otherNames = nameT.filter(t => !surn.some(s => tokMatch(t, s)) && t.length > 1);
+    let v = fIn || (fOther ? 0.6 : 0);
+    if (!v && !(peopleLike && otherNames.length)) v = 0.4;          // имени в записи нет — неизвестно
+    crit.push({ k: "first", v, w: 30 });
+  }
+
+  // годы
+  if (q.yf || q.yt){
+    const from = q.yf || q.yt, to = q.yt || q.yf;
+    let v = 0.4;                                                     // нет данных
+    if (r.kind === "person" && r.birth){
+      v = r.birth >= from && r.birth <= to ? 1 : (r.birth >= from - 5 && r.birth <= to + 5) ? 0.6 : 0;
+    } else if (r.eventYear){
+      v = r.eventYear >= from - 2 && r.eventYear <= to + 100 ? 0.8 : 0; // событие должно быть в пределах жизни
+    }
+    crit.push({ k: "years", v, w: 20 });
+  }
+
+  // место
+  if (q.place){
+    const pl = [...new Set([q.place, q.placeLat].flatMap(tokens).filter(x => x.length > 3))];
+    const itemPl = tokens(withLat([r.name, r.birthPlace, r.deathPlace, r.place, r.desc, r.snippet].filter(Boolean).join(" ")));
+    const v = !itemPl.length ? 0.4 : bestMatch(itemPl, pl) ? 1 : 0.15;
+    crit.push({ k: "place", v, w: 10 });
+  }
+
+  const wsum = crit.reduce((a, c) => a + c.w, 0);
+  let pct = Math.round(100 * crit.reduce((a, c) => a + c.v * c.w, 0) / wsum);
+  if (isSearchUrl(r.url)) pct = Math.min(pct, 40);
+  r.crit = crit; r.pct = pct;
+  r.level = pct >= 80 ? "high" : pct >= 55 ? "medium" : "low";
+  r.score = pct + (r.img ? 1 : 0);
+  return VERIFY_SOURCES.has(r.source) ? (sIn > 0 || sOther > 0) : true;
+}
+
+// Объединение дубликатов: прямые связи (Wikidata → WikiTree, Википедия) и совпадение имени/названия и года
+function mergeDuplicates(list){
+  const parent = list.map((_, i) => i);
+  const find = i => parent[i] === i ? i : (parent[i] = find(parent[i]));
+  const unite = (a, b) => { a = find(a); b = find(b); if (a !== b) parent[b] = a; };
+  const byUrl = new Map();
+  list.forEach((r, i) => byUrl.set(normUrl(r.url), i));
+  list.forEach((r, i) => {
+    for (const u of r.sameAs || []){ const j = byUrl.get(normUrl(u)); if (j !== undefined) unite(i, j); }
+    const j = byUrl.get(normUrl(r.url)); if (j !== undefined && j !== i) unite(i, j);
+  });
+  const byKey = new Map();
+  list.forEach((r, i) => {
+    const t = tokens(r.name);
+    if (t.length < 2) return;
+    const yr = r.kind === "person" ? r.birth : r.eventYear;
+    if (!yr && r.kind !== "person") return;                          // без года публикации не склеиваем
+    const key = (r.kind === "person" || r.kind === "record" ? "p:" + [...t].sort().join(" ") : "t:" + t.join(" ").slice(0, 80)) + "|" + (yr || "");
+    if (byKey.has(key)) unite(byKey.get(key), i); else byKey.set(key, i);
+  });
+  const groups = new Map();
+  list.forEach((r, i) => { const g = find(i); if (!groups.has(g)) groups.set(g, []); groups.get(g).push(r); });
+  const out = [];
+  for (const g of groups.values()){
+    g.sort((a, b) => SOURCE_PRIORITY.indexOf(a.source) - SOURCE_PRIORITY.indexOf(b.source));
+    const m = { ...g[0], also: [] };
+    for (const o of g.slice(1)){
+      for (const f of ["birth", "death", "birthPlace", "deathPlace", "img", "desc", "eventYear", "eventDate", "place"]) if (!m[f] && o[f]) m[f] = o[f];
+      if (normUrl(o.url) !== normUrl(m.url)) m.also.push({ source: o.source, url: o.url, ref: o.ref });
+      if (o.pct > m.pct){ m.pct = o.pct; m.crit = o.crit; m.level = o.level; m.score = o.score; }
+    }
+    m.dupes = g.length - 1;
+    out.push(m);
+  }
+  return out;
+}
+
+function rebuildView(){
+  state.items = mergeDuplicates(state.raw);
+  state.merged = state.raw.length - state.items.length;
+}
+
+/* ===================== отображение ===================== */
 function yearsOf(r){
   if (r.kind === "person"){
     if (!r.birth && !r.death) return "";
@@ -1428,20 +1608,34 @@ function metaOf(r){
   }
   return [...new Set(parts.map(x => String(x).trim()).filter(Boolean))].join(" · ");
 }
+function critHTML(r){
+  return (r.crit || []).map(c => {
+    const st = c.v >= 0.8 ? "ok" : c.v === 0.4 ? "na" : c.v >= 0.5 ? "part" : "no";
+    const sym = { ok: "✓", part: "≈", na: "?", no: "✗" }[st];
+    return `<span class="c ${st}" title="${esc(t("critHelp")[st])}">${sym} ${esc(t("crit")[c.k])}</span>`;
+  }).join("");
+}
 function rowHTML(r){
   const initials = (r.name || "?").replace(/[^\p{L}\s]/gu, "").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase() || "•";
   const img = r.img ? `<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" onload="if(this.naturalWidth<48)this.remove()">` : "";
   const yrs = yearsOf(r), meta = metaOf(r);
   const showSnip = r.snippet && (r.kind === "news" || r.kind === "article" || r.kind === "book");
-  return `<li><a class="row" style="--c:${colorOf(r.source)}" href="${esc(r.url)}" target="_blank" rel="noopener">
-    <span class="r-thumb">${esc(initials)}${img}</span>
-    <span class="r-main">
-      <span class="r-title">${highlight(r.name || "")}${yrs ? `<span class="y">${esc(yrs)}</span>` : ""}</span>
-      ${meta ? `<span class="r-meta">${esc(meta)}</span>` : ""}
-      ${showSnip ? `<span class="r-snip">${highlight(r.snippet)}</span>` : ""}
-    </span>
-    <span class="r-side"><span>${esc(t("src")[r.source][0])}</span>${ICON.ext}</span>
-  </a></li>`;
+  const srcName = t("src")[r.source][0];
+  const searchLink = isSearchUrl(r.url);
+  const also = (r.also || []).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(t("src")[a.source][0])}</a>`).join(", ");
+  return `<li class="rrow" style="--c:${colorOf(r.source)}">
+    <a class="row" href="${esc(r.url)}" target="_blank" rel="noopener">
+      <span class="r-thumb">${esc(initials)}${img}</span>
+      <span class="r-main">
+        <span class="r-title">${highlight(r.name || "")}${yrs ? `<span class="y">${esc(yrs)}</span>` : ""}</span>
+        ${meta ? `<span class="r-meta">${esc(meta)}</span>` : ""}
+        ${showSnip ? `<span class="r-snip">${highlight(r.snippet)}</span>` : ""}
+        <span class="r-crit"><span class="pct ${r.level}" title="${esc(t("levels")[r.level])}">${r.pct}%</span>${critHTML(r)}</span>
+      </span>
+      <span class="r-side"><span class="r-src">${esc(srcName)}</span>${r.ref ? `<span class="r-ref" title="${esc(t("recordId"))}">${esc(String(r.ref).slice(0, 34))}</span>` : ""}${searchLink ? `<span class="r-ref warn">${esc(t("searchLinkLabel"))}</span>` : ""}${ICON.ext}</span>
+    </a>
+    ${also ? `<div class="r-also">${esc(t("alsoIn"))} ${also}</div>` : ""}
+  </li>`;
 }
 function adRowHTML(){
   const ad = AD[lang];
@@ -1449,7 +1643,7 @@ function adRowHTML(){
   return `<ul class="rlist"><li><a class="row ad" href="${esc(url)}" target="_blank" rel="noopener sponsored">
     <span class="r-thumb">${esc(AD.name.charAt(0))}</span>
     <span class="r-main"><span class="r-title">${esc(ad.title)}</span><span class="r-meta">${esc(ad.text)}</span></span>
-    <span class="r-side"><span class="k">${esc(t("adLabel"))}</span>${ICON.ext}</span>
+    <span class="r-side"><span class="r-ref">${esc(t("adLabel"))}</span>${ICON.ext}</span>
   </a></li></ul>`;
 }
 
@@ -1461,7 +1655,7 @@ function sortList(list){
   return [...list].sort(by);
 }
 function filteredItems(){
-  return sortList(state.items.filter(r => state.filter === "all" || GROUP_OF[r.source] === state.filter));
+  return sortList(state.items.filter(r => state.filter === "all" || r.cat === state.filter));
 }
 
 const GROUP_LIMIT = 8;
@@ -1470,57 +1664,80 @@ function renderGrid(){
   const grid = $("#grid");
   const n = state.items.length;
   const query = [state.q.first, state.q.last].filter(Boolean).join(" ");
-  $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", query))}</small>`;
+  const strongN = state.items.filter(r => r.level !== "low").length;
+  $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", query))}${n ? " · " + esc(t("likely", strongN)) : ""}</small>`;
 
-  const groups = GROUP_ORDER.filter(g => state.filter === "all" || state.filter === g);
+  // в режиме «Все» первой идёт категория с самым сильным совпадением
+  const best = c => Math.max(0, ...state.items.filter(r => r.cat === c).map(r => r.score || 0));
+  const cats = CAT_ORDER.filter(c => state.filter === "all" || state.filter === c).sort((a, b) => best(b) - best(a));
   const mentions = Object.entries(state.mentions || {}).filter(([, v]) => v > 0);
-  let html = "", adPlaced = false;
-  for (const g of groups){
-    const items = sortList(state.items.filter(r => GROUP_OF[r.source] === g));
-    const strong = items.filter(r => !r.weak), weak = items.filter(r => r.weak);
-    const gMentions = mentions.filter(([id]) => GROUP_OF[id] === g);
-    if (!items.length && !gMentions.length) continue;
-    const limit = state.expanded[g] ? Infinity : GROUP_LIMIT;
-    html += `<section class="rgroup"><h3>${esc(t("groups")[g])} <span class="n">${items.length}</span></h3>`;
-    if (strong.length){
-      html += `<ul class="rlist">${strong.slice(0, limit).map(rowHTML).join("")}</ul>`;
-      if (strong.length > limit) html += `<button class="g-more" type="button" data-expand="${g}">${esc(t("showMoreN", strong.length - limit))}</button>`;
+  let html = "";
+  const onlySurname = !state.q.first && !state.q.yf && !state.q.yt && !state.q.place;
+  if (n && onlySurname) html += `<p class="hint">${esc(t("refineHint"))}</p>`;
+  let adPlaced = false;
+  for (const c of cats){
+    const items = sortList(state.items.filter(r => r.cat === c));
+    const good = items.filter(r => r.level !== "low"), low = items.filter(r => r.level === "low");
+    const cMentions = c === "pubs" ? mentions : [];
+    if (!items.length && !cMentions.length) continue;
+    const limit = state.expanded[c] ? Infinity : GROUP_LIMIT;
+    html += `<section class="rgroup"><h3>${esc(t("cats")[c])} <span class="n">${items.length}</span></h3>`;
+    if (good.length){
+      html += `<ul class="rlist">${good.slice(0, limit).map(rowHTML).join("")}</ul>`;
+      if (good.length > limit) html += `<button class="g-more" type="button" data-expand="${c}">${esc(t("showMoreN", good.length - limit))}</button>`;
     }
-    if (weak.length){
-      const surname = state.q.latLast || state.q.last;
-      const body = `<ul class="rlist">${weak.slice(0, 50).map(rowHTML).join("")}</ul>`;
-      html += strong.length ? `<details class="r-more"><summary>${esc(t("others", weak.length, surname))}</summary>${body}</details>`
-                            : `<p class="mention">${esc(t("onlySurname", surname))}</p>${body}`;
+    if (low.length){
+      const body = `<ul class="rlist">${low.slice(0, 60).map(rowHTML).join("")}</ul>`;
+      html += good.length ? `<details class="r-more"><summary>${esc(t("lowMatch", low.length))}</summary>${body}</details>`
+                          : `<p class="mention">${esc(t("onlyLow"))}</p>${body}`;
     }
-    for (const [id, cnt] of gMentions){
+    for (const [id, cnt] of cMentions){
       html += `<p class="mention"><span>${esc(t("mention", t("src")[id][0], cnt, state.q.latLast))}</span><a href="${esc(API["searchUrl_" + id](state.q))}" target="_blank" rel="noopener">${esc(t("mentionOpen"))}</a></p>`;
     }
     html += `</section>`;
     if (!adPlaced){ html += adRowHTML(); adPlaced = true; }
   }
   if (loading) html += `<div class="rlist">${'<div class="skel-row"></div>'.repeat(state.items.length ? 2 : 5)}</div>`;
-  if (!html){
-    html = `<div class="empty"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`;
-  }
+  if (!html) html = `<div class="empty"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`;
   grid.innerHTML = html;
   $("#moreWrap").hidden = true;
 }
 
 function renderStatus(){
-  const count = g => state.items.filter(r => g === "all" || GROUP_OF[r.source] === g).length;
-  const tabs = ["all", ...GROUP_ORDER].filter(g => g === "all" || count(g) || Object.entries(state.mentions || {}).some(([id, v]) => v && GROUP_OF[id] === g));
-  $("#statusRow").innerHTML = tabs.map(g => `<button type="button" class="tab ${state.filter === g ? "active" : ""}" data-filter="${g}" role="tab">${esc(g === "all" ? t("all") : t("groups")[g])} <span class="n">${count(g)}</span></button>`).join("");
-  let line = `<b>${esc(t("sourcesChecked"))}</b> `;
-  for (const s of SOURCES){
-    const st = state.status[s.id]; if (!st) continue;
-    const name = esc(t("src")[s.id][0]);
-    const cnt = s.id === "gallica" ? (state.mentions.gallica || 0) : state.items.filter(r => r.source === s.id).length;
-    if (st.state === "loading") line += `<span class="s" style="--c:${s.color}"><i></i>${name}<span class="spin"></span></span>`;
-    else if (st.state === "link") line += `<span class="s" style="--c:${s.color}"><i></i><a href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener" title="${esc(t("openOnSite"))}">${name} ↗</a></span>`;
-    else line += `<span class="s ${cnt ? "" : "zero"}" style="--c:${s.color}"><i></i>${name} ${cnt}</span>`;
-  }
-  $("#srcLine").innerHTML = line;
+  const count = c => state.items.filter(r => c === "all" || r.cat === c).length;
+  const tabs = ["all", ...CAT_ORDER].filter(c => c === "all" || count(c) || (c === "pubs" && Object.values(state.mentions || {}).some(v => v)));
+  $("#statusRow").innerHTML = tabs.map(c => `<button type="button" class="tab ${state.filter === c ? "active" : ""}" data-filter="${c}" role="tab">${esc(c === "all" ? t("all") : t("cats")[c])} <span class="n">${count(c)}</span></button>`).join("");
+  renderCoverage();
   $("#errors").innerHTML = "";
+}
+
+// Охват: что проверено, что не ответило, что не подключено и что доступно только по ссылке
+function renderCoverage(){
+  const rows = [];
+  let ok = 0, failed = 0, pending = 0, notConf = 0, off = 0;
+  for (const s of ALL_SOURCES){
+    const name = esc(t("src")[s.id][0]);
+    const st = state.status[s.id];
+    const configured = !s.needs || s.needs();
+    let cls, txt;
+    if (!configured){ notConf++; cls = "nc"; txt = t("cov").notConfigured; }
+    else if (!state.enabled.has(s.id)){ off++; cls = "off"; txt = t("cov").disabled; }
+    else if (!st || st.state === "loading"){ pending++; cls = "wait"; txt = t("cov").checking; }
+    else if (st.state === "link"){ failed++; cls = "fail"; txt = `${t("cov").failed} — <a href="${esc(API["searchUrl_" + s.id](state.q))}" target="_blank" rel="noopener">${esc(t("cov").openSearch)}</a>`; }
+    else {
+      ok++; cls = "ok";
+      if (s.id === "gallica") txt = t("cov").mentions(state.mentions.gallica || 0);
+      else {
+        const found = state.raw.filter(r => r.source === s.id).length;
+        const shown = state.items.filter(r => r.source === s.id).length;
+        txt = t("cov").found(found) + (found > shown ? " · " + t("cov").merged(found - shown) : "");
+      }
+    }
+    rows.push(`<li class="${cls}" style="--c:${s.color}"><i></i><b>${name}</b><span>${typeof txt === "string" && txt.includes("<a") ? txt : esc(txt)}</span></li>`);
+  }
+  const ext = EXTERNAL(state.q).length;
+  const summary = t("cov").summary({ ok, total: ALL_SOURCES.length - notConf - off, failed, pending, notConf, ext, merged: state.merged || 0 });
+  $("#srcLine").innerHTML = `<details class="cov"><summary>${esc(summary)}</summary><ul>${rows.join("")}</ul><p class="cov-ext">${esc(t("cov").extNote(ext))}</p></details>`;
 }
 
 function renderExternal(){
@@ -1567,7 +1784,7 @@ async function runSearch(){
   const q = readQuery();
   if (!q.last){ $("#ln").focus(); toast(t("needLast")); return; }
   const run = ++state.runId;
-  Object.assign(state, { q, items: [], status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, census: null });
+  Object.assign(state, { q, raw: [], items: [], merged: 0, status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, census: null });
   $("#results").hidden = false; $("#intro").hidden = true;
   syncUrl(q);
   renderExternal(); renderCensus(null);
@@ -1588,7 +1805,8 @@ async function runSearch(){
         res.forEach(r => r.bySurname = true);
       }
       if (run !== state.runId) return;
-      state.items.push(...res.filter(r => keep(r, q) && scoreResult(r, q)));
+      state.raw.push(...res.filter(r => r.url && /^https:\/\//.test(r.url) && keep(r, q) && assess(r, q)));
+      rebuildView();
       state.status[s.id] = { state: "done" };
     } catch(e){
       if (run !== state.runId) return;
@@ -1623,8 +1841,8 @@ function updateVariants(){
 }
 
 function toCSV(){
-  const rows = [["source","type","name","birth","death","birth_place","death_place","event","date","place","archive","url"]];
-  for (const r of filteredItems()) rows.push([t("src")[r.source][0], r.kind, r.name, r.birth, r.death, r.birthPlace, r.deathPlace, r.event, r.eventDate, r.place, r.archive, r.url]);
+  const rows = [["match_%","category","source","record_id","name","birth","death","birth_place","death_place","event","date","place","archive","url","also_found_in"]];
+  for (const r of filteredItems()) rows.push([r.pct, t("cats")[r.cat], t("src")[r.source][0], r.ref, r.name, r.birth, r.death, r.birthPlace, r.deathPlace, r.event, r.eventDate, r.place, r.archive, r.url, (r.also || []).map(a => t("src")[a.source][0] + " " + a.url).join(" | ")]);
   const csv = "\ufeff" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
