@@ -417,6 +417,7 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .r-also{font-size:12px;color:var(--faint);padding:0 16px 10px 74px;margin-top:-4px}
 .r-also a{color:var(--muted);font-weight:700}
 .hint{font-size:13.5px;color:var(--muted);background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:var(--radius-sm);padding:9px 13px;margin:0}
+.cfg-warn{margin:0 0 10px;padding:10px 13px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;color:#b03a37;background:color-mix(in srgb,#d0534f 9%,transparent);border:1px solid color-mix(in srgb,#d0534f 35%,transparent)}
 .cov summary{cursor:pointer;list-style:none;font-size:13px;font-weight:600;color:var(--muted)}
 .cov summary::-webkit-details-marker{display:none}
 .cov summary::before{content:"ⓘ ";color:var(--accent)}
@@ -754,7 +755,11 @@ footer a{color:var(--text)}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>window.PAGE_LANG = "ru";</script>
-<script src="/config.js"></script>
+<script>
+  // ловим ошибку в config.js (например, пропущенная кавычка или запятая), чтобы показать её на сайте
+  window.addEventListener("error", e => { if (/config\.js/.test(e.filename || "")) window.ISTOKI_CONFIG_ERROR = e.message + " (строка " + e.lineno + ")"; });
+</script>
+<script src="/config.js" onerror="window.ISTOKI_CONFIG_MISSING = true"></script>
 <script>
 const CFG = window.ISTOKI_CONFIG || {};
 /* =====================================================================
@@ -819,6 +824,11 @@ const I18N = {
     results: n => `${n} ${plural(n, ["находка","находки","находок"])}`,
     resultsFor: q => `по запросу «${q}»`,
     sortRel: "По точности",
+    cfg: {
+      missing: "Файл настроек config.js не найден на сайте — поэтому не работают посредник и ключи (WikiTree, Нац. библиотека Израиля, газеты, Gallica, Europeana). Загрузите config.js в корень репозитория, рядом с index.html.",
+      error: m => `В файле config.js ошибка: ${m}. Проверьте кавычки и запятые в конце строк — пока ошибка не исправлена, посредник и ключи не работают.`,
+      noProxy: "В config.js не указан PROXY_URL — без посредника WikiTree, Нац. библиотека Израиля, газеты и Gallica не отвечают."
+    },
     whyTitle: "Почему найдено",
     openRecord: "открыть запись",
     why: {
@@ -945,6 +955,11 @@ const I18N = {
     results: n => `${n} ${n === 1 ? "result" : "results"}`,
     resultsFor: q => `for “${q}”`,
     sortRel: "Best match",
+    cfg: {
+      missing: "config.js was not found on the site, so the proxy and keys are off (WikiTree, National Library of Israel, newspapers, Gallica, Europeana). Upload config.js to the repository root, next to index.html.",
+      error: m => `config.js has an error: ${m}. Check quotes and trailing commas — until it's fixed, the proxy and keys don't work.`,
+      noProxy: "PROXY_URL is not set in config.js — without the proxy, WikiTree, National Library of Israel, newspapers and Gallica don't respond."
+    },
     whyTitle: "Why this result",
     openRecord: "open record",
     why: {
@@ -1911,7 +1926,10 @@ function renderCoverage(){
   }
   const ext = EXTERNAL(state.q).length;
   const summary = t("cov").summary({ ok, total: ALL_SOURCES.length - notConf - off, failed, pending, notConf, ext, merged: state.merged || 0 });
-  $("#srcLine").innerHTML = `<details class="cov"><summary>${esc(summary)}</summary><ul>${rows.join("")}</ul><p class="cov-ext">${esc(t("cov").extNote(ext))}</p></details>`;
+  const cfgProblem = window.ISTOKI_CONFIG_ERROR ? t("cfg").error(window.ISTOKI_CONFIG_ERROR)
+                   : (window.ISTOKI_CONFIG_MISSING || !window.ISTOKI_CONFIG) ? t("cfg").missing
+                   : !PROXY_URL ? t("cfg").noProxy : "";
+  $("#srcLine").innerHTML = (cfgProblem ? `<p class="cfg-warn">⚠ ${esc(cfgProblem)}</p>` : "") + `<details class="cov"><summary>${esc(summary)}</summary><ul>${rows.join("")}</ul><p class="cov-ext">${esc(t("cov").extNote(ext))}</p></details>`;
 }
 
 function renderExternal(){
