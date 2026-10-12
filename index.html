@@ -471,6 +471,28 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .ext a:hover{background:var(--bg-2);border-color:var(--border)}
 .ext .ico{flex:0 0 32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--bg-2);border:1px solid var(--border)}
 .ext b{display:block;font-size:14px}
+.ext a.featured{border-color:color-mix(in srgb,#3d7be0 40%,transparent);background:color-mix(in srgb,#3d7be0 7%,transparent)}
+.ext a.featured b{color:#2f6cc9}
+.place .pnames{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.place .pnames button{border:1px solid var(--border);background:var(--bg-2);border-radius:8px;padding:4px 8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;gap:6px;align-items:baseline}
+.place .pnames button:hover{border-color:var(--accent)}
+.place .pnames i{font-style:normal;font-size:10.5px;color:var(--faint);text-transform:uppercase}
+.place .plinks{font-size:12.5px;margin:0}.place .plinks a{color:var(--muted);font-weight:700}
+.qsum{font-size:13px;color:var(--muted);margin:0 0 8px;line-height:1.55}
+.qsum b{color:var(--text)}
+.footer-ads{margin-bottom:28px}
+.footer-ads[hidden]{display:none}
+.fa-head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px}
+.fa-head span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.fa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.fa{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-sm);text-decoration:none;color:inherit;transition:.2s}
+.fa:hover{border-color:var(--accent);transform:translateY(-1px)}
+.fa-b{flex:0 0 40px;height:40px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:18px;overflow:hidden}
+.fa-b img{width:100%;height:100%;object-fit:cover}
+.fa-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.fa-t b{font-size:14.5px;color:var(--text)}
+.fa-t small{font-size:12.5px;color:var(--muted);line-height:1.4}
+.fa-c{font-size:12.5px;font-weight:800;color:var(--accent);white-space:nowrap}
 .ext-group{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin:10px 10px 2px}
 .ext-group:first-child{margin-top:0}
 .ext small{display:block;color:var(--muted);font-size:12px;line-height:1.35}
@@ -632,6 +654,7 @@ footer a{color:var(--text)}
           <div class="more" id="moreWrap" hidden=""><button class="pill-btn" id="moreBtn" type="button" data-i18n="showMore">Показать ещё</button></div>
         </div>
         <aside class="side">
+          <div class="panel place" id="placePanel" hidden=""></div>
           <div class="panel" id="censusPanel" hidden="">
             <h4 data-i18n="censusTitle">Фамилия в переписи США</h4>
             <p class="sub" id="censusSub"></p>
@@ -738,6 +761,7 @@ footer a{color:var(--text)}
 </main>
 
 <footer>
+  <div class="wrap footer-ads" id="footerAds"><div class="fa-head">Рекомендуем<span>Реклама</span></div><div class="fa-grid"><a class="fa" href="https://mystorytel.com" target="_blank" rel="noopener sponsored"><span class="fa-b">M</span><span class="fa-t"><b>Нашли предков? Сохраните их историю</b><small>Mystorytel — семейное древо, летопись, фото и печатная книга памяти на русском.</small></span><span class="fa-c">Попробовать ↗</span></a></div></div>
   <div class="wrap cols">
     <div>
       <h5 data-i18n="aboutTitle">О проекте</h5>
@@ -829,6 +853,17 @@ const I18N = {
       error: m => `В файле config.js ошибка: ${m}. Проверьте кавычки и запятые в конце строк — пока ошибка не исправлена, посредник и ключи не работают.`,
       noProxy: "В config.js не указан PROXY_URL — без посредника WikiTree, Нац. библиотека Израиля, газеты и Gallica не отвечают."
     },
+    placeTitle: "Место",
+    placeNames: "Как город назывался в документах — ищите под всеми названиями:",
+    placeClick: "Искать с этим названием места",
+    qsum: {
+      title: "Как искали:",
+      surname: (s, v) => `фамилия ${s}` + (v.length ? ` (+ варианты: ${v.join(", ")})` : ""),
+      first: (s, f) => `имя ${s}` + (f.length ? ` (+ формы: ${f.join(", ")})` : ""),
+      years: y => `годы рождения ${y}`,
+      place: (p, n) => `место ${p}` + (n ? ` (+ ${n} истор. названий)` : "")
+    },
+    footerAdsTitle: "Рекомендуем",
     whyTitle: "Почему найдено",
     openRecord: "открыть запись",
     why: {
@@ -961,6 +996,17 @@ const I18N = {
       error: m => `config.js has an error: ${m}. Check quotes and trailing commas — until it's fixed, the proxy and keys don't work.`,
       noProxy: "PROXY_URL is not set in config.js — without the proxy, WikiTree, National Library of Israel, newspapers and Gallica don't respond."
     },
+    placeTitle: "Place",
+    placeNames: "Names this town had in records — search under all of them:",
+    placeClick: "Search with this place name",
+    qsum: {
+      title: "How we searched:",
+      surname: (s, v) => `surname ${s}` + (v.length ? ` (+ spellings: ${v.join(", ")})` : ""),
+      first: (s, f) => `first name ${s}` + (f.length ? ` (+ forms: ${f.join(", ")})` : ""),
+      years: y => `born ${y}`,
+      place: (p, n) => `place ${p}` + (n ? ` (+ ${n} historical names)` : "")
+    },
+    footerAdsTitle: "Recommended",
     whyTitle: "Why this result",
     openRecord: "open record",
     why: {
@@ -1489,8 +1535,14 @@ const EXTERNAL = q => {
   const f = q.latFirst, l = q.latLast, fc = q.first, lc = q.last, full = (f + " " + l).trim();
   const ru = lang === "ru";
   const G = { us: ru ? "США и иммиграция" : "U.S. & immigration", jw: ru ? "Холокост и еврейская генеалогия" : "Holocaust & Jewish genealogy",
-              ussr: ru ? "Россия и СССР" : "Russia & USSR", tree: ru ? "Древа и кладбища" : "Trees & cemeteries", eu: ru ? "Европа" : "Europe" };
+              ussr: ru ? "Россия и СССР" : "Russia & USSR", tree: ru ? "Древа и кладбища" : "Trees & cemeteries", eu: ru ? "Европа" : "Europe",
+              bess: ru ? "Бессарабия и Молдова" : "Bessarabia & Moldova" };
   return [
+    { g: G.bess, featured: true, ico: "✡", c: "#3d7be0", name: ru ? "Реестр захоронений Кишинёвского еврейского кладбища" : "Kishinev Jewish Cemetery burial registry",
+      d: ru ? "Поиск по ФИО и годам жизни: сектор и номер могилы, схема кладбища" : "Search by name and years: sector and grave number, cemetery map",
+      url: `https://gbsearch.vercel.app/?q=${enc(lc || l)}` },
+    { g: G.bess, ico: "JG", c: "#4cc38a", name: "JewishGen Bessarabia", d: ru ? "Метрики, ревизские сказки и списки по Бессарабии" : "Bessarabian vital records, revision lists and other lists",
+      url: "https://www.jewishgen.org/Bessarabia/" },
     { g: G.us, ico: "FS", c: "#86b049", name: "FamilySearch", d: ru ? "Крупнейшая бесплатная база записей (бесплатный аккаунт)" : "Largest free record collection (free account)",
       url: `https://www.familysearch.org/search/record/results?q.givenName=${enc(f)}&q.surname=${enc(l)}` + (q.yf ? `&q.birthLikeDate.from=${q.yf}` : "") + (q.yt ? `&q.birthLikeDate.to=${q.yt}` : "") },
     ...(NARA_ENABLED ? [] : [{ g: G.us, ico: "NA", c: "#e4574c", name: "U.S. National Archives", d: ru ? "Иммиграция, натурализация, армия" : "Immigration, naturalization, military",
@@ -1553,7 +1605,7 @@ function applyI18n(){
   $("#siteName").textContent = SITE_NAME[lang];
   document.querySelectorAll(".siteNameFoot").forEach(e => e.textContent = SITE_NAME[lang]);
   $("#langBtn").textContent = lang === "ru" ? "EN" : "RU";
-  renderChips(); renderSrcCards();
+  renderChips(); renderSrcCards(); renderFooterAds();
   if (state.q) { renderStatus(); renderGrid(); renderExternal(); renderCensus(state.census); }
   updateVariants();
 }
@@ -1713,7 +1765,7 @@ function assess(r, q){
   // место
   let placeState = null;
   if (q.place){
-    const pl = [...new Set([q.place, q.placeLat].flatMap(tokens).filter(x => x.length > 3))];
+    const pl = [...new Set([q.place, q.placeLat, ...(q.placeNames || [])].flatMap(s => tokens(s + " " + translit(s))).filter(x => x.length > 3))];
     const placeText = [r.birthPlace, r.deathPlace, r.place].filter(Boolean).join(", ");
     const itemPl = tokens(withLat([r.name, placeText, r.desc, r.snippet].filter(Boolean).join(" ")));
     const hit = bestHit(itemPl, pl);
@@ -1979,14 +2031,79 @@ function renderCoverage(){
   const cfgProblem = window.ISTOKI_CONFIG_ERROR ? t("cfg").error(window.ISTOKI_CONFIG_ERROR)
                    : (window.ISTOKI_CONFIG_MISSING || !window.ISTOKI_CONFIG) ? t("cfg").missing
                    : !PROXY_URL ? t("cfg").noProxy : "";
-  $("#srcLine").innerHTML = (cfgProblem ? `<p class="cfg-warn">⚠ ${esc(cfgProblem)}</p>` : "") + `<details class="cov"><summary>${esc(summary)}</summary><ul>${rows.join("")}</ul><p class="cov-ext">${esc(t("cov").extNote(ext))}</p></details>`;
+  $("#srcLine").innerHTML = (cfgProblem ? `<p class="cfg-warn">⚠ ${esc(cfgProblem)}</p>` : "") + querySummary(state.q) + `<details class="cov"><summary>${esc(summary)}</summary><ul>${rows.join("")}</ul><p class="cov-ext">${esc(t("cov").extNote(ext))}</p></details>`;
+}
+
+/* ---------- карточка места (Wikidata): исторические названия города на разных языках ---------- */
+const PLACE_LANGS = ["ru", "en", "uk", "be", "ro", "pl", "de", "he", "yi", "lt", "lv", "hu", "cs"];
+async function lookupPlace(name){
+  const lg = hasCyr(name) ? "ru" : "en";
+  const s = await getJSON(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${enc(name)}&language=${lg}&uselang=${lang}&type=item&limit=6&format=json&origin=*`);
+  const ids = ((s && s.search) || []).map(x => x.id);
+  if (!ids.length) return null;
+  const d = await getJSON(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${ids.join("|")}&props=labels|aliases|descriptions|claims|sitelinks/urls&languages=${PLACE_LANGS.join("|")}&format=json&origin=*`);
+  const ents = ids.map(id => d && d.entities && d.entities[id]).filter(Boolean);
+  // берём первый результат, у которого есть координаты, — то есть населённый пункт, а не, например, фамилия
+  const e = ents.find(x => x.claims && x.claims.P625);
+  if (!e) return null;
+  const names = new Map();
+  for (const l of PLACE_LANGS){
+    const v = e.labels && e.labels[l] && e.labels[l].value;
+    if (v && !names.has(norm(v))) names.set(norm(v), { v, l });
+    for (const a of (e.aliases && e.aliases[l]) || []) if (a.value.length < 40 && !names.has(norm(a.value))) names.set(norm(a.value), { v: a.value, l });
+  }
+  const label = (e.labels[lang] || e.labels.en || e.labels.ru || {}).value || name;
+  const desc = ((e.descriptions && (e.descriptions[lang] || e.descriptions.en)) || {}).value || "";
+  const wiki = e.sitelinks && (e.sitelinks[lang + "wiki"] || e.sitelinks.enwiki);
+  return { id: e.id, label, desc, names: [...names.values()].slice(0, 24), url: "https://www.wikidata.org/wiki/" + e.id, wiki: wiki && wiki.url };
+}
+function renderPlace(p){
+  const box = $("#placePanel");
+  if (!p){ box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = `<h4>${esc(t("placeTitle"))}: ${esc(p.label)}</h4>
+    ${p.desc ? `<p class="sub">${esc(p.desc)}</p>` : ""}
+    <p class="sub">${esc(t("placeNames"))}</p>
+    <div class="pnames">${p.names.map(n => `<button type="button" data-place="${esc(n.v)}" title="${esc(t("placeClick"))}"><span>${esc(n.v)}</span><i>${esc(n.l)}</i></button>`).join("")}</div>
+    <p class="plinks"><a href="${esc(p.url)}" target="_blank" rel="noopener">Wikidata ${esc(p.id)} ↗</a>${p.wiki ? ` · <a href="${esc(p.wiki)}" target="_blank" rel="noopener">${esc(t("src").wikipedia[0])} ↗</a>` : ""}</p>`;
+}
+
+/* ---------- «Как искали»: что именно учтено в запросе ---------- */
+function querySummary(q){
+  const S = t("qsum"), parts = [];
+  const sv = variants(q.latLast).slice(0, 4);
+  parts.push(S.surname(q.last + (q.latLast && q.latLast !== q.last ? ` / ${q.latLast}` : ""), sv));
+  if (q.first){
+    const forms = [...new Set(nameForms(q.first).map(capW))].filter(x => norm(x) !== norm(q.first) && norm(x) !== norm(q.latFirst)).slice(0, 6);
+    parts.push(S.first(q.first + (q.latFirst && q.latFirst !== q.first ? ` / ${q.latFirst}` : ""), forms));
+  }
+  if (q.yf || q.yt) parts.push(S.years(q.yf === q.yt || !q.yt || !q.yf ? (q.yf || q.yt) : `${q.yf}–${q.yt}`));
+  if (q.place) parts.push(S.place(q.place, (q.placeNames || []).length));
+  return `<p class="qsum"><b>${esc(S.title)}</b> ${parts.map(esc).join(" · ")}</p>`;
+}
+
+/* ---------- реклама в подвале: настраивается в config.js (FOOTER_ADS) ---------- */
+function renderFooterAds(){
+  const pick = v => (v && typeof v === "object") ? (v[lang] || v.ru || v.en || "") : (v || "");
+  const list = Array.isArray(CFG.FOOTER_ADS) ? CFG.FOOTER_ADS : [{
+    title: { ru: AD.ru.title, en: AD.en.title }, text: { ru: AD.ru.text, en: AD.en.text },
+    url: AD.url, cta: { ru: AD.ru.cta, en: AD.en.cta }, badge: "M"
+  }];
+  const box = $("#footerAds");
+  if (!list.length){ box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = `<div class="fa-head">${esc(t("footerAdsTitle"))}<span>${esc(t("adLabel"))}</span></div><div class="fa-grid">` + list.filter(a => a && a.url).map(a => {
+    const title = pick(a.title), text = pick(a.text), cta = pick(a.cta) || t("open");
+    const badge = a.image ? `<img src="${esc(a.image)}" alt="">` : esc(pick(a.badge) || title.charAt(0) || "•");
+    return `<a class="fa" href="${esc(a.url)}" target="_blank" rel="noopener sponsored"><span class="fa-b">${badge}</span><span class="fa-t"><b>${esc(title)}</b>${text ? `<small>${esc(text)}</small>` : ""}</span><span class="fa-c">${esc(cta)} ↗</span></a>`;
+  }).join("") + `</div>`;
 }
 
 function renderExternal(){
   let last = "", html = "";
   for (const e of EXTERNAL(state.q)){
     if (e.g !== last){ html += `<div class="ext-group">${esc(e.g)}</div>`; last = e.g; }
-    html += `<a href="${esc(e.url)}" target="_blank" rel="noopener"><span class="ico" style="color:${e.c}">${esc(e.ico)}</span><span><b>${esc(e.name)}</b><small>${esc(e.d)}</small></span></a>`;
+    html += `<a class="${e.featured ? "featured" : ""}" href="${esc(e.url)}" target="_blank" rel="noopener"><span class="ico" style="color:${e.c}">${esc(e.ico)}</span><span><b>${esc(e.name)}</b><small>${esc(e.d)}</small></span></a>`;
   }
   $("#extLinks").innerHTML = html;
 }
@@ -2026,6 +2143,14 @@ async function runSearch(){
   const q = readQuery();
   if (!q.last){ $("#ln").focus(); toast(t("needLast")); return; }
   const run = ++state.runId;
+  renderPlace(null);
+  if (q.place){
+    try {
+      const pl = await Promise.race([lookupPlace(q.place), new Promise(r => setTimeout(() => r(null), 4000))]);
+      if (run !== state.runId) return;
+      if (pl){ q.placeNames = pl.names.map(n => n.v); renderPlace(pl); }
+    } catch(e){}
+  }
   Object.assign(state, { q, raw: [], items: [], merged: 0, status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, census: null });
   $("#results").hidden = false; $("#intro").hidden = true;
   syncUrl(q);
@@ -2106,6 +2231,10 @@ $("#sourceChips").addEventListener("click", e => {
 });
 $("#statusRow").addEventListener("click", e => { const b = e.target.closest("[data-filter]"); if (!b) return; state.filter = b.dataset.filter; state.shown = PAGE_SIZE; renderStatus(); renderGrid(); });
 $("#sort").addEventListener("change", renderGrid);
+$("#placePanel").addEventListener("click", e => {
+  const b = e.target.closest("[data-place]"); if (!b) return;
+  $("#pl").value = b.dataset.place; $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); runSearch();
+});
 $("#moreBtn").addEventListener("click", () => { state.shown += PAGE_SIZE; renderGrid(); });
 $("#grid").addEventListener("click", e => {
   const b = e.target.closest("[data-expand]"); if (!b) return;
