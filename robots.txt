@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://isradata.vercel.app/sitemap.xml
