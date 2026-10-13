@@ -132,7 +132,7 @@
      "name": "Do you store my searches or data?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "No. Searches run right in your browser, with no sign-up and no cookies. We store neither queries nor results."
+      "text": "No. Searches run right in your browser, with no sign-up. We store neither queries nor results. Anonymous visit statistics are collected with a web analytics service — the names you enter are never sent to it."
      }
     },
     {
@@ -478,6 +478,25 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .place .pnames button:hover{border-color:var(--accent)}
 .place .pnames i{font-style:normal;font-size:10.5px;color:var(--faint);text-transform:uppercase}
 .place .plinks{font-size:12.5px;margin:0}.place .plinks a{color:var(--muted);font-weight:700}
+.plan{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface));border-radius:var(--radius);padding:18px 18px 8px;margin-bottom:30px}
+.plan-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.plan-head h3{margin:0;font-family:var(--serif);font-size:24px;font-weight:700}
+.plan-head span{font-size:12.5px;font-weight:700;color:var(--accent)}
+.plan-sub{font-size:13.5px;color:var(--muted);margin:6px 0 12px;max-width:760px}
+.plan-list{list-style:none;margin:0;padding:0}
+.plan-list li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--border)}
+.plan-list li.featured .pt b{color:#2f6cc9}
+.plan-list .pn{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:13px}
+.plan-list .pt{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.plan-list .pt b{font-size:15.5px}
+.ptag{font-size:11px;font-weight:700;color:var(--faint);border:1px solid var(--border);border-radius:999px;padding:0 7px}
+.plan-list p{margin:3px 0 0;font-size:13px;color:var(--muted);line-height:1.45}
+.plan-list p.pe{color:var(--text);font-size:12.5px;font-weight:600}
+.pgo{white-space:nowrap;text-decoration:none;font-weight:800;font-size:13.5px;color:var(--accent-ink);background:var(--accent);padding:8px 14px;border-radius:10px}
+.pgo:hover{background:var(--accent-2)}
+.open-head h3{margin:0;font-family:var(--serif);font-size:22px;font-weight:700}
+.open-head p{margin:4px 0 14px;font-size:13px;color:var(--muted)}
+@media (max-width:640px){.plan-list li{grid-template-columns:28px minmax(0,1fr)}.pgo{grid-column:2;justify-self:start}}
 .qsum{font-size:13px;color:var(--muted);margin:0 0 8px;line-height:1.55}
 .qsum b{color:var(--text)}
 .footer-ads{margin-bottom:28px}
@@ -566,7 +585,7 @@ footer a{color:var(--text)}
     <div class="wrap">
       <span class="eyebrow"><b></b><span data-i18n="eyebrow">Free · no sign-up</span></span>
       <h1 data-i18n-html="title">Find your ancestors<br>in the world's <em>open archives</em></h1>
-      <p class="lead" data-i18n="lead">Free ancestor search by surname — family trees, vital records, archives, old newspapers and photo collections in one search. Cyrillic names are transliterated automatically.</p>
+      <p class="lead" data-i18n="lead">Enter a surname, years and place — we check open databases and build a personal research plan: which archives and databases most likely hold records of your ancestors, with ready-made links.</p>
 
       <form class="search" id="form" autocomplete="off">
         <div class="row-main">
@@ -650,6 +669,8 @@ footer a{color:var(--text)}
       <div class="layout">
         <div>
           <div id="errors"></div>
+          <div id="planBox"></div>
+          <div class="open-head" id="openHead"></div>
           <div class="rgroups" id="grid"></div>
           <div class="more" id="moreWrap" hidden=""><button class="pill-btn" id="moreBtn" type="button" data-i18n="showMore">Show more</button></div>
         </div>
@@ -752,7 +773,7 @@ footer a{color:var(--text)}
       <details><summary>How do I find information about a grandfather who fought in WWII?</summary><p>Use Pamyat Naroda, OBD Memorial and Podvig Naroda — they hold draft records, awards, wounds and burial places of Soviet soldiers. Search by surname, first name and birth year.</p></details>
       <details><summary>How do I find relatives who died in the Holocaust?</summary><p>Check Yad Vashem's Central Database of Shoah Victims' Names, the Arolsen Archives and the USHMM database. Also search for your family's town in Yizkor memorial books — many are in the National Library of Israel and the Internet Archive.</p></details>
       <details><summary>Why are results in Latin letters?</summary><p>Most of the world's archives keep records in Latin script. We transliterate Russian surnames automatically and also search the original spelling where possible, such as Wikipedia and the National Library of Israel.</p></details>
-      <details><summary>Do you store my searches or data?</summary><p>No. Searches run right in your browser, with no sign-up and no cookies. We store neither queries nor results.</p></details>
+      <details><summary>Do you store my searches or data?</summary><p>No. Searches run right in your browser, with no sign-up. We store neither queries nor results. Anonymous visit statistics are collected with a web analytics service — the names you enter are never sent to it.</p></details>
       <details><summary>How can I save my findings and build a family tree?</summary><p>Export results to CSV or copy links to what you found. To build a family tree, collect memories and photos, and print a family memory book, use Mystorytel.</p></details>
     </div>
   </div>
@@ -761,7 +782,7 @@ footer a{color:var(--text)}
 </main>
 
 <footer>
-  <div class="wrap footer-ads" id="footerAds"><div class="fa-head">Recommended<span>Ad</span></div><div class="fa-grid"><a class="fa" href="https://mystorytel.com" target="_blank" rel="noopener sponsored"><span class="fa-b">M</span><span class="fa-t"><b>Found your ancestors? Keep their story</b><small>Mystorytel — family tree, chronicle, photos and a printed memory book.</small></span><span class="fa-c">Try it ↗</span></a></div></div>
+  <div class="wrap footer-ads" id="footerAds"><div class="fa-head">Recommended<span>Ad</span></div><div class="fa-grid"><a class="fa" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=banner&amp;utm_campaign=genealogy_search&amp;utm_content=footer" target="_blank" rel="noopener sponsored"><span class="fa-b">M</span><span class="fa-t"><b>Found your ancestors? Keep their story</b><small>Mystorytel — family tree, chronicle, photos and a printed memory book.</small></span><span class="fa-c">Try it ↗</span></a></div></div>
   <div class="wrap cols">
     <div>
       <h5 data-i18n="aboutTitle">About</h5>
@@ -770,7 +791,7 @@ footer a{color:var(--text)}
     </div>
     <div>
       <h5 data-i18n="privacyTitle">Privacy</h5>
-      <p data-i18n="privacyText">No sign-up, no cookies, no stored queries. Searches run right in your browser.</p>
+      <p data-i18n="privacyText">No sign-up. Searches run right in your browser; we store neither queries nor results. Anonymous visit statistics are collected with a web analytics service — the names you enter are never sent to it.</p>
       <p>© <span id="year">2026</span> <span class="siteNameFoot">Istoki</span></p>
     </div>
   </div>
@@ -832,11 +853,54 @@ const DPLA_KEY = CFG.DPLA_KEY || "";             // ← задаётся в conf
 const PAGE_SIZE = 24;
 /* ===================================================================== */
 
+/* ===================== статистика: Яндекс Метрика и/или Google Analytics (номера — в config.js) ===================== */
+// Введённые имена и фамилии в статистику НЕ отправляются: адрес страницы передаётся без параметров поиска.
+const YM_ID = parseInt(CFG.YANDEX_METRIKA_ID, 10) || 0;
+const GA_ID = String(CFG.GA4_ID || "").trim();
+const cleanUrl = () => location.origin + location.pathname;
+(function initAnalytics(){
+  if (YM_ID){
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(YM_ID, "init", { defer: true, clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: false });
+    ym(YM_ID, "hit", cleanUrl(), { title: document.title, referer: document.referrer });
+  }
+  if (GA_ID){
+    const s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_ID);
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag("js", new Date());
+    gtag("config", GA_ID, { send_page_view: false, anonymize_ip: true });
+    gtag("event", "page_view", { page_location: cleanUrl(), page_title: document.title, page_referrer: document.referrer });
+  }
+})();
+function track(goal, params = {}){
+  try { if (YM_ID && window.ym) ym(YM_ID, "reachGoal", goal, params); } catch(e){}
+  try { if (GA_ID && window.gtag) gtag("event", goal, params); } catch(e){}
+}
+// все переходы по ссылкам: на mystorytel.com — отдельной целью с местом на странице, на другие сайты — с названием сайта
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[href]"); if (!a) return;
+  let u; try { u = new URL(a.href, location.href); } catch(err){ return; }
+  if (u.host === location.host) return;
+  if (/mystorytel\.com$/i.test(u.hostname)){
+    const placement = u.searchParams.get("utm_content") || (a.closest("footer") ? "footer" : a.closest(".ext") ? "sidebar_links" : "other");
+    track("mystorytel_click", { placement });
+  } else {
+    const row = a.closest(".rrow");
+    if (a.dataset.plan) track("plan_click", { site: u.hostname.replace(/^www\./, ""), item: a.dataset.plan });
+    track("outbound_click", { site: u.hostname.replace(/^www\./, ""), kind: row ? "result" : a.dataset.plan ? "plan" : a.closest(".ext") ? "also_search" : a.closest(".cov") ? "source_search" : "other" });
+  }
+}, true);
+
 const I18N = {
   ru: {
     eyebrow: "Бесплатно · без регистрации",
     title: "Найдите своих предков<br>в <em>открытых архивах</em> мира",
-    lead: "Бесплатный поиск предков и родственников по фамилии — сразу в родословных древах, метрических записях, архивах, старых газетах и фотоархивах. Кириллица переводится в латиницу автоматически.",
+    lead: "Введите фамилию, годы и место — мы проверим открытые базы и составим персональный план поиска: в каких архивах и базах вероятнее всего есть записи о ваших предках, с готовыми ссылками.",
     firstName: "Имя", firstNamePh: "Например, Иван", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
     searchBtn: "Найти", advanced: "Годы, место и латинское написание",
     yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
@@ -864,6 +928,45 @@ const I18N = {
       place: (p, n) => `место ${p}` + (n ? ` (+ ${n} истор. названий)` : "")
     },
     footerAdsTitle: "Рекомендуем",
+    plan: {
+      title: "План поиска",
+      sub: "Записи об обычных людях — метрики, переписи, списки пассажиров, военные и архивные документы — хранятся в этих базах. Они не открывают данные для других сайтов, поэтому мы подобрали их под ваш запрос и порядок проверки. Ссылки сразу открывают поиск там, где это технически возможно.",
+      forRegion: r => `под регион: ${r}`, general: "общий — укажите место, и план станет точнее",
+      open: "Искать", free: "бесплатно", freeReg: "бесплатно, нужна регистрация", paid: "частично платно", unique: "уникальные данные",
+      fs: rg => "Крупнейшая бесплатная база записей: метрические книги" + (rg && ["moldova","ukraine","belarus","russia","lithuania","latvia","poland"].includes(rg) ? " Российской империи (в т. ч. по вашему региону)" : "") + ", переписи, иммиграция и натурализация. Поиск уже заполнен вашими данными.",
+      fsCatName: p => `FamilySearch — какие документы есть по месту «${p}»`,
+      fsCat: p => `Каталог: список сохранившихся метрических книг, переписей и списков по ${p} — многие можно листать онлайн. Это лучший способ узнать, где искать дальше.`,
+      kishName: "Реестр захоронений Кишинёвского еврейского кладбища",
+      kish: "Сектор и номер могилы, годы жизни. Данные, которых нет в других базах.",
+      jgBess: "Бессарабские метрики, ревизские сказки, списки избирателей и налогоплательщиков, проиндексированные волонтёрами.",
+      geneteka: "Индекс метрических записей Польши (десятки миллионов записей о рождении, браке и смерти), в т. ч. еврейских общин.",
+      jri: "Индекс еврейских метрик Польши и части Литвы/Украины — со ссылками на сканы.",
+      litvak: "Еврейские метрики, ревизские сказки и списки Литвы (бывшие Виленская, Ковенская, Гродненская губернии).",
+      radu: "Сканы метрических книг всех конфессий Латвии, включая еврейские общины Риги, Двинска, Либавы.",
+      bgIsrael: "Фото надгробий с датами — очень полное покрытие кладбищ Израиля.",
+      jg: "Главная база еврейской генеалогии: метрики, ревизские сказки, переписи, кладбища Российской империи и Восточной Европы.",
+      yv: "Листы свидетельских показаний о погибших в Холокост — часто с именами родителей, супругов, местом жительства и профессией.",
+      arolsen: "Документы о депортированных, узниках лагерей и перемещённых лицах после войны.",
+      ushmmName: "Музей Холокоста США (USHMM)", ushmm: "Списки выживших и погибших, документы и устные свидетельства.",
+      pnName: "Память народа", pn: "Все призванные в 1941–1945: донесения о потерях, награды, госпитали, документы части.",
+      obdName: "ОБД «Мемориал»", obd: "Погибшие и пропавшие без вести красноармейцы: донесения о потерях, данные о захоронениях.",
+      olName: "Открытый список", ol: "Пострадавшие от политических репрессий в СССР: даты ареста, приговоры, реабилитация.",
+      ellis: "Списки пассажиров, прибывших в Нью-Йорк в 1892–1924 гг.: возраст, родной город, к кому ехали.",
+      fag: "Захоронения в США с фото надгробий — на еврейских надгробиях часто указано имя отца.",
+      nara: "Документы о натурализации, переписи и призыве в армию США.",
+      geni: "Большое общее древо — возможно, ваши родственники уже внесли эту семью.",
+      mh: "Древа и записи; поиск бесплатный, просмотр части документов — платный.",
+      enterName: (n, y, p) => `Заполнено: ${n}` + (y ? `, годы рождения ${y}` : "") + (p ? `, место ${p}` : ""),
+      enterSurname: s => `Введите фамилию: ${s}`,
+      enterPhonetic: s => `Введите фамилию ${s} и выберите фонетический поиск (Daitch–Mokotoff) — он найдёт все написания.`,
+      enterRu: (l, f) => `Введите по-русски: ${[l, f].filter(Boolean).join(" ")} — в документах фамилия может быть записана с ошибкой, попробуйте варианты.`,
+      enterEllis: (l, f) => `Введите ${[f, l].filter(Boolean).join(" ")} и включите «sounds like» — фамилии записывались на слух.`
+    },
+    regions: { moldova: "Бессарабия и Молдова", ukraine: "Украина", belarus: "Беларусь", poland: "Польша", lithuania: "Литва", latvia: "Латвия", russia: "Россия", romania: "Румыния", usa: "США", israel: "Израиль", germany: "Германия", hungary: "Венгрия", czech: "Чехия", estonia: "Эстония", canada: "Канада", uk: "Великобритания", argentina: "Аргентина", brazil: "Бразилия", australia: "Австралия" },
+    namesakes: n => `Известные однофамильцы (${n}) — биографии без совпадения имени и лет`,
+    openTitle: "Найдено в открытых базах",
+    openNote: "Эти базы мы проверяем сами и показываем записи прямо здесь. В них лишь малая часть документов о людях из Восточной Европы — основные записи ищите по плану выше.",
+    regSector: "сектор", regGrave: "могила",
     whyTitle: "Почему найдено",
     openRecord: "открыть запись",
     why: {
@@ -898,7 +1001,7 @@ const I18N = {
       vContradiction: "Скорее другой человек — данные расходятся"
     },
     prov: {
-      primary: { civil: "Первичный источник доступен — запись актов гражданского состояния", archive: "Первичный источник доступен — архивный документ", news: "Первичный источник — газета того времени" },
+      primary: { burial: "Первичный источник — реестр захоронений кладбища", civil: "Первичный источник доступен — запись актов гражданского состояния", archive: "Первичный источник доступен — архивный документ", news: "Первичный источник — газета того времени" },
       primaryVia: s => `Первичный источник доступен в базе ${s}`,
       tree: "Вторичный источник — древо, составленное пользователями; проверьте источники в профиле",
       reference: "Справочный источник (энциклопедия) — не первичный документ",
@@ -960,7 +1063,7 @@ const I18N = {
     aboutText: "Истоки — бесплатный инструмент поиска по открытым генеалогическим базам. Мы не являемся владельцами данных: все результаты принадлежат их источникам и открываются на их сайтах.",
     attrib: 'Данные: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://www.nli.org.il" target="_blank" rel="noopener">Национальная библиотека Израиля</a>, <a href="https://gallica.bnf.fr" target="_blank" rel="noopener">Gallica (BnF)</a>, <a href="https://www.europeana.eu" target="_blank" rel="noopener">Europeana</a>, <a href="https://dp.la" target="_blank" rel="noopener">DPLA</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Википедия</a> и <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Викисклад</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. Этот сайт использует API Census Bureau, но не одобрен и не сертифицирован Census Bureau.',
     privacyTitle: "Конфиденциальность",
-    privacyText: "Без регистрации, без cookies и без хранения запросов. Поиск выполняется прямо в вашем браузере.",
+    privacyText: "Без регистрации. Поиск выполняется прямо в вашем браузере, мы не храним ни запросы, ни результаты. Для обезличенной статистики посещений используется сервис веб-аналитики — введённые имена в него не передаются.",
     src: {
       wikitree: ["WikiTree", "Общее древо", "Бесплатное мировое семейное древо: более 30 млн профилей с источниками и связями."],
       wikidata: ["Wikidata", "Энциклопедия", "Известные люди: даты, места, родители, фото. Хорошо ищет и на кириллице."],
@@ -968,6 +1071,7 @@ const I18N = {
       loc: ["Газеты США", "1770–1963", "Chronicling America: миллионы оцифрованных страниц американских газет с полнотекстовым поиском."],
       nara: ["Архив США (NARA)", "Документы", "Национальный архив США: иммиграция, натурализация, армия, переписи."],
       archive: ["Internet Archive", "Книги и справочники", "Оцифрованные книги, адресные книги, школьные альбомы, книги памяти (Yizkor)."],
+      registry: ["Реестр Кишинёвского кладбища", "Захоронения", "Реестр захоронений Кишинёвского еврейского кладбища: сектор, номер могилы, годы жизни."],
       nli: ["Нац. библиотека Израиля", "Еврейское наследие", "Крупнейшее собрание еврейских документов, газет, фото и архивов (в т.ч. на идиш, иврите, русском)."],
       gallica: ["Gallica", "Пресса Франции", "Национальная библиотека Франции: газеты, книги, в т.ч. русская эмигрантская пресса."],
       europeana: ["Europeana", "Архивы Европы", "50+ млн объектов из музеев, архивов и библиотек Европы: фото, документы, газеты."],
@@ -979,7 +1083,7 @@ const I18N = {
   en: {
     eyebrow: "Free · no sign-up",
     title: "Find your ancestors<br>in the world's <em>open archives</em>",
-    lead: "Free ancestor search by surname — family trees, vital records, archives, old newspapers and photo collections in one search. Cyrillic names are transliterated automatically.",
+    lead: "Enter a surname, years and place — we check open databases and build a personal research plan: which archives and databases most likely hold records of your ancestors, with ready-made links.",
     firstName: "First name", firstNamePh: "e.g. John", lastName: "Last name", lastNamePh: "e.g. Goldberg",
     searchBtn: "Search", advanced: "Years, place and Latin spelling",
     yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
@@ -1007,6 +1111,45 @@ const I18N = {
       place: (p, n) => `place ${p}` + (n ? ` (+ ${n} historical names)` : "")
     },
     footerAdsTitle: "Recommended",
+    plan: {
+      title: "Research plan",
+      sub: "Records of ordinary people — vital records, censuses, passenger lists, military and archival documents — are kept in these databases. They don't share data with other sites, so we picked them for your query and ordered them. Links open the search directly where technically possible.",
+      forRegion: r => `for region: ${r}`, general: "general — add a place for a more precise plan",
+      open: "Search", free: "free", freeReg: "free, sign-up required", paid: "partly paid", unique: "unique data",
+      fs: rg => "The largest free record collection: metrical books" + (rg && ["moldova","ukraine","belarus","russia","lithuania","latvia","poland"].includes(rg) ? " of the Russian Empire (incl. your region)" : "") + ", censuses, immigration and naturalization. The search is pre-filled with your data.",
+      fsCatName: p => `FamilySearch — records available for “${p}”`,
+      fsCat: p => `Catalog: surviving metrical books, censuses and lists for ${p} — many can be browsed online. The best way to see where to look next.`,
+      kishName: "Kishinev Jewish Cemetery burial registry",
+      kish: "Sector and grave number, years of life. Data not found in other databases.",
+      jgBess: "Bessarabian vital records, revision lists, voter and taxpayer lists indexed by volunteers.",
+      geneteka: "Index of Polish vital records (tens of millions of births, marriages, deaths), incl. Jewish communities.",
+      jri: "Index of Jewish vital records of Poland and parts of Lithuania/Ukraine — with links to scans.",
+      litvak: "Jewish vital records, revision lists and other lists of Lithuania (former Vilna, Kovno, Grodno guberniyas).",
+      radu: "Scans of Latvian metrical books of all faiths, incl. Jewish communities of Riga, Dvinsk, Libau.",
+      bgIsrael: "Gravestone photos with dates — very complete coverage of Israeli cemeteries.",
+      jg: "The main Jewish genealogy database: vital records, revision lists, censuses, cemeteries of the Russian Empire and Eastern Europe.",
+      yv: "Pages of Testimony about Holocaust victims — often with parents' and spouse's names, residence and occupation.",
+      arolsen: "Records on deportees, camp prisoners and post-war displaced persons.",
+      ushmmName: "U.S. Holocaust Memorial Museum (USHMM)", ushmm: "Lists of survivors and victims, documents and oral testimonies.",
+      pnName: "Pamyat Naroda", pn: "Everyone drafted in 1941–1945: loss reports, awards, hospitals, unit records.",
+      obdName: "OBD Memorial", obd: "Red Army soldiers killed or missing: loss reports, burial data.",
+      olName: "Open List", ol: "Victims of Soviet political repression: arrest dates, sentences, rehabilitation.",
+      ellis: "Passenger lists of arrivals in New York 1892–1924: age, hometown, whom they were joining.",
+      fag: "U.S. burials with gravestone photos — Jewish gravestones often name the father.",
+      nara: "Naturalization, census and U.S. military draft records.",
+      geni: "A large shared tree — relatives may already have added this family.",
+      mh: "Trees and records; search is free, some documents are paid.",
+      enterName: (n, y, p) => `Pre-filled: ${n}` + (y ? `, born ${y}` : "") + (p ? `, place ${p}` : ""),
+      enterSurname: s => `Enter the surname: ${s}`,
+      enterPhonetic: s => `Enter ${s} and choose phonetic (Daitch–Mokotoff) search — it finds all spellings.`,
+      enterRu: (l, f) => `Enter in Russian: ${[l, f].filter(Boolean).join(" ")} — records may misspell names, try variants.`,
+      enterEllis: (l, f) => `Enter ${[f, l].filter(Boolean).join(" ")} and turn on “sounds like” — names were written down by ear.`
+    },
+    regions: { moldova: "Bessarabia & Moldova", ukraine: "Ukraine", belarus: "Belarus", poland: "Poland", lithuania: "Lithuania", latvia: "Latvia", russia: "Russia", romania: "Romania", usa: "USA", israel: "Israel", germany: "Germany", hungary: "Hungary", czech: "Czechia", estonia: "Estonia", canada: "Canada", uk: "UK", argentina: "Argentina", brazil: "Brazil", australia: "Australia" },
+    namesakes: n => `Notable namesakes (${n}) — biographies without a first-name and year match`,
+    openTitle: "Found in open databases",
+    openNote: "We query these databases ourselves and show records right here. They hold only a small share of records on people from Eastern Europe — look for the main records via the plan above.",
+    regSector: "sector", regGrave: "grave",
     whyTitle: "Why this result",
     openRecord: "open record",
     why: {
@@ -1041,7 +1184,7 @@ const I18N = {
       vContradiction: "Likely a different person — details conflict"
     },
     prov: {
-      primary: { civil: "Primary source available — civil registration record", archive: "Primary source available — archival document", news: "Primary source — contemporary newspaper" },
+      primary: { burial: "Primary source — cemetery burial registry", civil: "Primary source available — civil registration record", archive: "Primary source available — archival document", news: "Primary source — contemporary newspaper" },
       primaryVia: s => `Primary source available in ${s}`,
       tree: "Secondary source — user-compiled family tree; check the sources cited in the profile",
       reference: "Reference source (encyclopedia) — not a primary document",
@@ -1103,7 +1246,7 @@ const I18N = {
     aboutText: "Istoki is a free search tool for open genealogy databases. We do not own the data: all results belong to their sources and open on their websites.",
     attrib: 'Data: <a href="https://www.wikitree.com" target="_blank" rel="noopener">WikiTree</a>, <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a> (CC0), <a href="https://www.openarchieven.nl" target="_blank" rel="noopener">Open Archives</a>, <a href="https://www.loc.gov/collections/chronicling-america/" target="_blank" rel="noopener">Library of Congress — Chronicling America</a>, <a href="https://archive.org" target="_blank" rel="noopener">Internet Archive</a>, <a href="https://www.nli.org.il" target="_blank" rel="noopener">National Library of Israel</a>, <a href="https://gallica.bnf.fr" target="_blank" rel="noopener">Gallica (BnF)</a>, <a href="https://www.europeana.eu" target="_blank" rel="noopener">Europeana</a>, <a href="https://dp.la" target="_blank" rel="noopener">DPLA</a>, <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a> and <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (CC BY-SA), <a href="https://www.census.gov/data/developers.html" target="_blank" rel="noopener">U.S. Census Bureau</a>. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.',
     privacyTitle: "Privacy",
-    privacyText: "No sign-up, no cookies, no stored queries. Searches run right in your browser.",
+    privacyText: "No sign-up. Searches run right in your browser; we store neither queries nor results. Anonymous visit statistics are collected with a web analytics service — the names you enter are never sent to it.",
     src: {
       wikitree: ["WikiTree", "Shared tree", "Free worldwide family tree: 30M+ sourced profiles with family links."],
       wikidata: ["Wikidata", "Encyclopedia", "Notable people: dates, places, parents, photos. Works well with Cyrillic too."],
@@ -1111,6 +1254,7 @@ const I18N = {
       loc: ["U.S. newspapers", "1770–1963", "Chronicling America: millions of digitized U.S. newspaper pages, full-text searchable."],
       nara: ["U.S. Archives (NARA)", "Records", "U.S. National Archives: immigration, naturalization, military, census."],
       archive: ["Internet Archive", "Books & directories", "Digitized books, city directories, yearbooks, Yizkor memorial books."],
+      registry: ["Kishinev cemetery registry", "Burials", "Kishinev Jewish Cemetery burial registry: sector, grave number, years of life."],
       nli: ["National Library of Israel", "Jewish heritage", "The largest collection of Jewish documents, newspapers, photos and archives (Yiddish, Hebrew, Russian…)."],
       gallica: ["Gallica", "French press", "National Library of France: newspapers and books, incl. Russian émigré press."],
       europeana: ["Europeana", "European archives", "50M+ items from European museums, archives and libraries: photos, documents, newspapers."],
@@ -1128,6 +1272,7 @@ const SOURCES = [
   { id: "nara",      color: "#e4574c", needs: () => NARA_ENABLED && !!PROXY_URL },
   { id: "loc",       color: "var(--c-loc)", needs: () => !!PROXY_URL },
   { id: "archive",   color: "#4fb3c8" },
+  { id: "registry",  color: "#2f6cc9", needs: () => !!(CFG.REGISTRY && CFG.REGISTRY.url) },
   { id: "nli",       color: "#3d7be0" },
   { id: "gallica",   color: "#c9536b", needs: () => !!PROXY_URL },
   { id: "europeana", color: "#e0a030", needs: () => !!EUROPEANA_KEY },
@@ -1360,7 +1505,53 @@ async function settledFlat(promises){
 }
 const dedupe = (arr, key) => { const seen = new Set(); return arr.filter(x => { const k = key(x); if (seen.has(k)) return false; seen.add(k); return true; }); };
 
+/* Реестр захоронений (ваш собственный источник). Адрес JSON или CSV задаётся в config.js → REGISTRY */
+const REG_FIELDS = {
+  name: ["name", "fio", "full_name", "fullname", "фио", "ф.и.о.", "ф.и.о"], last: ["last", "lastname", "last_name", "surname", "фамилия"], first: ["first", "firstname", "first_name", "имя"],
+  birth: ["birth", "born", "birth_year", "birthdate", "рождение", "год рождения", "дата рождения"], death: ["death", "died", "death_year", "deathdate", "смерть", "год смерти", "дата смерти"],
+  sector: ["sector", "section", "сектор", "участок"], grave: ["grave", "grave_no", "number", "no", "№ могилы", "могила", "номер"], id: ["id", "uid", "key"]
+};
+async function loadRegistry(){
+  if (window.__registry) return window.__registry;
+  const R = CFG.REGISTRY;
+  const txt = await getText(R.url);
+  let rows;
+  if (/^\s*[\[{]/.test(txt)){ const j = JSON.parse(txt); rows = Array.isArray(j) ? j : (j.records || j.data || j.items || j.rows || []); }
+  else {                                                     // CSV (например, опубликованная Google-таблица)
+    const lines = txt.replace(/\r/g, "").split("\n").filter(Boolean);
+    const sep = (lines[0].match(/;/g) || []).length > (lines[0].match(/,/g) || []).length ? ";" : ",";
+    const split = s => { const out = []; let cur = "", qo = false; for (const ch of s){ if (ch === '"') qo = !qo; else if (ch === sep && !qo){ out.push(cur); cur = ""; } else cur += ch; } out.push(cur); return out.map(x => x.trim()); };
+    const head = split(lines[0]);
+    rows = lines.slice(1).map(l => { const v = split(l), o = {}; head.forEach((k, i) => o[k] = v[i]); return o; });
+  }
+  const map = Object.assign({}, R.fields || {});
+  const pick = (row, key) => {
+    if (map[key]) return row[map[key]];
+    const k = Object.keys(row).find(x => REG_FIELDS[key].includes(String(x).toLowerCase().trim()));
+    return k ? row[k] : undefined;
+  };
+  window.__registry = rows.map(row => {
+    const name = pick(row, "name") || [pick(row, "last"), pick(row, "first")].filter(Boolean).join(" ");
+    return { name: String(name || "").trim(), birth: pick(row, "birth"), death: pick(row, "death"), sector: pick(row, "sector"), grave: pick(row, "grave"), id: pick(row, "id") };
+  }).filter(r => r.name);
+  return window.__registry;
+}
+
 Object.assign(API, {
+  async registry(q){
+    const R = CFG.REGISTRY, rows = await loadRegistry();
+    const surn = [...new Set([q.last, q.latLast, ...variants(q.latLast)].flatMap(tokens).filter(x => x.length > 1))];
+    return rows.filter(r => bestMatch(tokens(r.name + " " + translit(r.name)), surn) >= 0.85).slice(0, 200).map(r => {
+      const where = [R.place || (lang === "ru" ? "Кишинёв, еврейское кладбище" : "Kishinev Jewish Cemetery"),
+                     r.sector ? t("regSector") + " " + r.sector : "", r.grave ? t("regGrave") + " " + r.grave : ""].filter(Boolean).join(" · ");
+      const link = (R.link || "https://gbsearch.vercel.app/?q={name}").replace("{name}", enc(r.name)).replace("{id}", enc(r.id || ""));
+      return { source: "registry", kind: "person", cat: "docs", ref: [r.sector, r.grave].filter(Boolean).join(" / ") || r.id || "",
+        name: r.name, birth: yearOf(r.birth), death: yearOf(r.death), deathPlace: where, url: link };
+    });
+  },
+  searchUrl_registry: q => ((CFG.REGISTRY && CFG.REGISTRY.link) || "https://gbsearch.vercel.app/?q={name}").replace("{name}", enc(q.last)).replace("{id}", ""),
+
+
   /* Internet Archive — книги, справочники, альбомы */
   async archive(q){
     const list = await settledFlat(queryTerms(q).map(async term => {
@@ -1635,9 +1826,9 @@ function highlight(text){
 }
 /* ===================== категории, точность, дубликаты ===================== */
 const CAT_ORDER = ["docs", "trees", "bios", "pubs", "images"];
-const PERSON_SOURCES = new Set(["wikitree", "wikidata", "openarch"]);   // ищут по полям имени
+const PERSON_SOURCES = new Set(["wikitree", "wikidata", "openarch", "registry"]);   // ищут по полям имени
 const VERIFY_SOURCES = new Set(["archive", "nli", "europeana", "dpla", "commons", "wikipedia"]); // полнотекстовые — проверяем, что фамилия реально есть
-const SOURCE_PRIORITY = ["openarch", "nara", "wikitree", "nli", "europeana", "dpla", "loc", "archive", "wikidata", "wikipedia", "commons"];
+const SOURCE_PRIORITY = ["registry", "openarch", "nara", "wikitree", "nli", "europeana", "dpla", "loc", "archive", "wikidata", "wikipedia", "commons"];
 const colorOf = id => (ALL_SOURCES.find(s => s.id === id) || {}).color;
 
 const norm = s => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replace(/ё/g, "е");
@@ -1779,7 +1970,7 @@ function assess(r, q){
 
   const wsum = crit.reduce((a, c) => a + c.w, 0);
   let pct = Math.round(100 * crit.reduce((a, c) => a + c.v * c.w, 0) / wsum);
-  if (isSearchUrl(r.url)) pct = Math.min(pct, 40);
+  if (isSearchUrl(r.url) && r.source !== "registry") pct = Math.min(pct, 40);
   // процент не должен противоречить выводу: инициал — максимум «возможное», расхождение данных — «слабое»
   if (firstState === "part") pct = Math.min(pct, 70);
   if (firstState === "no" || yearsState === "no") pct = Math.min(pct, 45);
@@ -1801,9 +1992,10 @@ function assess(r, q){
 }
 
 // Тип источника: первичный (архивная запись, газета того времени) или вторичный (древо, энциклопедия, книга)
-const PRIMARY = { openarch: "civil", nara: "archive", loc: "news" };
+const PRIMARY = { registry: "burial", openarch: "civil", nara: "archive", loc: "news" };
 function provenanceOf(r){
   const P = t("prov");
+  if (PRIMARY[r.source] && r.source === "registry") return { cls: "ok", text: P.primary.burial };
   if (isSearchUrl(r.url)) return { cls: "na", text: P.searchOnly };
   if (PRIMARY[r.source]) return { cls: "ok", text: P.primary[PRIMARY[r.source]] };
   if ((r.source === "nli" || r.source === "europeana" || r.source === "dpla") && r.cat === "docs") return { cls: "ok", text: P.primary.archive };
@@ -1907,7 +2099,7 @@ function rowHTML(r){
   const yrs = yearsOf(r), meta = metaOf(r);
   const showSnip = r.snippet && (r.kind === "news" || r.kind === "article" || r.kind === "book");
   const srcName = t("src")[r.source][0];
-  const searchLink = isSearchUrl(r.url);
+  const searchLink = isSearchUrl(r.url) && r.source !== "registry";
   const also = (r.also || []).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(t("src")[a.source][0])}</a>`).join(", ");
   return `<li class="rrow" style="--c:${colorOf(r.source)}">
     <a class="row" href="${esc(r.url)}" target="_blank" rel="noopener">
@@ -1959,7 +2151,7 @@ function renderGrid(){
   $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", query))}${n ? " · " + esc(t("likely", strongN)) : ""}</small>`;
 
   // в режиме «Все» первой идёт категория с самым сильным совпадением
-  const best = c => Math.max(0, ...state.items.filter(r => r.cat === c).map(r => r.score || 0));
+  const best = c => Math.max(0, ...state.items.filter(r => r.cat === c && (c !== "bios" || (r.level === "high" && r.verdict && r.verdict.cls === "ok"))).map(r => r.score || 0));
   const cats = CAT_ORDER.filter(c => state.filter === "all" || state.filter === c).sort((a, b) => best(b) - best(a));
   const mentions = Object.entries(state.mentions || {}).filter(([, v]) => v > 0);
   let html = "";
@@ -1968,7 +2160,10 @@ function renderGrid(){
   let adPlaced = false;
   for (const c of cats){
     const items = sortList(state.items.filter(r => r.cat === c));
-    const good = items.filter(r => r.level !== "low"), low = items.filter(r => r.level === "low");
+    // биографии (Wikidata, Википедия) — это в основном известные люди: показываем только при сильном совпадении
+    const strongBio = r => r.level === "high" && r.verdict && r.verdict.cls === "ok";
+    const isGood = r => c === "bios" ? strongBio(r) : r.level !== "low";
+    const good = items.filter(isGood), low = items.filter(r => !isGood(r));
     const cMentions = c === "pubs" ? mentions : [];
     if (!items.length && !cMentions.length) continue;
     const limit = state.expanded[c] ? Infinity : GROUP_LIMIT;
@@ -1979,7 +2174,8 @@ function renderGrid(){
     }
     if (low.length){
       const body = `<ul class="rlist">${low.slice(0, 60).map(rowHTML).join("")}</ul>`;
-      html += good.length ? `<details class="r-more"><summary>${esc(t("lowMatch", low.length))}</summary>${body}</details>`
+      const label = c === "bios" ? t("namesakes", low.length) : t("lowMatch", low.length);
+      html += (good.length || c === "bios") ? `<details class="r-more"><summary>${esc(label)}</summary>${body}</details>`
                           : `<p class="mention">${esc(t("onlyLow"))}</p>${body}`;
     }
     for (const [id, cnt] of cMentions){
@@ -1992,6 +2188,7 @@ function renderGrid(){
   if (!html) html = `<div class="empty"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`;
   grid.innerHTML = html;
   $("#moreWrap").hidden = true;
+  $("#openHead").innerHTML = `<h3>${esc(t("openTitle"))}</h3><p>${esc(t("openNote"))}</p>`;
 }
 
 function renderStatus(){
@@ -2055,7 +2252,9 @@ async function lookupPlace(name){
   const label = (e.labels[lang] || e.labels.en || e.labels.ru || {}).value || name;
   const desc = ((e.descriptions && (e.descriptions[lang] || e.descriptions.en)) || {}).value || "";
   const wiki = e.sitelinks && (e.sitelinks[lang + "wiki"] || e.sitelinks.enwiki);
-  return { id: e.id, label, desc, names: [...names.values()].slice(0, 24), url: "https://www.wikidata.org/wiki/" + e.id, wiki: wiki && wiki.url };
+  const p17 = e.claims.P17 && e.claims.P17[0] && e.claims.P17[0].mainsnak && e.claims.P17[0].mainsnak.datavalue;
+  const country = p17 && p17.value && p17.value.id;
+  return { id: e.id, label, desc, country, names: [...names.values()].slice(0, 24), url: "https://www.wikidata.org/wiki/" + e.id, wiki: wiki && wiki.url };
 }
 function renderPlace(p){
   const box = $("#placePanel");
@@ -2095,8 +2294,149 @@ function renderFooterAds(){
   box.innerHTML = `<div class="fa-head">${esc(t("footerAdsTitle"))}<span>${esc(t("adLabel"))}</span></div><div class="fa-grid">` + list.filter(a => a && a.url).map(a => {
     const title = pick(a.title), text = pick(a.text), cta = pick(a.cta) || t("open");
     const badge = a.image ? `<img src="${esc(a.image)}" alt="">` : esc(pick(a.badge) || title.charAt(0) || "•");
-    return `<a class="fa" href="${esc(a.url)}" target="_blank" rel="noopener sponsored"><span class="fa-b">${badge}</span><span class="fa-t"><b>${esc(title)}</b>${text ? `<small>${esc(text)}</small>` : ""}</span><span class="fa-c">${esc(cta)} ↗</span></a>`;
+    let href = a.url;
+    if (/mystorytel\.com/i.test(href) && !/utm_source=/.test(href)) href += (href.includes("?") ? "&" : "?") + AD.utm + "&utm_content=footer";
+    return `<a class="fa" href="${esc(href)}" target="_blank" rel="noopener sponsored"><span class="fa-b">${badge}</span><span class="fa-t"><b>${esc(title)}</b>${text ? `<small>${esc(text)}</small>` : ""}</span><span class="fa-c">${esc(cta)} ↗</span></a>`;
   }).join("") + `</div>`;
+}
+
+/* ===================== ПЛАН ПОИСКА: где реально лежат записи о человеке ===================== */
+// Открытые базы содержат лишь малую часть записей о людях из Российской империи и Восточной Европы.
+// Основные документы — в базах без открытого API. План подбирает их под регион и годы и даёт точные ссылки.
+const COUNTRY_REGION = { Q217: "moldova", Q218: "romania", Q212: "ukraine", Q184: "belarus", Q159: "russia", Q15180: "russia", Q34266: "russia",
+  Q36: "poland", Q37: "lithuania", Q211: "latvia", Q191: "estonia", Q30: "usa", Q801: "israel", Q183: "germany", Q28: "hungary", Q213: "czech", Q16: "canada", Q408: "australia", Q145: "uk", Q414: "argentina", Q155: "brazil" };
+const REGION_WORDS = [
+  ["moldova", /бессараб|bessarab|кишин|kishin|kischin|chisin|chișin|бельц|balti|bălți|сорок|soroc|оргеев|orhei|orgeyev|бендер|bender|tighina|единц|edine|хотин|khotin|hotin|аккерман|akkerman|измаил|izmail|кагул|cahul|флорешт|floresti|молдав|moldov|рышкан|riscani|леово|leova|теленешт|telenesti|ганчешт|hancesti|бричан|briceni|липкан|lipcani|сокиря|secureni|атак|otaci|резин|rezina|калараш|calarasi|дубоссар|dubasari|тирасп|tiraspol/i],
+  ["ukraine", /украин|ukrain|одесс|odess|одеса|киев|kiev|kyiv|київ|житомир|zhitomir|zhytomyr|бердичев|berdich|винниц|vinnits|vinnyts|подол|podol|волын|volyn|volhyn|херсон|kherson|николаев|nikolaev|mykolaiv|екатеринослав|днепр|dnipro|ekaterinoslav|полтав|poltav|черниг|chernig|чернигов|chernihiv|харьков|kharkov|kharkiv|умань|uman|каменец|kamenets|проскуров|proskurov|львов|lviv|lwow|lemberg|черновц|czernowitz|chernivtsi|черкас|cherkas|кременчуг|kremenchug/i],
+  ["belarus", /беларус|белорус|belarus|минск|minsk|гомел|gomel|homel|витеб|vitebsk|могил|mogilev|mahil|бобруйск|bobruisk|брест|brest|пинск|pinsk|гродн|grodno|hrodna|слуцк|slutsk|борисов|borisov|полоцк|polotsk|мозыр|mozyr|речиц|rechitsa/i],
+  ["poland", /польш|poland|polska|варшав|warsaw|warszaw|лодз|lodz|łódź|краков|krakow|kraków|люблин|lublin|белосток|bialystok|białystok|радом|radom|ченстох|czestoch|kielce|кельц|плоцк|plock|сувалк|suwalki|ломж|lomza|łomża|замост|zamosc|седлец|siedlce/i],
+  ["lithuania", /литв|lithuan|lietuv|вильн|vilna|vilnius|wilno|ковн|kovno|kaunas|шавл|siauliai|šiauliai|паневеж|panevez|тельш|telsiai|укмерг|ukmerge|вилкомир/i],
+  ["latvia", /латв|latvia|рига|riga|двинск|dvinsk|daugavpils|либав|libau|liepaja|митав|mitau|jelgava|курлянд|courland|kurzeme|резекн|rezekne|режиц/i],
+  ["russia", /росси|russia|москв|moscow|петербург|petersburg|ленинград|leningrad|смоленск|smolensk|брянск|briansk|самар|samara|ростов|rostov|саратов|saratov|казан|kazan|нижн|nizhn|сибир|siberi|урал|ural/i],
+  ["romania", /румын|romania|românia|бухарест|bucharest|ясс|iasi|iași|ботошан|botosani|черновиц/i],
+  ["usa", /сша|америк|usa|united states|america|нью-йорк|new york|бруклин|brooklyn|чикаго|chicago|бостон|boston|филадельф|philadelph|балтимор|baltimore|детройт|detroit|лос-андж|los angeles|кливленд|cleveland|питтсбург|pittsburgh|ньюарк|newark|new jersey|нью-джерси/i],
+  ["israel", /израил|israel|палестин|palestin|тель-авив|tel aviv|tel-aviv|иерусалим|jerusalem|хайф|haifa|ришон|rishon|петах|petah|нетани|netanya|беэр|beer sheva|ашдод|ashdod/i],
+  ["germany", /германи|germany|deutschland|берлин|berlin|мюнхен|munich|франкфурт|frankfurt|гамбург|hamburg/i]
+];
+const EMPIRE = new Set(["moldova", "ukraine", "belarus", "poland", "lithuania", "latvia", "russia", "estonia", "romania"]);
+const USSR = new Set(["moldova", "ukraine", "belarus", "lithuania", "latvia", "russia", "estonia"]);
+function detectRegion(q){
+  if (q.placeCountry && COUNTRY_REGION[q.placeCountry]) return COUNTRY_REGION[q.placeCountry];
+  const text = [q.place, q.placeLat, ...(q.placeNames || []), q.placeDesc || ""].join(" ");
+  for (const [rg, re] of REGION_WORDS) if (re.test(text)) return rg;
+  return null;
+}
+
+// Латиница → кириллица (приблизительно) для баз, которые ищут только по-русски: «Память народа», ОБД, «Открытый список»
+function toCyr(s){
+  if (!s || hasCyr(s)) return s || "";
+  const pairs = [["shch","щ"],["sch","щ"],["zh","ж"],["kh","х"],["ch","ч"],["sh","ш"],["ts","ц"],["tz","ц"],["yu","ю"],["ya","я"],["yo","ё"],["ye","е"],["ie","ье"],["ei","ей"],["ai","ай"],["oi","ой"],["ui","уй"],
+                 ["a","а"],["b","б"],["v","в"],["w","в"],["g","г"],["h","г"],["d","д"],["e","е"],["z","з"],["i","и"],["y","й"],["j","й"],["k","к"],["l","л"],["m","м"],
+                 ["n","н"],["o","о"],["p","п"],["r","р"],["s","с"],["t","т"],["u","у"],["f","ф"],["c","к"],["q","к"],["x","кс"]];
+  let out = "", low = s.toLowerCase().replace(/(skiy|skii|sky|ski)$/, "ский").replace(/(tskiy|tsky)$/, "цкий").replace(/(iy|yi)$/, "ий"), i = 0;
+  while (i < low.length){
+    const pr = pairs.find(([a]) => low.startsWith(a, i));
+    if (pr){ out += pr[1]; i += pr[0].length; } else { out += low[i]; i++; }
+  }
+  out = out.replace(/ий$/, "ий").replace(/(^|[^а-яё])й([аоуэ])/g, "$1$2");
+  return out.charAt(0).toUpperCase() + out.slice(1);
+}
+function buildPlan(q){
+  const P = t("plan"), ru = lang === "ru";
+  // имя — русская форма из словаря имён (Moisei → Моисей), иначе транслитерация
+  const cyrForm = n => { if (!n || hasCyr(n)) return n || ""; const g = NAME_GROUPS.find(gr => gr.includes(norm(n))); const c = g && g.find(x => hasCyr(x)); return c ? capW(c) : toCyr(n); };
+  const f = q.latFirst || "", l = q.latLast || "", fc = cyrForm(q.first || ""), lc = toCyr(q.last || "");
+  const fullL = (f + " " + l).trim();
+  const region = detectRegion(q);
+  const yf = q.yf || q.yt || null, yt = q.yt || q.yf || null;
+  const unknownYears = !yf;
+  const empire = !region || EMPIRE.has(region);
+  const ussr = !region || USSR.has(region);
+  const holocaustAge = unknownYears || yf <= 1944;                 // родился до конца войны
+  const ww2Age = unknownYears || (yt >= 1870 && yf <= 1928);       // мог быть призван в 1941–45
+  const emigrationAge = unknownYears || yf <= 1925;               // эпоха массовой эмиграции через Эллис-Айленд и до 1950-х
+  const placeTxt = q.place || "";
+  const years = yf ? (yf === yt ? String(yf) : `${yf}–${yt}`) : "";
+  const items = [];
+  const add = (prio, o) => items.push({ prio, ...o });
+
+  // FamilySearch — основа почти для любого поиска
+  add(100, { id: "fs", name: "FamilySearch", tag: P.free,
+    why: P.fs(region), enter: P.enterName(fullL, years, placeTxt),
+    url: `https://www.familysearch.org/search/record/results?q.givenName=${enc(f)}&q.surname=${enc(l)}` + (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + (placeTxt ? `&q.anyPlace=${enc(q.placeLat || placeTxt)}` : "") });
+  if (placeTxt) add(92, { id: "fscat", name: P.fsCatName(placeTxt), tag: P.free,
+    why: P.fsCat(placeTxt), enter: "",
+    url: `https://www.familysearch.org/search/catalog/results?count=20&query=${enc('+place:"' + (q.placeLat || placeTxt) + '"')}` });
+
+  // регион
+  if (region === "moldova"){
+    add(97, { id: "kish", name: P.kishName, tag: P.unique, featured: true, why: P.kish, enter: P.enterSurname(lc || l),
+      url: `https://gbsearch.vercel.app/?q=${enc(lc || l)}` });
+    add(84, { id: "jgbess", name: "JewishGen — Bessarabia", tag: P.freeReg, why: P.jgBess, enter: P.enterPhonetic(l),
+      url: "https://www.jewishgen.org/Bessarabia/" });
+  }
+  if (region === "poland"){
+    add(90, { id: "geneteka", name: "Geneteka", tag: P.free, why: P.geneteka, enter: P.enterSurname(l),
+      url: `https://geneteka.genealodzy.pl/index.php?op=gt&lang=${ru ? "rus" : "eng"}&w=&rid=B&search_lastname=${enc(l)}&search_name=${enc(f)}&search_lastname2=&search_name2=&from_date=&to_date=` });
+    add(86, { id: "jri", name: "JRI-Poland", tag: P.free, why: P.jri, enter: P.enterPhonetic(l), url: "https://jri-poland.org/" });
+  }
+  if (region === "lithuania") add(86, { id: "litvak", name: "LitvakSIG", tag: P.freeReg, why: P.litvak, enter: P.enterPhonetic(l), url: "https://www.litvaksig.org/" });
+  if (region === "latvia") add(86, { id: "radu", name: "Raduraksti", tag: P.freeReg, why: P.radu, enter: "", url: "https://raduraksti.arhivi.lv/" });
+  if (region === "israel") add(84, { id: "bg", name: "BillionGraves", tag: P.free, why: P.bgIsrael, enter: P.enterName(fullL, "", ""),
+    url: `https://billiongraves.com/search/results?given_names=${enc(f)}&family_names=${enc(l)}` });
+
+  // еврейская генеалогия Российской империи и Восточной Европы
+  if (empire) add(88, { id: "jg", name: "JewishGen", tag: P.freeReg, why: P.jg, enter: P.enterPhonetic(l), url: "https://www.jewishgen.org/databases/all/" });
+
+  // Холокост
+  if (holocaustAge && (empire || region === "germany" || region === "hungary" || region === "czech")){
+    add(87, { id: "yv", name: "Yad Vashem", tag: P.free, why: P.yv, enter: "",
+      url: `https://collections.yadvashem.org/${ru ? "ru" : "en"}/names/search-results/${enc(fullL)}?page=1` });
+    add(68, { id: "arolsen", name: "Arolsen Archives", tag: P.free, why: P.arolsen, enter: "",
+      url: `https://collections.arolsen-archives.org/en/search?s=${enc(fullL)}` });
+    add(62, { id: "ushmm", name: P.ushmmName, tag: P.free, why: P.ushmm, enter: "",
+      url: `https://collections.ushmm.org/search/?q=${enc(fullL)}` });
+  }
+
+  // СССР: война и репрессии
+  if (ussr && ww2Age){
+    add(83, { id: "pn", name: P.pnName, tag: P.free, why: P.pn, enter: P.enterRu(lc, fc),
+      url: `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}` });
+    add(66, { id: "obd", name: P.obdName, tag: P.free, why: P.obd, enter: P.enterRu(lc, fc), url: "https://obd-memorial.ru/html/" });
+  }
+  if (ussr) add(58, { id: "ol", name: P.olName, tag: P.free, why: P.ol, enter: P.enterRu(lc, fc), url: "https://ru.openlist.wiki/" });
+
+  // эмиграция в США
+  if (emigrationAge && (empire || region === "usa" || !region)){
+    add(region === "usa" ? 91 : 78, { id: "ellis", name: "Ellis Island", tag: P.freeReg, why: P.ellis, enter: P.enterEllis(l, f), url: "https://heritage.statueofliberty.org/" });
+  }
+  if (region === "usa"){
+    add(80, { id: "fag", name: "Find a Grave", tag: P.free, why: P.fag, enter: "",
+      url: `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (yf ? `&birthyear=${yf}&birthyearfilter=5` : "") });
+    add(70, { id: "nara", name: "U.S. National Archives", tag: P.free, why: P.nara, enter: "", url: `https://catalog.archives.gov/search?q=${enc('"' + fullL + '"')}` });
+  }
+
+  // общие древа — вдруг родственники уже построили древо
+  add(56, { id: "geni", name: "Geni", tag: P.free, why: P.geni, enter: "", url: `https://www.geni.com/search?search_type=people&names=${enc(fullL)}` });
+  add(50, { id: "mh", name: "MyHeritage", tag: P.paid, why: P.mh, enter: "", url: `https://www.myheritage.com/names/${enc((f || "").toLowerCase())}_${enc(l.toLowerCase())}` });
+
+  return { region, items: items.sort((a, b) => b.prio - a.prio).slice(0, 8) };
+}
+
+function renderPlan(){
+  const box = $("#planBox"); if (!state.q){ box.innerHTML = ""; return; }
+  const { region, items } = buildPlan(state.q);
+  const P = t("plan");
+  box.innerHTML = `<section class="plan">
+    <div class="plan-head"><h3>${esc(P.title)}</h3><span>${esc(region ? P.forRegion(t("regions")[region] || region) : P.general)}</span></div>
+    <p class="plan-sub">${esc(P.sub)}</p>
+    <ol class="plan-list">${items.map((it, i) => `<li class="${it.featured ? "featured" : ""}">
+      <span class="pn">${i + 1}</span>
+      <div class="pb"><div class="pt"><b>${esc(it.name)}</b><span class="ptag">${esc(it.tag)}</span></div>
+        <p>${esc(it.why)}</p>${it.enter ? `<p class="pe">${esc(it.enter)}</p>` : ""}</div>
+      <a class="pgo" href="${esc(it.url)}" target="_blank" rel="noopener" data-plan="${it.id}">${esc(P.open)} ↗</a>
+    </li>`).join("")}</ol>
+  </section>`;
 }
 
 function renderExternal(){
@@ -2142,18 +2482,20 @@ function readQuery(){
 async function runSearch(){
   const q = readQuery();
   if (!q.last){ $("#ln").focus(); toast(t("needLast")); return; }
+  track("search", { lang, first: !!q.first, years: !!(q.yf || q.yt), place: !!q.place });
   const run = ++state.runId;
   renderPlace(null);
   if (q.place){
     try {
       const pl = await Promise.race([lookupPlace(q.place), new Promise(r => setTimeout(() => r(null), 4000))]);
       if (run !== state.runId) return;
-      if (pl){ q.placeNames = pl.names.map(n => n.v); renderPlace(pl); }
+      if (pl){ q.placeNames = pl.names.map(n => n.v); q.placeCountry = pl.country; q.placeDesc = pl.desc; renderPlace(pl); }
     } catch(e){}
   }
   Object.assign(state, { q, raw: [], items: [], merged: 0, status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, census: null });
   $("#results").hidden = false; $("#intro").hidden = true;
   syncUrl(q);
+  renderPlan();
   renderExternal(); renderCensus(null);
   const active = SOURCES.filter(s => state.enabled.has(s.id));
   active.forEach(s => state.status[s.id] = { state: "loading" });
@@ -2167,7 +2509,7 @@ async function runSearch(){
       let res = await API[s.id](q);
       if (res && !Array.isArray(res)){ if (run === state.runId) state.mentions[s.id] = res.mentions || 0; res = []; }
       // Имя в документах часто записано иначе: для баз с людьми и записями, если по имени ничего нет, ищем по фамилии
-      else if (!res.length && (q.first || q.latFirst) && PERSON_SOURCES.has(s.id)){
+      else if (!res.length && (q.first || q.latFirst) && PERSON_SOURCES.has(s.id) && s.id !== "registry"){
         res = await API[s.id]({ ...q, first: "", latFirst: "" });
         res.forEach(r => r.bySurname = true);
       }
@@ -2241,7 +2583,7 @@ $("#grid").addEventListener("click", e => {
   state.expanded[b.dataset.expand] = true; renderGrid();
 });
 $("#shareBtn").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(location.href).then(() => toast(t("linkCopied"))); });
-$("#csvBtn").addEventListener("click", toCSV);
+$("#csvBtn").addEventListener("click", () => { track("csv_export"); toCSV(); });
 document.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", () => {
   const [f, l, yf, yt] = b.dataset.ex.split("|");
   $("#fn").value = f || ""; $("#ln").value = l || ""; $("#yf").value = yf || ""; $("#yt").value = yt || "";
