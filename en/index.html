@@ -250,6 +250,11 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .adv .wide{grid-column:span 2}
 .translit-note{grid-column:1/-1;font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;padding:0 6px}
 .translit-note svg{flex:0 0 16px;margin-top:3px}
+.fam-head{grid-column:1/-1;border-top:1px dashed var(--border);margin-top:6px;padding:12px 6px 0;display:flex;flex-direction:column;gap:2px}
+.fam-head b{font-size:14px}
+.fam-head span{font-size:13px;color:var(--muted)}
+.docs-used{font-size:13px;margin:-2px 0 12px;color:var(--muted)}
+.docs-used b{color:var(--text)}
 .sources{display:flex;gap:8px;flex-wrap:wrap;margin:14px 4px 4px}
 .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:transparent;border-radius:999px;padding:7px 13px 7px 10px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.2s;user-select:none}
 .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c);opacity:.35;transition:.2s}
@@ -621,7 +626,7 @@ footer a{color:var(--text)}
 
         <div class="adv-toggle">
           <button type="button" class="link-btn" id="advBtn" aria-expanded="false" aria-controls="adv">
-            <span data-i18n="advanced">Years, place and Latin spelling</span>
+            <span data-i18n="advanced">Years, place, family and Latin spelling</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"></path></svg>
           </button>
         </div>
@@ -636,6 +641,14 @@ footer a{color:var(--text)}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M11 12h1v5h1"></path></svg>
             <span data-i18n="translitNote">U.S. and European databases search in Latin letters. We fill these in automatically — edit them if records spelled the name differently.</span>
           </div>
+          <div class="fam-head"><b data-i18n="famTitle">Narrow down by events and family — optional</b><span data-i18n="famSub">Filled-in fields are passed into the archive search forms (FamilySearch, Find a Grave, Geneteka), so the right record comes up first.</span></div>
+          <div class="field"><label for="dy" data-i18n="fDy">Year of death</label><input id="dy" name="dy" inputmode="numeric" maxlength="4" placeholder="1962"></div>
+          <div class="field"><label for="my" data-i18n="fMy">Year of marriage</label><input id="my" name="my" inputmode="numeric" maxlength="4" placeholder="1912"></div>
+          <div class="field"><label for="ay" data-i18n="fAy">Arrived in U.S.</label><input id="ay" name="ay" inputmode="numeric" maxlength="4" placeholder="1907"></div>
+          <div class="field"><label for="rs" data-i18n="fRs">Later residence</label><input id="rs" name="rs" data-i18n-ph="fRsPh" placeholder="New York, Chicago…"></div>
+          <div class="field"><label for="sp" data-i18n="fSp">Spouse</label><input id="sp" name="sp" data-i18n-ph="fSpPh" placeholder="Sarah Goldman"></div>
+          <div class="field"><label for="fa" data-i18n="fFa">Father's first name</label><input id="fa" name="fa" data-i18n-ph="fFaPh" placeholder="Aaron"></div>
+          <div class="field wide"><label for="mo" data-i18n="fMo">Mother: first &amp; maiden name</label><input id="mo" name="mo" data-i18n-ph="fMoPh" placeholder="Chaya Shapiro"></div>
         </div>
 
         <div class="variants" id="variants" hidden=""></div>
@@ -918,7 +931,11 @@ const I18N = {
     title: "Найдите <em>документы</em><br>о своих предках",
     lead: "Списки пассажиров кораблей, натурализация, метрики о рождении, браке и смерти, переписи, военные архивы. Введите фамилию, годы и место — мы откроем поиск сразу в нужных коллекциях архивов с вашими данными.",
     firstName: "Имя", firstNamePh: "Например, Иван", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
-    searchBtn: "Найти", advanced: "Годы, место и латинское написание",
+    searchBtn: "Найти", advanced: "Годы, место, семья и латинское написание",
+    famTitle: "Уточнить по событиям и семье — необязательно",
+    famSub: "Заполненные поля мы подставим в формы поиска архивов (FamilySearch, Find a Grave, Geneteka), и нужная запись окажется в начале списка.",
+    fDy: "Год смерти", fMy: "Год брака", fAy: "Прибыл(а) в США", fRs: "Где жил(а) потом", fRsPh: "Нью-Йорк, Чикаго…",
+    fSp: "Муж или жена", fSpPh: "Сура Гольдман", fFa: "Имя отца", fFaPh: "Арон", fMo: "Мать: имя, девичья фамилия", fMoPh: "Хая Шапиро",
     yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
     latFirst: "Имя латиницей", latLast: "Фамилия латиницей",
     translitNote: "Американские и европейские базы ищут латиницей. Мы заполним эти поля сами — исправьте, если в документах фамилия писалась иначе.",
@@ -990,6 +1007,10 @@ const I18N = {
       addYears: "Укажите годы рождения — тогда останутся только документы, подходящие по времени, а поиск внутри коллекций станет точнее.",
       foot: "Совет: если человек не находится, попробуйте другие написания фамилии (кнопки «Другие написания» под формой) и имя в форме, принятой в стране въезда: Моисей → Moses, Morris; Ицхак → Isaac, Isidore.",
       free: "бесплатно", freeReg: "бесплатно, регистрация", unique: "уникальные данные",
+      used: "В ссылки подставлено:", uDy: "смерть", uMy: "брак", uAy: "прибытие", uSp: "супруг(а)", uFa: "отец", uMo: "мать", uRs: "жительство",
+      patr: p => `Отчество в советских документах, вероятно: ${p}.`,
+      gnMarr: "Geneteka — браки", gnMarrN: "Поиск записи о браке по обоим супругам.",
+      arrive: y => `Год прибытия: ${y} — укажите его в форме.`,
       types: {
         ships: { title: "Списки пассажиров кораблей", what: "Возраст, родной город, профессия, родственник, оставшийся дома, и к кому ехал в Америке. Часто это единственный документ с названием местечка." },
         natur: { title: "Натурализация и гражданство", what: "Заявление о намерении и прошение о гражданстве: дата и место рождения, корабль и дата прибытия, имена супруга и детей, иногда фото." },
@@ -1165,7 +1186,11 @@ const I18N = {
     title: "Find the <em>records</em><br>of your ancestors",
     lead: "Ship passenger lists, naturalization, birth, marriage and death records, censuses, military files. Enter a surname, years and place — we open the search directly in the right archive collections with your details filled in.",
     firstName: "First name", firstNamePh: "e.g. John", lastName: "Last name", lastNamePh: "e.g. Goldberg",
-    searchBtn: "Search", advanced: "Years, place and Latin spelling",
+    searchBtn: "Search", advanced: "Years, place, family and Latin spelling",
+    famTitle: "Narrow down by events and family — optional",
+    famSub: "Filled-in fields are passed into the archive search forms (FamilySearch, Find a Grave, Geneteka), so the right record comes up first.",
+    fDy: "Year of death", fMy: "Year of marriage", fAy: "Arrived in U.S.", fRs: "Later residence", fRsPh: "New York, Chicago…",
+    fSp: "Spouse", fSpPh: "Sarah Goldman", fFa: "Father's first name", fFaPh: "Aaron", fMo: "Mother: first & maiden name", fMoPh: "Chaya Shapiro",
     yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
     latFirst: "First name (Latin)", latLast: "Last name (Latin)",
     translitNote: "U.S. and European databases search in Latin letters. We fill these in automatically — edit them if records spelled the name differently.",
@@ -1237,6 +1262,10 @@ const I18N = {
       addYears: "Add birth years — only documents that fit the time period will remain, and searches inside collections become more precise.",
       foot: "Tip: if the person doesn't turn up, try other surname spellings (the “Other spellings” buttons under the form) and the name form used in the destination country: Moshe → Moses, Morris; Yitzhak → Isaac, Isidore.",
       free: "free", freeReg: "free, sign-up", unique: "unique data",
+      used: "Passed into the links:", uDy: "death", uMy: "marriage", uAy: "arrival", uSp: "spouse", uFa: "father", uMo: "mother", uRs: "residence",
+      patr: p => `Patronymic in Soviet records is probably: ${p}.`,
+      gnMarr: "Geneteka — marriages", gnMarrN: "Marriage record search by both spouses.",
+      arrive: y => `Arrival year: ${y} — enter it in the form.`,
       types: {
         ships: { title: "Ship passenger lists", what: "Age, hometown, occupation, the relative left behind and whom they were joining in America. Often the only document naming the shtetl." },
         natur: { title: "Naturalization & citizenship", what: "Declaration of intention and petition: date and place of birth, ship and arrival date, names of spouse and children, sometimes a photo." },
@@ -2518,26 +2547,47 @@ function buildDocs(q){
   const empire = !region || EMPIRE.has(region), ussr = !region || USSR.has(region);
   const usaLikely = !region || region === "usa" || empire;
   // FamilySearch: поиск сразу внутри коллекции, с именем и годами рождения
-  const fs = (id, extra = "") => `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` +
-    (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + `&f.collectionId=${id}` + extra;
+  // Дополнительные поля: имена — в латиницу (FamilySearch ищет латиницей), «Имя Фамилия» делим на две части
+  const lat = s => hasCyr(s) ? translit(s) : s;
+  const split = s => { const w = lat(s || "").split(" ").filter(Boolean); return { g: w[0] || "", s: w.slice(1).join(" ") }; };
+  const sp = split(q.sp), mo = split(q.mo), fa = split(q.fa), rs = lat(q.rs || "");
+  const { dy, my, ay } = q;
+  // В каждую коллекцию передаём только то, что есть в таком документе: в манифесте нет даты смерти, в переписи — даты брака
+  const famFS = (keys = "dmsfor") =>
+    (keys.includes("d") && dy ? `&q.deathLikeDate.from=${dy - 1}&q.deathLikeDate.to=${dy + 1}` : "") +
+    (keys.includes("m") && my ? `&q.marriageLikeDate.from=${my - 1}&q.marriageLikeDate.to=${my + 1}` : "") +
+    (keys.includes("s") && sp.g ? `&q.spouseGivenName=${enc(sp.g)}` + (sp.s ? `&q.spouseSurname=${enc(sp.s)}` : "") : "") +
+    (keys.includes("f") && fa.g ? `&q.fatherGivenName=${enc(fa.g)}&q.fatherSurname=${enc(fa.s || l)}` : "") +
+    (keys.includes("o") && mo.g ? `&q.motherGivenName=${enc(mo.g)}` + (mo.s ? `&q.motherSurname=${enc(mo.s)}` : "") : "") +
+    (keys.includes("r") && rs ? `&q.residencePlace=${enc(rs)}` : "") +
+    (keys.includes("a") && ay ? `&q.anyDate.from=${ay - 1}&q.anyDate.to=${ay + 1}` : "");
+  const fs = (id, keys) => `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` +
+    (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + famFS(keys) + `&f.collectionId=${id}`;
+  // Отсечения по известным событиям: умер до 1941 — нет смысла искать среди участников войны и т. п.
+  const alive = y => !dy || dy >= y;
+  const arrived = (a, b) => !ay || (ay >= a && ay <= b);
+  // Отчество для советских документов: Арон → Аронович, Моисей → Моисеевич
+  const faC = q.fa ? cyrForm(q.fa.split(" ")[0]) : "";
+  const patr = !faC ? "" : /[йь]$/.test(faC) ? faC.slice(0, -1) + "евич" : /[ая]$/.test(faC) ? faC.slice(0, -1) + "ич" : /[жшчщц]$/.test(faC) ? faC + "евич" : faC + "ович";
   const sections = [];
   const sec = (id, prio, items) => { const list = items.filter(Boolean); if (list.length) sections.push({ id, prio, ...D.types[id], items: list }); };
   const it = (name, url, note, tag) => ({ name, url, note, tag });
 
   // 1. Списки пассажиров
-  if (usaLikely && born(1840, 1925)) sec("ships", region === "usa" || empire ? 96 : 70, [
-    it(D.l.ellis, fs(FS_COLL.ellis), D.n.ellis, "FamilySearch"),
-    it(D.l.ellisSite, "https://heritage.statueofliberty.org/", D.n.ellisSite(l, f), D.free),
-    it(D.l.morse, "https://stevemorse.org/ellis/elliswhite.html", D.n.morse, D.free),
-    born(1800, 1905) && it(D.l.nyPass, fs(FS_COLL.nyPass), D.n.nyPass, "FamilySearch")
+  const arrNote = ay ? " " + D.arrive(ay) : "";
+  if (usaLikely && born(1840, 1925) && arrived(1820, 1960)) sec("ships", region === "usa" || empire ? 96 : 70, [
+    arrived(1892, 1925) && it(D.l.ellis, fs(FS_COLL.ellis, "asf"), D.n.ellis, "FamilySearch"),
+    arrived(1892, 1957) && it(D.l.ellisSite, "https://heritage.statueofliberty.org/", D.n.ellisSite(l, f) + arrNote, D.free),
+    arrived(1820, 1957) && it(D.l.morse, "https://stevemorse.org/ellis/elliswhite.html", D.n.morse + arrNote, D.free),
+    born(1800, 1905) && arrived(1820, 1920) && it(D.l.nyPass, fs(FS_COLL.nyPass, "asf"), D.n.nyPass, "FamilySearch")
   ]);
   // 2. Натурализация
   if (usaLikely && born(1840, 1935)) sec("natur", region === "usa" ? 94 : 88, [
-    it(D.l.natNY, fs(FS_COLL.natNY), D.n.natNY, "FamilySearch"),
-    it(D.l.natNE, fs(FS_COLL.natNE), D.n.natNE, "FamilySearch"),
-    it(D.l.natMA, fs(FS_COLL.natMA), "", "FamilySearch"),
-    it(D.l.natMD, fs(FS_COLL.natMD), "", "FamilySearch"),
-    it(D.l.natCA, fs(FS_COLL.natCA), "", "FamilySearch"),
+    it(D.l.natNY, fs(FS_COLL.natNY, "msr"), D.n.natNY, "FamilySearch"),
+    it(D.l.natNE, fs(FS_COLL.natNE, "msr"), D.n.natNE, "FamilySearch"),
+    it(D.l.natMA, fs(FS_COLL.natMA, "msr"), "", "FamilySearch"),
+    it(D.l.natMD, fs(FS_COLL.natMD, "msr"), "", "FamilySearch"),
+    it(D.l.natCA, fs(FS_COLL.natCA, "msr"), "", "FamilySearch"),
     it(D.l.nara, `https://catalog.archives.gov/search?q=${enc('"' + full + '" naturalization')}`, D.n.nara, D.free)
   ]);
   // 3. Рождение, брак, смерть
@@ -2545,37 +2595,42 @@ function buildDocs(q){
   if (empire){
     vital.push(it(D.l.jg, "https://www.jewishgen.org/databases/all/", D.n.jg(l), D.freeReg));
     if (q.place) vital.push(it(D.l.fsCat(q.place), `https://www.familysearch.org/search/catalog/results?count=20&query=${enc('+place:"' + (q.placeLat || q.place) + '"')}`, D.n.fsCat, "FamilySearch"));
-    if (region === "poland") vital.push(it("Geneteka", `https://geneteka.genealodzy.pl/index.php?op=gt&lang=${ru ? "rus" : "eng"}&w=&rid=B&search_lastname=${enc(l)}&search_name=${enc(f)}&search_lastname2=&search_name2=&from_date=&to_date=`, D.n.geneteka, D.free));
+    if (region === "poland"){
+      const gn = (rid, a, b, l2 = "", f2 = "") => `https://geneteka.genealodzy.pl/index.php?op=gt&lang=${ru ? "rus" : "eng"}&w=&rid=${rid}&search_lastname=${enc(l)}&search_name=${enc(f)}&search_lastname2=${enc(l2)}&search_name2=${enc(f2)}&from_date=${a || ""}&to_date=${b || ""}`;
+      vital.push(it("Geneteka", gn("B", yf && yf - 2, yt && yt + 2), D.n.geneteka, D.free));
+      if (my || sp.g) vital.push(it(D.gnMarr, gn("S", my && my - 1, my && my + 1, sp.s, sp.g), D.gnMarrN, D.free));
+    }
     if (region === "latvia") vital.push(it("Raduraksti", "https://raduraksti.arhivi.lv/", D.n.radu, D.freeReg));
     if (region === "lithuania") vital.push(it("LitvakSIG", "https://www.litvaksig.org/", D.n.litvak, D.freeReg));
     if (region === "moldova") vital.push(it("JewishGen — Bessarabia", "https://www.jewishgen.org/Bessarabia/", D.n.bess, D.freeReg));
   }
   if (usaLikely){
     vital.push(it(D.l.nycVital, "https://a860-historicalvitalrecords.nyc.gov/", D.n.nycVital, D.free));
-    vital.push(it(D.l.nycDeaths, fs(FS_COLL.nycDeaths), D.n.nycDeaths, "FamilySearch"));
-    vital.push(it(D.l.nycMarr, fs(FS_COLL.nycMarr), "", "FamilySearch"));
-    if (born(1875, 2010)) vital.push(it(D.l.ssdi, fs(FS_COLL.ssdi), D.n.ssdi, "FamilySearch"));
+    if (!dy || dy <= 1949) vital.push(it(D.l.nycDeaths, fs(FS_COLL.nycDeaths, "dsfor"), D.n.nycDeaths, "FamilySearch"));
+    if (!my || my <= 1938) vital.push(it(D.l.nycMarr, fs(FS_COLL.nycMarr, "msfor"), "", "FamilySearch"));
+    if (born(1875, 2010) && alive(1962)) vital.push(it(D.l.ssdi, fs(FS_COLL.ssdi, "dr"), D.n.ssdi, "FamilySearch"));
   }
-  vital.push(it(D.l.fsAll, `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` + (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + (q.place ? `&q.anyPlace=${enc(q.placeLat || q.place)}` : ""), D.n.fsAll, "FamilySearch"));
+  vital.push(it(D.l.fsAll, `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` + (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + (q.place ? `&q.birthLikePlace=${enc(q.placeLat || q.place)}` : "") + famFS("dmsfor"), D.n.fsAll, "FamilySearch"));
   sec("vital", empire ? 95 : 90, vital);
   // 4. Переписи
-  if (usaLikely && born(1840, 1950)) sec("census", region === "usa" ? 92 : 80, [
-    born(1855, 1950) && it(D.l.c1950, `https://1950census.archives.gov/search/?name=${enc(full)}&page=1`, D.n.c1950, D.free),
-    born(1845, 1940) && it(D.l.c1940, fs(FS_COLL.c1940), D.n.c1940, "FamilySearch"),
-    born(1835, 1930) && it(D.l.c1930, fs(FS_COLL.c1930), "", "FamilySearch"),
-    born(1825, 1920) && it(D.l.c1920, fs(FS_COLL.c1920), D.n.c1920, "FamilySearch")
+  if (usaLikely && born(1840, 1950) && alive(1920)) sec("census", region === "usa" ? 92 : 80, [
+    born(1855, 1950) && alive(1950) && it(D.l.c1950, `https://1950census.archives.gov/search/?name=${enc(full)}&page=1`, D.n.c1950, D.free),
+    born(1845, 1940) && alive(1940) && it(D.l.c1940, fs(FS_COLL.c1940, "sfor"), D.n.c1940, "FamilySearch"),
+    born(1835, 1930) && alive(1930) && it(D.l.c1930, fs(FS_COLL.c1930, "sfor"), "", "FamilySearch"),
+    born(1825, 1920) && alive(1920) && it(D.l.c1920, fs(FS_COLL.c1920, "sfor"), D.n.c1920, "FamilySearch")
   ]);
   // 5. Военные документы
   const mil = [];
-  if (ussr && born(1870, 1928)){
-    mil.push(it(D.l.pn, `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}`, D.n.pn, D.free));
-    mil.push(it(D.l.obd, "https://obd-memorial.ru/html/", D.n.obd(lc, fc), D.free));
+  if (ussr && born(1870, 1928) && alive(1941)){
+    const pt = patr ? " " + D.patr(patr) : "";
+    mil.push(it(D.l.pn, `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}`, D.n.pn + pt, D.free));
+    mil.push(it(D.l.obd, "https://obd-memorial.ru/html/", D.n.obd(lc, fc) + pt, D.free));
   }
-  if (usaLikely && born(1872, 1900)) mil.push(it(D.l.ww1, fs(FS_COLL.ww1), D.n.ww1, "FamilySearch"));
-  if (usaLikely && born(1877, 1897)) mil.push(it(D.l.ww2old, fs(FS_COLL.ww2old), D.n.ww2old, "FamilySearch"));
+  if (usaLikely && born(1872, 1900) && alive(1917)) mil.push(it(D.l.ww1, fs(FS_COLL.ww1, "r"), D.n.ww1, "FamilySearch"));
+  if (usaLikely && born(1877, 1897) && alive(1942)) mil.push(it(D.l.ww2old, fs(FS_COLL.ww2old, "r"), D.n.ww2old, "FamilySearch"));
   sec("military", 78, mil);
   // 6. Холокост и депортации
-  if (born(1850, 1944) && (empire || ["germany", "hungary", "czech", "romania"].includes(region))) sec("holocaust", 84, [
+  if (born(1850, 1944) && alive(1939) && (empire || ["germany", "hungary", "czech", "romania"].includes(region))) sec("holocaust", 84, [
     it("Yad Vashem", `https://collections.yadvashem.org/${ru ? "ru" : "en"}/names/search-results/${enc(full)}?page=1`, D.n.yv, D.free),
     it("Arolsen Archives", `https://collections.arolsen-archives.org/en/search?s=${enc(full)}`, D.n.arolsen, D.free),
     it(D.l.ushmm, `https://collections.ushmm.org/search/?q=${enc(full)}`, D.n.ushmm, D.free)
@@ -2583,25 +2638,27 @@ function buildDocs(q){
   // 7. Захоронения
   sec("graves", 74, [
     region === "moldova" && it(D.l.kish, `https://gbsearch.vercel.app/?q=${enc(lc || l)}`, D.n.kish, D.unique),
-    it("Find a Grave", `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (yf ? `&birthyear=${yf}&birthyearfilter=5` : ""), D.n.fag, D.free),
+    it("Find a Grave", `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (yf ? `&birthyear=${yf}&birthyearfilter=5` : "") + (dy ? `&deathyear=${dy}&deathyearfilter=1` : ""), D.n.fag, D.free),
     it("BillionGraves", `https://billiongraves.com/search/results?given_names=${enc(f)}&family_names=${enc(l)}`, D.n.bg, D.free),
     it(D.l.jowbr, "https://www.jewishgen.org/databases/cemetery/", D.n.jowbr, D.freeReg)
   ]);
   // 8. Репрессии (СССР)
   if (ussr) sec("repression", 60, [
-    it(D.l.ol, "https://ru.openlist.wiki/", D.n.ol(lc, fc), D.free)
+    it(D.l.ol, "https://ru.openlist.wiki/", D.n.ol(lc, fc) + (patr ? " " + D.patr(patr) : ""), D.free)
   ]);
-  return { region, sections: sections.sort((a, b) => b.prio - a.prio) };
+  const used = [dy && [D.uDy, dy], my && [D.uMy, my], ay && [D.uAy, ay], q.sp && [D.uSp, q.sp], q.fa && [D.uFa, q.fa], q.mo && [D.uMo, q.mo], q.rs && [D.uRs, q.rs]].filter(Boolean);
+  return { region, used, sections: sections.sort((a, b) => b.prio - a.prio) };
 }
 
 function renderPlan(){
   const box = $("#planBox"); if (!state.q){ box.innerHTML = ""; return; }
-  const { region, sections } = buildDocs(state.q);
+  const { region, sections, used } = buildDocs(state.q);
   const D = t("docs");
   box.innerHTML = `<section class="docs">
     <div class="plan-head"><h3>${esc(D.title)}</h3><span>${esc(region ? D.forRegion(t("regions")[region] || region) : D.general)}</span></div>
     <p class="plan-sub">${esc(D.sub)}</p>
     ${(!state.q.yf && !state.q.yt) ? `<p class="docs-hint">${esc(D.addYears)}</p>` : ""}
+    ${used.length ? `<p class="docs-used">${esc(D.used)} ${used.map(([k, v]) => `${esc(k)} <b>${esc(String(v))}</b>`).join(" · ")}</p>` : ""}
     <div class="doc-grid">${sections.map(s => `<article class="doc" data-doc="${s.id}">
       <h4>${esc(s.title)}</h4>
       <p class="doc-what">${esc(s.what)}</p>
@@ -2648,13 +2705,16 @@ function readQuery(){
   const place = $("#pl").value.trim();
   const latFirst = ($("#lfn").value.trim() || translit(first));
   const latLast = ($("#lln").value.trim() || translit(last));
-  return { first, last, yf, yt, place, placeLat: translit(place), latFirst, latLast };
+  const yr = id => { const v = parseInt($("#" + id).value, 10); return v > 1500 && v < 2100 ? v : null; };
+  const tx = id => $("#" + id).value.trim().replace(/\s+/g, " ");
+  return { first, last, yf, yt, place, placeLat: translit(place), latFirst, latLast,
+    dy: yr("dy"), my: yr("my"), ay: yr("ay"), sp: tx("sp"), fa: tx("fa"), mo: tx("mo"), rs: tx("rs") };
 }
 
 async function runSearch(){
   const q = readQuery();
   if (!q.last){ $("#ln").focus(); toast(t("needLast")); return; }
-  track("search", { lang, first: !!q.first, years: !!(q.yf || q.yt), place: !!q.place });
+  track("search", { lang, first: !!q.first, years: !!(q.yf || q.yt), place: !!q.place, family: !!(q.dy || q.my || q.ay || q.sp || q.fa || q.mo || q.rs) });
   const run = ++state.runId;
   renderPlace(null);
   if (q.place){
@@ -2707,6 +2767,7 @@ function syncUrl(q){
   if (q.yf) p.set("yf", q.yf); if (q.yt) p.set("yt", q.yt); if (q.place) p.set("pl", q.place);
   if ($("#lfn").value.trim()) p.set("lfn", $("#lfn").value.trim());
   if ($("#lln").value.trim()) p.set("lln", $("#lln").value.trim());
+  for (const k of ["dy", "my", "ay", "sp", "fa", "mo", "rs"]) if (q[k]) p.set(k, q[k]);
   history.replaceState(null, "", "?" + p.toString());
 }
 
@@ -2760,6 +2821,7 @@ document.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", 
   const [f, l, yf, yt] = b.dataset.ex.split("|");
   $("#fn").value = f || ""; $("#ln").value = l || ""; $("#yf").value = yf || ""; $("#yt").value = yt || "";
   $("#lfn").value = ""; $("#lln").value = ""; $("#pl").value = "";
+  ["dy", "my", "ay", "sp", "fa", "mo", "rs"].forEach(k => $("#" + k).value = "");
   if (yf){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
   updateVariants(); runSearch();
 }));
@@ -2780,7 +2842,8 @@ applyI18n();
   $("#fn").value = p.get("fn") || ""; $("#ln").value = p.get("ln") || "";
   $("#yf").value = p.get("yf") || ""; $("#yt").value = p.get("yt") || ""; $("#pl").value = p.get("pl") || "";
   $("#lfn").value = p.get("lfn") || ""; $("#lln").value = p.get("lln") || "";
-  if (p.get("yf") || p.get("yt") || p.get("pl") || p.get("lln")){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
+  const fam = ["dy", "my", "ay", "sp", "fa", "mo", "rs"]; fam.forEach(k => $("#" + k).value = p.get(k) || "");
+  if (p.get("yf") || p.get("yt") || p.get("pl") || p.get("lln") || fam.some(k => p.get(k))){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
   updateVariants(); runSearch();
 })();
 </script>
