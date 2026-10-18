@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Поиск предков по фамилии бесплатно — архивы и генеалогия | Истоки</title>
-<meta name="description" content="Бесплатный поиск предков и родственников по фамилии сразу в 10+ открытых базах: родословные древа, метрические записи, газеты США, Национальная библиотека Израиля, архивы Европы.">
+<meta name="description" content="Бесплатный поиск документов о предках по фамилии: списки пассажиров Эллис-Айленда, натурализация, метрики о рождении, браке и смерти, переписи США, военные архивы, Холокост, кладбища.">
 <meta name="keywords" content="поиск предков, поиск предков по фамилии, найти предков бесплатно, генеалогия, родословная, поиск родственников, найти родственников по фамилии, генеалогическое древо, архивы, метрические книги, ревизские сказки, поиск родственников в США, эмиграция в Америку, Эллис Айленд, еврейская генеалогия, Российская империя, Бессарабия, жертвы Холокоста, участники войны, история семьи">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="https://isradata.vercel.app/">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Истоки">
 <meta property="og:url" content="https://isradata.vercel.app/">
 <meta property="og:title" content="Истоки — найдите своих предков в открытых архивах мира">
-<meta property="og:description" content="Один бесплатный поиск по фамилии — сразу в родословных древах, архивах, газетах и фотоархивах. Без регистрации.">
+<meta property="og:description" content="Списки пассажиров, натурализация, метрики, переписи и военные документы — поиск сразу в нужных коллекциях архивов.">
 <meta property="og:image" content="https://isradata.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -22,7 +22,7 @@
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Истоки — найдите своих предков в открытых архивах мира">
-<meta name="twitter:description" content="Один бесплатный поиск по фамилии — сразу в родословных древах, архивах, газетах и фотоархивах. Без регистрации.">
+<meta name="twitter:description" content="Списки пассажиров, натурализация, метрики, переписи и военные документы — поиск сразу в нужных коллекциях архивов.">
 <meta name="twitter:image" content="https://isradata.vercel.app/og-image.png">
 <script type="application/ld+json">
 {
@@ -38,7 +38,7 @@
     "Istoki",
     "Istoki genealogy search"
    ],
-   "description": "Бесплатный поиск предков и родственников по фамилии сразу в 10+ открытых базах: родословные древа, метрические записи, газеты США, Национальная библиотека Израиля, архивы Европы.",
+   "description": "Бесплатный поиск документов о предках по фамилии: списки пассажиров Эллис-Айленда, натурализация, метрики о рождении, браке и смерти, переписи США, военные архивы, Холокост, кладбища.",
    "inLanguage": "ru",
    "potentialAction": {
     "@type": "SearchAction",
@@ -54,7 +54,7 @@
    "@id": "https://isradata.vercel.app/#app",
    "name": "Истоки",
    "url": "https://isradata.vercel.app/",
-   "description": "Бесплатный поиск предков и родственников по фамилии сразу в 10+ открытых базах: родословные древа, метрические записи, газеты США, Национальная библиотека Израиля, архивы Европы.",
+   "description": "Бесплатный поиск документов о предках по фамилии: списки пассажиров Эллис-Айленда, натурализация, метрики о рождении, браке и смерти, переписи США, военные архивы, Холокост, кладбища.",
    "inLanguage": "ru",
    "applicationCategory": "ReferenceApplication",
    "operatingSystem": "Any",
@@ -478,6 +478,22 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .place .pnames button:hover{border-color:var(--accent)}
 .place .pnames i{font-style:normal;font-size:10.5px;color:var(--faint);text-transform:uppercase}
 .place .plinks{font-size:12.5px;margin:0}.place .plinks a{color:var(--muted);font-weight:700}
+.docs{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface));border-radius:var(--radius);padding:20px;margin-bottom:30px}
+.docs-hint{font-size:13px;font-weight:600;color:var(--accent);margin:-4px 0 12px}
+.doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.doc{border:1px solid var(--border);background:var(--surface-2);border-radius:var(--radius-sm);padding:14px 14px 8px}
+.doc h4{margin:0 0 4px;font-size:16px;font-weight:800}
+.doc-what{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+.doc ul{list-style:none;margin:0;padding:0}
+.doc li{border-top:1px dashed var(--border);padding:7px 0}
+.doc li a{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--text)}
+.doc li a b{font-size:13.5px;font-weight:700;flex:1;min-width:0}
+.doc li a:hover b{color:var(--accent)}
+.dtag{font-size:10.5px;font-weight:700;color:var(--faint);white-space:nowrap}
+.darr{color:var(--accent);font-weight:800}
+.doc li small{display:block;font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px}
+.docs-foot{font-size:12.5px;color:var(--muted);margin:12px 0 0}
+@media (max-width:900px){.doc-grid{grid-template-columns:1fr}}
 .plan{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface));border-radius:var(--radius);padding:18px 18px 8px;margin-bottom:30px}
 .plan-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .plan-head h3{margin:0;font-family:var(--serif);font-size:24px;font-weight:700}
@@ -584,14 +600,14 @@ footer a{color:var(--text)}
   <section class="hero">
     <div class="wrap">
       <span class="eyebrow"><b></b><span data-i18n="eyebrow">Бесплатно · без регистрации</span></span>
-      <h1 data-i18n-html="title">Найдите своих предков<br>в <em>открытых архивах</em> мира</h1>
-      <p class="lead" data-i18n="lead">Введите фамилию, годы и место — мы проверим открытые базы и составим персональный план поиска: в каких архивах и базах вероятнее всего есть записи о ваших предках, с готовыми ссылками.</p>
+      <h1 data-i18n-html="title">Найдите <em>документы</em><br>о своих предках</h1>
+      <p class="lead" data-i18n="lead">Списки пассажиров кораблей, натурализация, метрики о рождении, браке и смерти, переписи, военные архивы. Введите фамилию, годы и место — мы откроем поиск сразу в нужных коллекциях архивов с вашими данными.</p>
 
       <form class="search" id="form" autocomplete="off">
         <div class="row-main">
           <div class="field">
             <label for="fn" data-i18n="firstName">Имя</label>
-            <input id="fn" name="fn" data-i18n-ph="firstNamePh" placeholder="Например, Герш">
+            <input id="fn" name="fn" data-i18n-ph="firstNamePh" placeholder="Например, Иван">
           </div>
           <div class="field">
             <label for="ln" data-i18n="lastName">Фамилия</label>
@@ -899,9 +915,9 @@ document.addEventListener("click", e => {
 const I18N = {
   ru: {
     eyebrow: "Бесплатно · без регистрации",
-    title: "Найдите своих предков<br>в <em>открытых архивах</em> мира",
-    lead: "Введите фамилию, годы и место — мы проверим открытые базы и составим персональный план поиска: в каких архивах и базах вероятнее всего есть записи о ваших предках, с готовыми ссылками.",
-    firstName: "Имя", firstNamePh: "Например, Герш", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
+    title: "Найдите <em>документы</em><br>о своих предках",
+    lead: "Списки пассажиров кораблей, натурализация, метрики о рождении, браке и смерти, переписи, военные архивы. Введите фамилию, годы и место — мы откроем поиск сразу в нужных коллекциях архивов с вашими данными.",
+    firstName: "Имя", firstNamePh: "Например, Иван", lastName: "Фамилия", lastNamePh: "Например, Гольдберг",
     searchBtn: "Найти", advanced: "Годы, место и латинское написание",
     yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
     latFirst: "Имя латиницей", latLast: "Фамилия латиницей",
@@ -967,6 +983,70 @@ const I18N = {
     openTitle: "Найдено в открытых базах",
     openNote: "Эти базы мы проверяем сами и показываем записи прямо здесь. В них лишь малая часть документов о людях из Восточной Европы — основные записи ищите по плану выше.",
     regSector: "сектор", regGrave: "могила",
+    docs: {
+      title: "Какие документы искать",
+      sub: "Каждая кнопка открывает поиск сразу в нужной коллекции документов — с уже введёнными именем и годами. Большинство коллекций — на FamilySearch: это бесплатно, нужен только вход в бесплатный аккаунт.",
+      forRegion: r => `с учётом региона: ${r}`, general: "общий набор — укажите место, и список станет точнее",
+      addYears: "Укажите годы рождения — тогда останутся только документы, подходящие по времени, а поиск внутри коллекций станет точнее.",
+      foot: "Совет: если человек не находится, попробуйте другие написания фамилии (кнопки «Другие написания» под формой) и имя в форме, принятой в стране въезда: Моисей → Moses, Morris; Ицхак → Isaac, Isidore.",
+      free: "бесплатно", freeReg: "бесплатно, регистрация", unique: "уникальные данные",
+      types: {
+        ships: { title: "Списки пассажиров кораблей", what: "Возраст, родной город, профессия, родственник, оставшийся дома, и к кому ехал в Америке. Часто это единственный документ с названием местечка." },
+        natur: { title: "Натурализация и гражданство", what: "Заявление о намерении и прошение о гражданстве: дата и место рождения, корабль и дата прибытия, имена супруга и детей, иногда фото." },
+        vital: { title: "Рождение, брак, смерть", what: "Метрические книги и свидетельства: точные даты, имена родителей (в т. ч. девичья фамилия матери), место жительства, свидетели." },
+        census: { title: "Переписи населения", what: "Вся семья по одному адресу: возраст, год прибытия, родной язык, гражданство, профессия. Переписи США 1920–1950 доступны бесплатно." },
+        military: { title: "Военные документы", what: "Призывные карточки США (адрес, дата и место рождения, ближайший родственник) и данные о советских солдатах 1941–1945: награды, потери, госпитали." },
+        holocaust: { title: "Холокост и депортации", what: "Листы свидетельских показаний, списки депортированных, документы лагерей и перемещённых лиц — часто с именами родителей и местом жительства до войны." },
+        graves: { title: "Захоронения", what: "Надгробия с датами; на еврейских надгробиях обычно указано имя отца — это ключ к следующему поколению." },
+        repression: { title: "Репрессии в СССР", what: "Даты ареста, приговор, место ссылки или гибели, реабилитация." }
+      },
+      l: {
+        ellis: "Эллис-Айленд, Нью-Йорк, 1892–1925 — поиск в коллекции", ellisSite: "Ellis Island Foundation — сканы манифестов", morse: "Поиск Стива Морса по Эллис-Айленду",
+        nyPass: "Пассажиры, прибывшие в Нью-Йорк, 1820–1920",
+        natNY: "Натурализация: Нью-Йорк (Южный округ), 1824–1941", natNE: "Натурализация: Новая Англия, 1791–1906", natMA: "Натурализация: Массачусетс, 1906–1966",
+        natMD: "Натурализация: Мэриленд, 1797–1951", natCA: "Натурализация: Калифорния (Южный округ), 1915–1976", nara: "Национальный архив США — дела о натурализации",
+        jg: "JewishGen — метрики и ревизские сказки Российской империи", fsCat: p => `Какие метрики и списки сохранились по месту «${p}»`,
+        nycVital: "Метрики Нью-Йорка — бесплатные сканы городского архива", nycDeaths: "Смерти в Нью-Йорке, 1795–1949", nycMarr: "Браки в Нью-Йорке, 1829–1938",
+        ssdi: "Индекс смертей США (Social Security), 1962–2014", fsAll: "Все записи FamilySearch по этому человеку",
+        c1950: "Перепись США 1950 года — Национальный архив", c1940: "Перепись США 1940 года", c1930: "Перепись США 1930 года", c1920: "Перепись США 1920 года",
+        pn: "Память народа — участники войны 1941–1945", obd: "ОБД «Мемориал» — погибшие и пропавшие без вести",
+        ww1: "Призывные карточки США, Первая мировая (1917–1918)", ww2old: "Призывные карточки США 1942 г. (мужчины 1877–1897 г. р.)",
+        ushmm: "Музей Холокоста США — списки и документы", kish: "Реестр захоронений Кишинёвского еврейского кладбища", jowbr: "JewishGen — еврейские кладбища мира (JOWBR)",
+        ol: "Открытый список — жертвы политических репрессий"
+      },
+      n: {
+        ellis: "Главная коллекция для прибывших в 1892–1925. Ищите и в разных написаниях: фамилии записывали на слух.",
+        ellisSite: (l, f) => `Введите ${[f, l].filter(Boolean).join(" ")}; бесплатная регистрация нужна, чтобы открыть скан манифеста.`,
+        morse: "Расширенный поиск: по началу фамилии, году прибытия, возрасту, городу — помогает, когда фамилия искажена.",
+        nyPass: "Включает Касл-Гарден (до 1892) и ранние годы Эллис-Айленда.",
+        natNY: "Индекс прошений — по нему найдёте номер дела и суд. Для иммигрантов, живших в Нью-Йорке, — первое место поиска.",
+        natNE: "Бостон и штаты Новой Англии.",
+        nara: "Полные дела о натурализации (после 1906 — с фото и подробной анкетой) хранятся в Национальном архиве.",
+        jg: l => `Введите ${l} и выберите фонетический поиск (Daitch–Mokotoff): он найдёт все написания фамилии.`,
+        fsCat: "Каталог покажет, какие метрические книги, ревизские сказки и переписи по месту сохранились и какие можно листать онлайн.",
+        geneteka: "Индекс метрик Польши, включая еврейские общины.", radu: "Сканы метрических книг Латвии всех конфессий.",
+        litvak: "Метрики и ревизские сказки Литвы (Виленская, Ковенская губ.).", bess: "Метрики, ревизские сказки и списки по Бессарабии.",
+        nycVital: "9 млн записей о рождении (1866–1909), браке (1866–1949) и смерти (1862–1948) с изображениями документов.",
+        nycDeaths: "Индекс свидетельств о смерти: дата, возраст, адрес, иногда имена родителей.",
+        ssdi: "Для умерших после 1962 г.: даты рождения и смерти, последний адрес.",
+        fsAll: "Если не знаете, в какой коллекции искать, — поиск по всем записям сразу.",
+        c1950: "Поиск по имени в переписи 1950 года; уточните штат на сайте.",
+        c1940: "Последняя перепись, где указан год прибытия и гражданство всех членов семьи до войны.",
+        c1920: "Указаны год иммиграции, год натурализации и родной язык.",
+        pn: "Донесения о потерях, наградные листы, госпитали, документы части.",
+        obd: (l, f) => `Введите по-русски: ${[l, f].filter(Boolean).join(" ")}.`,
+        ww1: "Регистрировались все мужчины 1872–1900 г. р. в США, включая неграждан: адрес, место рождения, работа.",
+        ww2old: "«Призыв стариков»: место и дата рождения, работодатель, ближайший родственник.",
+        yv: "Листы свидетельских показаний о погибших: имена родителей, супруга, детей, довоенный адрес.",
+        arolsen: "Документы о депортации, лагерях и перемещённых лицах; многие — со сканами.",
+        ushmm: "Списки выживших и погибших, документы общин, свидетельства.",
+        kish: "Сектор и номер могилы, годы жизни.",
+        fag: "Фото надгробий и даты; на еврейских надгробиях — имя отца на иврите.",
+        bg: "Фото надгробий с GPS; хорошо покрыты кладбища Израиля.",
+        jowbr: "Более 3 млн записей с еврейских кладбищ мира, в т. ч. Восточной Европы.",
+        ol: (l, f) => `Введите по-русски: ${[l, f].filter(Boolean).join(" ")}.`
+      }
+    },
     whyTitle: "Почему найдено",
     openRecord: "открыть запись",
     why: {
@@ -1082,8 +1162,8 @@ const I18N = {
   },
   en: {
     eyebrow: "Free · no sign-up",
-    title: "Find your ancestors<br>in the world's <em>open archives</em>",
-    lead: "Enter a surname, years and place — we check open databases and build a personal research plan: which archives and databases most likely hold records of your ancestors, with ready-made links.",
+    title: "Find the <em>records</em><br>of your ancestors",
+    lead: "Ship passenger lists, naturalization, birth, marriage and death records, censuses, military files. Enter a surname, years and place — we open the search directly in the right archive collections with your details filled in.",
     firstName: "First name", firstNamePh: "e.g. John", lastName: "Last name", lastNamePh: "e.g. Goldberg",
     searchBtn: "Search", advanced: "Years, place and Latin spelling",
     yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
@@ -1150,6 +1230,70 @@ const I18N = {
     openTitle: "Found in open databases",
     openNote: "We query these databases ourselves and show records right here. They hold only a small share of records on people from Eastern Europe — look for the main records via the plan above.",
     regSector: "sector", regGrave: "grave",
+    docs: {
+      title: "Which documents to look for",
+      sub: "Each button opens a search directly in the right record collection — with the name and years already filled in. Most collections are on FamilySearch: free, you only need to sign in to a free account.",
+      forRegion: r => `based on region: ${r}`, general: "general set — add a place for a more precise list",
+      addYears: "Add birth years — only documents that fit the time period will remain, and searches inside collections become more precise.",
+      foot: "Tip: if the person doesn't turn up, try other surname spellings (the “Other spellings” buttons under the form) and the name form used in the destination country: Moshe → Moses, Morris; Yitzhak → Isaac, Isidore.",
+      free: "free", freeReg: "free, sign-up", unique: "unique data",
+      types: {
+        ships: { title: "Ship passenger lists", what: "Age, hometown, occupation, the relative left behind and whom they were joining in America. Often the only document naming the shtetl." },
+        natur: { title: "Naturalization & citizenship", what: "Declaration of intention and petition: date and place of birth, ship and arrival date, names of spouse and children, sometimes a photo." },
+        vital: { title: "Birth, marriage, death", what: "Metrical books and certificates: exact dates, parents' names (incl. mother's maiden name), residence, witnesses." },
+        census: { title: "Censuses", what: "The whole household at one address: ages, year of arrival, native language, citizenship, occupation. U.S. censuses 1920–1950 are free." },
+        military: { title: "Military records", what: "U.S. draft cards (address, birth date and place, nearest relative) and Soviet WWII soldiers' records: awards, losses, hospitals." },
+        holocaust: { title: "Holocaust & deportations", what: "Pages of Testimony, deportation lists, camp and displaced-persons records — often with parents' names and pre-war residence." },
+        graves: { title: "Burials", what: "Gravestones with dates; Jewish gravestones usually give the father's name — the key to the next generation." },
+        repression: { title: "Soviet repression", what: "Arrest date, sentence, place of exile or death, rehabilitation." }
+      },
+      l: {
+        ellis: "Ellis Island, New York, 1892–1925 — search the collection", ellisSite: "Ellis Island Foundation — manifest scans", morse: "Steve Morse's Ellis Island search",
+        nyPass: "New York passenger arrivals, 1820–1920",
+        natNY: "Naturalization: New York (Southern District), 1824–1941", natNE: "Naturalization: New England, 1791–1906", natMA: "Naturalization: Massachusetts, 1906–1966",
+        natMD: "Naturalization: Maryland, 1797–1951", natCA: "Naturalization: California (Southern District), 1915–1976", nara: "U.S. National Archives — naturalization files",
+        jg: "JewishGen — vital records and revision lists of the Russian Empire", fsCat: p => `Which records survive for “${p}”`,
+        nycVital: "New York City vital records — free municipal archive scans", nycDeaths: "New York City deaths, 1795–1949", nycMarr: "New York City marriages, 1829–1938",
+        ssdi: "U.S. Social Security Death Index, 1962–2014", fsAll: "All FamilySearch records for this person",
+        c1950: "1950 U.S. Census — National Archives", c1940: "1940 U.S. Census", c1930: "1930 U.S. Census", c1920: "1920 U.S. Census",
+        pn: "Pamyat Naroda — WWII participants 1941–1945", obd: "OBD Memorial — killed and missing in action",
+        ww1: "U.S. WWI draft registration cards (1917–1918)", ww2old: "U.S. 1942 draft cards (men born 1877–1897)",
+        ushmm: "U.S. Holocaust Memorial Museum — lists and records", kish: "Kishinev Jewish Cemetery burial registry", jowbr: "JewishGen — Jewish cemeteries worldwide (JOWBR)",
+        ol: "Open List — victims of political repression"
+      },
+      n: {
+        ellis: "The main collection for 1892–1925 arrivals. Try different spellings: names were written down by ear.",
+        ellisSite: (l, f) => `Enter ${[f, l].filter(Boolean).join(" ")}; free sign-up is needed to view the manifest scan.`,
+        morse: "Advanced search by surname start, arrival year, age, town — helps when the surname was garbled.",
+        nyPass: "Includes Castle Garden (before 1892) and early Ellis Island years.",
+        natNY: "Petition index — gives the case number and court. The first place to look for immigrants who lived in New York.",
+        natNE: "Boston and the New England states.",
+        nara: "Full naturalization files (after 1906 — with photo and detailed form) are held by the National Archives.",
+        jg: l => `Enter ${l} and choose phonetic (Daitch–Mokotoff) search: it finds all spellings of the surname.`,
+        fsCat: "The catalog shows which metrical books, revision lists and censuses survive for the place, and which can be browsed online.",
+        geneteka: "Index of Polish vital records, incl. Jewish communities.", radu: "Scans of Latvian metrical books of all faiths.",
+        litvak: "Lithuanian vital records and revision lists (Vilna, Kovno guberniyas).", bess: "Bessarabian vital records, revision lists and other lists.",
+        nycVital: "9 million birth (1866–1909), marriage (1866–1949) and death (1862–1948) records with document images.",
+        nycDeaths: "Death certificate index: date, age, address, sometimes parents' names.",
+        ssdi: "For deaths after 1962: birth and death dates, last residence.",
+        fsAll: "If you don't know which collection to use — search all records at once.",
+        c1950: "Name search in the 1950 census; refine by state on the site.",
+        c1940: "Gives arrival year and citizenship for every household member before the war.",
+        c1920: "Gives year of immigration, year of naturalization and native language.",
+        pn: "Loss reports, award sheets, hospitals, unit records.",
+        obd: (l, f) => `Enter in Russian: ${[l, f].filter(Boolean).join(" ")}.`,
+        ww1: "All men in the U.S. born 1872–1900 registered, incl. non-citizens: address, birthplace, employer.",
+        ww2old: "The “old man's draft”: birth date and place, employer, nearest relative.",
+        yv: "Pages of Testimony about victims: names of parents, spouse, children, pre-war address.",
+        arolsen: "Deportation, camp and displaced-persons records; many with scans.",
+        ushmm: "Survivor and victim lists, community records, testimonies.",
+        kish: "Sector and grave number, years of life.",
+        fag: "Gravestone photos and dates; Jewish gravestones give the father's Hebrew name.",
+        bg: "Gravestone photos with GPS; strong coverage of Israeli cemeteries.",
+        jowbr: "Over 3 million records from Jewish cemeteries worldwide, incl. Eastern Europe.",
+        ol: (l, f) => `Enter in Russian: ${[l, f].filter(Boolean).join(" ")}.`
+      }
+    },
     whyTitle: "Why this result",
     openRecord: "open record",
     why: {
@@ -1272,7 +1416,6 @@ const SOURCES = [
   { id: "nara",      color: "#e4574c", needs: () => NARA_ENABLED && !!PROXY_URL },
   { id: "loc",       color: "var(--c-loc)", needs: () => !!PROXY_URL },
   { id: "archive",   color: "#4fb3c8" },
-  { id: "registry",  color: "#2f6cc9", needs: () => !!(CFG.REGISTRY && CFG.REGISTRY.url) },
   { id: "nli",       color: "#3d7be0" },
   { id: "gallica",   color: "#c9536b", needs: () => !!PROXY_URL },
   { id: "europeana", color: "#e0a030", needs: () => !!EUROPEANA_KEY },
@@ -1573,31 +1716,43 @@ Object.assign(API, {
   },
   searchUrl_archive: q => `https://archive.org/search?query=${enc('"' + fullLat(q) + '"')}`,
 
-  /* Национальная библиотека Израиля — каталог Primo, без ключа */
+  /* Национальная библиотека Израиля — официальный Open Library API (api.nli.org.il). Ключ: config.js → NLI_KEY, иначе гостевой */
   async nli(q){
+    const key = CFG.NLI_KEY || "DVQyidFLOAjp12ib92pNJPmflmB5IessOq1CJQDK";
     const list = await settledFlat(queryTerms(q).map(async term => {
-      const u = "https://merhav.nli.org.il/PrimoWebServices/xservice/search/brief?institution=NNL&loc=local,scope:(NNL)&indx=1&bulkSize=40&json=true&query=" + enc(`any,exact,"${term}"`);
+      const u = `https://api.nli.org.il/openlibrary/search?api_key=${enc(key)}&query=${enc("any,contains," + term)}&output_format=json&result_page=1`;
       const data = await smartJSON(u);
-      let docs = (((((data || {}).SEGMENTS || {}).JAGROOT || {}).RESULT || {}).DOCSET || {}).DOC || [];
-      if (!Array.isArray(docs)) docs = [docs];
-      const v = x => Array.isArray(x) ? x[0] : x;
-      return docs.map(d => {
-        const rec = (d.PrimoNMBib || {}).record || {};
-        const disp = rec.display || {}, ctrl = rec.control || {};
-        const id = v(ctrl.recordid) || "";
-        const date = String(v(disp.creationdate) || "");
-        const type = String(v(disp.type) || "").toLowerCase();
-        const cat = /image|photo|poster|map/.test(type) ? "images" : /archiv|manuscript|letter|document/.test(type) || /ARCHIVE/.test(id) ? "docs" : "pubs";
-        const seg = /ARCHIVE/.test(id) || cat === "docs" ? "archives" : cat === "images" ? "images" : /journal|newspaper/.test(type) ? "newspapers" : "books";
+      const recs = Array.isArray(data) ? data : (data && (data.records || data.results || data.docs || data.items)) || [];
+      // поле может называться "title" или "http://purl.org/dc/elements/1.1/title", а значение — строкой или [{ "@value": … }]
+      const val = (rec, k) => {
+        const key = Object.keys(rec).find(x => x === k || x.endsWith("/" + k) || x.endsWith(":" + k));
+        let v = key ? rec[key] : undefined;
+        if (Array.isArray(v)) v = v[0];
+        if (v && typeof v === "object") v = v["@value"] || v["@id"] || v.value || "";
+        return v ? String(v) : "";
+      };
+      const out = recs.map(rec => {
+        let id = val(rec, "recordid") || val(rec, "identifier") || "";
+        if (/^99\d{6,}$/.test(id)) id = "NNL_ALEPH" + id;
+        const title = stripTags(val(rec, "title"));
+        if (!title) return null;
+        const date = val(rec, "date") || val(rec, "creationdate");
+        const type = val(rec, "type").toLowerCase();
+        const cat = /image|photo|poster|map|graphic/.test(type) ? "images" : /archiv|manuscript|letter|document/.test(type) || /ARCHIVE/.test(id) ? "docs" : "pubs";
+        const seg = /ARCHIVE/.test(id) || cat === "docs" ? "archives" : cat === "images" ? "images" : /journal|newspaper|serial/.test(type) ? "newspapers" : "books";
+        const thumb = val(rec, "thumbnail");
         return {
           source: "nli", kind: "archive", cat, ref: id,
-          name: stripTags(v(disp.title) || id),
-          eventYear: yearOf(date), eventDate: date,
-          creator: stripTags(v(disp.creator) || v(disp.contributor) || ""),
-          event: v(disp.type) ? String(v(disp.type)).replace(/_/g, " ") : "",
+          name: title, eventYear: yearOf(date), eventDate: date,
+          creator: stripTags(val(rec, "creator") || val(rec, "contributor")),
+          event: type.replace(/_/g, " "),
+          img: /^https?:/.test(thumb) ? thumb.replace(/^http:/, "https:") : null,
           url: id ? `https://www.nli.org.il/en/${seg}/${enc(id)}/NLI` : `https://www.nli.org.il/en/search?projectName=NLI&query=any,contains,${enc(term)}`
         };
-      });
+      }).filter(Boolean);
+      // ответ пришёл, но не разобран — это ошибка формата, а не «ничего не найдено»
+      if (recs.length && !out.length) throw new Error("NLI format");
+      return out;
     }));
     return dedupe(list, r => r.url + r.name);
   },
@@ -2341,101 +2496,118 @@ function toCyr(s){
   out = out.replace(/ий$/, "ий").replace(/(^|[^а-яё])й([аоуэ])/g, "$1$2");
   return out.charAt(0).toUpperCase() + out.slice(1);
 }
-function buildPlan(q){
-  const P = t("plan"), ru = lang === "ru";
-  // имя — русская форма из словаря имён (Moisei → Моисей), иначе транслитерация
+/* ===================== НАВИГАТОР ПО ДОКУМЕНТАМ ===================== */
+// Списки пассажиров, натурализация, метрики, переписи, военные документы хранятся в базах без открытого API.
+// Навигатор подбирает нужные КОЛЛЕКЦИИ (а не базы целиком) под годы и регион и открывает поиск с данными человека.
+const FS_COLL = {
+  ellis: 1368704, nyPass: 1849782,
+  natNY: 1840501, natNE: 1840474, natMA: 1834334, natMD: 1838829, natCA: 1849628,
+  ssdi: 1202535, nycDeaths: 2240477, nycMarr: 2143225,
+  c1920: 1488411, c1930: 1810731, c1940: 2000219,
+  ww1: 1968530, ww2old: 1861144
+};
+function buildDocs(q){
+  const D = t("docs"), ru = lang === "ru";
+  const f = q.latFirst || "", l = q.latLast || "";
   const cyrForm = n => { if (!n || hasCyr(n)) return n || ""; const g = NAME_GROUPS.find(gr => gr.includes(norm(n))); const c = g && g.find(x => hasCyr(x)); return c ? capW(c) : toCyr(n); };
-  const f = q.latFirst || "", l = q.latLast || "", fc = cyrForm(q.first || ""), lc = toCyr(q.last || "");
-  const fullL = (f + " " + l).trim();
+  const fc = cyrForm(q.first || ""), lc = toCyr(q.last || "");
+  const full = (f + " " + l).trim();
   const region = detectRegion(q);
   const yf = q.yf || q.yt || null, yt = q.yt || q.yf || null;
-  const unknownYears = !yf;
-  const empire = !region || EMPIRE.has(region);
-  const ussr = !region || USSR.has(region);
-  const holocaustAge = unknownYears || yf <= 1944;                 // родился до конца войны
-  const ww2Age = unknownYears || (yt >= 1870 && yf <= 1928);       // мог быть призван в 1941–45
-  const emigrationAge = unknownYears || yf <= 1925;               // эпоха массовой эмиграции через Эллис-Айленд и до 1950-х
-  const placeTxt = q.place || "";
-  const years = yf ? (yf === yt ? String(yf) : `${yf}–${yt}`) : "";
-  const items = [];
-  const add = (prio, o) => items.push({ prio, ...o });
+  const born = (a, b) => !yf || (yt >= a && yf <= b);           // родился в интервале [a, b] или годы неизвестны
+  const empire = !region || EMPIRE.has(region), ussr = !region || USSR.has(region);
+  const usaLikely = !region || region === "usa" || empire;
+  // FamilySearch: поиск сразу внутри коллекции, с именем и годами рождения
+  const fs = (id, extra = "") => `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` +
+    (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + `&f.collectionId=${id}` + extra;
+  const sections = [];
+  const sec = (id, prio, items) => { const list = items.filter(Boolean); if (list.length) sections.push({ id, prio, ...D.types[id], items: list }); };
+  const it = (name, url, note, tag) => ({ name, url, note, tag });
 
-  // FamilySearch — основа почти для любого поиска
-  add(100, { id: "fs", name: "FamilySearch", tag: P.free,
-    why: P.fs(region), enter: P.enterName(fullL, years, placeTxt),
-    url: `https://www.familysearch.org/search/record/results?q.givenName=${enc(f)}&q.surname=${enc(l)}` + (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + (placeTxt ? `&q.anyPlace=${enc(q.placeLat || placeTxt)}` : "") });
-  if (placeTxt) add(92, { id: "fscat", name: P.fsCatName(placeTxt), tag: P.free,
-    why: P.fsCat(placeTxt), enter: "",
-    url: `https://www.familysearch.org/search/catalog/results?count=20&query=${enc('+place:"' + (q.placeLat || placeTxt) + '"')}` });
-
-  // регион
-  if (region === "moldova"){
-    add(97, { id: "kish", name: P.kishName, tag: P.unique, featured: true, why: P.kish, enter: P.enterSurname(lc || l),
-      url: `https://gbsearch.vercel.app/?q=${enc(lc || l)}` });
-    add(84, { id: "jgbess", name: "JewishGen — Bessarabia", tag: P.freeReg, why: P.jgBess, enter: P.enterPhonetic(l),
-      url: "https://www.jewishgen.org/Bessarabia/" });
+  // 1. Списки пассажиров
+  if (usaLikely && born(1840, 1925)) sec("ships", region === "usa" || empire ? 96 : 70, [
+    it(D.l.ellis, fs(FS_COLL.ellis), D.n.ellis, "FamilySearch"),
+    it(D.l.ellisSite, "https://heritage.statueofliberty.org/", D.n.ellisSite(l, f), D.free),
+    it(D.l.morse, "https://stevemorse.org/ellis/elliswhite.html", D.n.morse, D.free),
+    born(1800, 1905) && it(D.l.nyPass, fs(FS_COLL.nyPass), D.n.nyPass, "FamilySearch")
+  ]);
+  // 2. Натурализация
+  if (usaLikely && born(1840, 1935)) sec("natur", region === "usa" ? 94 : 88, [
+    it(D.l.natNY, fs(FS_COLL.natNY), D.n.natNY, "FamilySearch"),
+    it(D.l.natNE, fs(FS_COLL.natNE), D.n.natNE, "FamilySearch"),
+    it(D.l.natMA, fs(FS_COLL.natMA), "", "FamilySearch"),
+    it(D.l.natMD, fs(FS_COLL.natMD), "", "FamilySearch"),
+    it(D.l.natCA, fs(FS_COLL.natCA), "", "FamilySearch"),
+    it(D.l.nara, `https://catalog.archives.gov/search?q=${enc('"' + full + '" naturalization')}`, D.n.nara, D.free)
+  ]);
+  // 3. Рождение, брак, смерть
+  const vital = [];
+  if (empire){
+    vital.push(it(D.l.jg, "https://www.jewishgen.org/databases/all/", D.n.jg(l), D.freeReg));
+    if (q.place) vital.push(it(D.l.fsCat(q.place), `https://www.familysearch.org/search/catalog/results?count=20&query=${enc('+place:"' + (q.placeLat || q.place) + '"')}`, D.n.fsCat, "FamilySearch"));
+    if (region === "poland") vital.push(it("Geneteka", `https://geneteka.genealodzy.pl/index.php?op=gt&lang=${ru ? "rus" : "eng"}&w=&rid=B&search_lastname=${enc(l)}&search_name=${enc(f)}&search_lastname2=&search_name2=&from_date=&to_date=`, D.n.geneteka, D.free));
+    if (region === "latvia") vital.push(it("Raduraksti", "https://raduraksti.arhivi.lv/", D.n.radu, D.freeReg));
+    if (region === "lithuania") vital.push(it("LitvakSIG", "https://www.litvaksig.org/", D.n.litvak, D.freeReg));
+    if (region === "moldova") vital.push(it("JewishGen — Bessarabia", "https://www.jewishgen.org/Bessarabia/", D.n.bess, D.freeReg));
   }
-  if (region === "poland"){
-    add(90, { id: "geneteka", name: "Geneteka", tag: P.free, why: P.geneteka, enter: P.enterSurname(l),
-      url: `https://geneteka.genealodzy.pl/index.php?op=gt&lang=${ru ? "rus" : "eng"}&w=&rid=B&search_lastname=${enc(l)}&search_name=${enc(f)}&search_lastname2=&search_name2=&from_date=&to_date=` });
-    add(86, { id: "jri", name: "JRI-Poland", tag: P.free, why: P.jri, enter: P.enterPhonetic(l), url: "https://jri-poland.org/" });
+  if (usaLikely){
+    vital.push(it(D.l.nycVital, "https://a860-historicalvitalrecords.nyc.gov/", D.n.nycVital, D.free));
+    vital.push(it(D.l.nycDeaths, fs(FS_COLL.nycDeaths), D.n.nycDeaths, "FamilySearch"));
+    vital.push(it(D.l.nycMarr, fs(FS_COLL.nycMarr), "", "FamilySearch"));
+    if (born(1875, 2010)) vital.push(it(D.l.ssdi, fs(FS_COLL.ssdi), D.n.ssdi, "FamilySearch"));
   }
-  if (region === "lithuania") add(86, { id: "litvak", name: "LitvakSIG", tag: P.freeReg, why: P.litvak, enter: P.enterPhonetic(l), url: "https://www.litvaksig.org/" });
-  if (region === "latvia") add(86, { id: "radu", name: "Raduraksti", tag: P.freeReg, why: P.radu, enter: "", url: "https://raduraksti.arhivi.lv/" });
-  if (region === "israel") add(84, { id: "bg", name: "BillionGraves", tag: P.free, why: P.bgIsrael, enter: P.enterName(fullL, "", ""),
-    url: `https://billiongraves.com/search/results?given_names=${enc(f)}&family_names=${enc(l)}` });
-
-  // еврейская генеалогия Российской империи и Восточной Европы
-  if (empire) add(88, { id: "jg", name: "JewishGen", tag: P.freeReg, why: P.jg, enter: P.enterPhonetic(l), url: "https://www.jewishgen.org/databases/all/" });
-
-  // Холокост
-  if (holocaustAge && (empire || region === "germany" || region === "hungary" || region === "czech")){
-    add(87, { id: "yv", name: "Yad Vashem", tag: P.free, why: P.yv, enter: "",
-      url: `https://collections.yadvashem.org/${ru ? "ru" : "en"}/names/search-results/${enc(fullL)}?page=1` });
-    add(68, { id: "arolsen", name: "Arolsen Archives", tag: P.free, why: P.arolsen, enter: "",
-      url: `https://collections.arolsen-archives.org/en/search?s=${enc(fullL)}` });
-    add(62, { id: "ushmm", name: P.ushmmName, tag: P.free, why: P.ushmm, enter: "",
-      url: `https://collections.ushmm.org/search/?q=${enc(fullL)}` });
+  vital.push(it(D.l.fsAll, `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` + (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + (q.place ? `&q.anyPlace=${enc(q.placeLat || q.place)}` : ""), D.n.fsAll, "FamilySearch"));
+  sec("vital", empire ? 95 : 90, vital);
+  // 4. Переписи
+  if (usaLikely && born(1840, 1950)) sec("census", region === "usa" ? 92 : 80, [
+    born(1855, 1950) && it(D.l.c1950, `https://1950census.archives.gov/search/?name=${enc(full)}&page=1`, D.n.c1950, D.free),
+    born(1845, 1940) && it(D.l.c1940, fs(FS_COLL.c1940), D.n.c1940, "FamilySearch"),
+    born(1835, 1930) && it(D.l.c1930, fs(FS_COLL.c1930), "", "FamilySearch"),
+    born(1825, 1920) && it(D.l.c1920, fs(FS_COLL.c1920), D.n.c1920, "FamilySearch")
+  ]);
+  // 5. Военные документы
+  const mil = [];
+  if (ussr && born(1870, 1928)){
+    mil.push(it(D.l.pn, `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}`, D.n.pn, D.free));
+    mil.push(it(D.l.obd, "https://obd-memorial.ru/html/", D.n.obd(lc, fc), D.free));
   }
-
-  // СССР: война и репрессии
-  if (ussr && ww2Age){
-    add(83, { id: "pn", name: P.pnName, tag: P.free, why: P.pn, enter: P.enterRu(lc, fc),
-      url: `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}` });
-    add(66, { id: "obd", name: P.obdName, tag: P.free, why: P.obd, enter: P.enterRu(lc, fc), url: "https://obd-memorial.ru/html/" });
-  }
-  if (ussr) add(58, { id: "ol", name: P.olName, tag: P.free, why: P.ol, enter: P.enterRu(lc, fc), url: "https://ru.openlist.wiki/" });
-
-  // эмиграция в США
-  if (emigrationAge && (empire || region === "usa" || !region)){
-    add(region === "usa" ? 91 : 78, { id: "ellis", name: "Ellis Island", tag: P.freeReg, why: P.ellis, enter: P.enterEllis(l, f), url: "https://heritage.statueofliberty.org/" });
-  }
-  if (region === "usa"){
-    add(80, { id: "fag", name: "Find a Grave", tag: P.free, why: P.fag, enter: "",
-      url: `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (yf ? `&birthyear=${yf}&birthyearfilter=5` : "") });
-    add(70, { id: "nara", name: "U.S. National Archives", tag: P.free, why: P.nara, enter: "", url: `https://catalog.archives.gov/search?q=${enc('"' + fullL + '"')}` });
-  }
-
-  // общие древа — вдруг родственники уже построили древо
-  add(56, { id: "geni", name: "Geni", tag: P.free, why: P.geni, enter: "", url: `https://www.geni.com/search?search_type=people&names=${enc(fullL)}` });
-  add(50, { id: "mh", name: "MyHeritage", tag: P.paid, why: P.mh, enter: "", url: `https://www.myheritage.com/names/${enc((f || "").toLowerCase())}_${enc(l.toLowerCase())}` });
-
-  return { region, items: items.sort((a, b) => b.prio - a.prio).slice(0, 8) };
+  if (usaLikely && born(1872, 1900)) mil.push(it(D.l.ww1, fs(FS_COLL.ww1), D.n.ww1, "FamilySearch"));
+  if (usaLikely && born(1877, 1897)) mil.push(it(D.l.ww2old, fs(FS_COLL.ww2old), D.n.ww2old, "FamilySearch"));
+  sec("military", 78, mil);
+  // 6. Холокост и депортации
+  if (born(1850, 1944) && (empire || ["germany", "hungary", "czech", "romania"].includes(region))) sec("holocaust", 84, [
+    it("Yad Vashem", `https://collections.yadvashem.org/${ru ? "ru" : "en"}/names/search-results/${enc(full)}?page=1`, D.n.yv, D.free),
+    it("Arolsen Archives", `https://collections.arolsen-archives.org/en/search?s=${enc(full)}`, D.n.arolsen, D.free),
+    it(D.l.ushmm, `https://collections.ushmm.org/search/?q=${enc(full)}`, D.n.ushmm, D.free)
+  ]);
+  // 7. Захоронения
+  sec("graves", 74, [
+    region === "moldova" && it(D.l.kish, `https://gbsearch.vercel.app/?q=${enc(lc || l)}`, D.n.kish, D.unique),
+    it("Find a Grave", `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (yf ? `&birthyear=${yf}&birthyearfilter=5` : ""), D.n.fag, D.free),
+    it("BillionGraves", `https://billiongraves.com/search/results?given_names=${enc(f)}&family_names=${enc(l)}`, D.n.bg, D.free),
+    it(D.l.jowbr, "https://www.jewishgen.org/databases/cemetery/", D.n.jowbr, D.freeReg)
+  ]);
+  // 8. Репрессии (СССР)
+  if (ussr) sec("repression", 60, [
+    it(D.l.ol, "https://ru.openlist.wiki/", D.n.ol(lc, fc), D.free)
+  ]);
+  return { region, sections: sections.sort((a, b) => b.prio - a.prio) };
 }
 
 function renderPlan(){
   const box = $("#planBox"); if (!state.q){ box.innerHTML = ""; return; }
-  const { region, items } = buildPlan(state.q);
-  const P = t("plan");
-  box.innerHTML = `<section class="plan">
-    <div class="plan-head"><h3>${esc(P.title)}</h3><span>${esc(region ? P.forRegion(t("regions")[region] || region) : P.general)}</span></div>
-    <p class="plan-sub">${esc(P.sub)}</p>
-    <ol class="plan-list">${items.map((it, i) => `<li class="${it.featured ? "featured" : ""}">
-      <span class="pn">${i + 1}</span>
-      <div class="pb"><div class="pt"><b>${esc(it.name)}</b><span class="ptag">${esc(it.tag)}</span></div>
-        <p>${esc(it.why)}</p>${it.enter ? `<p class="pe">${esc(it.enter)}</p>` : ""}</div>
-      <a class="pgo" href="${esc(it.url)}" target="_blank" rel="noopener" data-plan="${it.id}">${esc(P.open)} ↗</a>
-    </li>`).join("")}</ol>
+  const { region, sections } = buildDocs(state.q);
+  const D = t("docs");
+  box.innerHTML = `<section class="docs">
+    <div class="plan-head"><h3>${esc(D.title)}</h3><span>${esc(region ? D.forRegion(t("regions")[region] || region) : D.general)}</span></div>
+    <p class="plan-sub">${esc(D.sub)}</p>
+    ${(!state.q.yf && !state.q.yt) ? `<p class="docs-hint">${esc(D.addYears)}</p>` : ""}
+    <div class="doc-grid">${sections.map(s => `<article class="doc" data-doc="${s.id}">
+      <h4>${esc(s.title)}</h4>
+      <p class="doc-what">${esc(s.what)}</p>
+      <ul>${s.items.map(i => `<li><a href="${esc(i.url)}" target="_blank" rel="noopener" data-plan="${s.id}"><b>${esc(i.name)}</b><span class="dtag">${esc(i.tag)}</span><span class="darr">↗</span></a>${i.note ? `<small>${esc(i.note)}</small>` : ""}</li>`).join("")}</ul>
+    </article>`).join("")}</div>
+    <p class="docs-foot">${esc(D.foot)}</p>
   </section>`;
 }
 
