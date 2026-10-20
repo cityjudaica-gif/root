@@ -1881,7 +1881,7 @@ Object.assign(API, {
 
   /* NARA — только через посредника, который сам добавляет ключ */
   async nara(q){
-    const p = new URLSearchParams({ q: `"${fullLat(q)}"`, rows: "40" });
+    const p = new URLSearchParams({ q: `"${fullLat(q)}"`, limit: "40" });
     const data = await smartJSON("https://catalog.archives.gov/api/v2/records/search?" + p.toString(), {}, true);
     const hits = (data && data.body && data.body.hits && data.body.hits.hits) || (data && data.hits && data.hits.hits) || [];
     return hits.map(hh => {
