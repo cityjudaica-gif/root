@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Поиск предков по фамилии бесплатно — архивы и генеалогия | Истоки</title>
-<meta name="description" content="Бесплатный поиск документов о предках по фамилии: списки пассажиров Эллис-Айленда, натурализация, метрики о рождении, браке и смерти, переписи США, военные архивы, Холокост, кладбища.">
+<meta name="description" content="Бесплатный поиск документов о предках: списки пассажиров, натурализация, метрики, переписи и кладбища — США, Канада, Аргентина, Бразилия, Англия, Израиль, ЮАР, Австралия и Восточная Европа.">
 <meta name="keywords" content="поиск предков, поиск предков по фамилии, найти предков бесплатно, генеалогия, родословная, поиск родственников, найти родственников по фамилии, генеалогическое древо, архивы, метрические книги, ревизские сказки, поиск родственников в США, эмиграция в Америку, Эллис Айленд, еврейская генеалогия, Российская империя, Бессарабия, жертвы Холокоста, участники войны, история семьи">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="https://isradata.vercel.app/">
@@ -38,7 +38,7 @@
     "Istoki",
     "Istoki genealogy search"
    ],
-   "description": "Бесплатный поиск документов о предках по фамилии: списки пассажиров Эллис-Айленда, натурализация, метрики о рождении, браке и смерти, переписи США, военные архивы, Холокост, кладбища.",
+   "description": "Бесплатный поиск документов о предках: списки пассажиров, натурализация, метрики, переписи и кладбища — США, Канада, Аргентина, Бразилия, Англия, Израиль, ЮАР, Австралия и Восточная Европа.",
    "inLanguage": "ru",
    "potentialAction": {
     "@type": "SearchAction",
@@ -54,7 +54,7 @@
    "@id": "https://isradata.vercel.app/#app",
    "name": "Истоки",
    "url": "https://isradata.vercel.app/",
-   "description": "Бесплатный поиск документов о предках по фамилии: списки пассажиров Эллис-Айленда, натурализация, метрики о рождении, браке и смерти, переписи США, военные архивы, Холокост, кладбища.",
+   "description": "Бесплатный поиск документов о предках: списки пассажиров, натурализация, метрики, переписи и кладбища — США, Канада, Аргентина, Бразилия, Англия, Израиль, ЮАР, Австралия и Восточная Европа.",
    "inLanguage": "ru",
    "applicationCategory": "ReferenceApplication",
    "operatingSystem": "Any",
@@ -253,6 +253,19 @@ h1 em{font-style:italic;font-weight:500;background:linear-gradient(100deg,var(--
 .fam-head{grid-column:1/-1;border-top:1px dashed var(--border);margin-top:6px;padding:12px 6px 0;display:flex;flex-direction:column;gap:2px}
 .fam-head b{font-size:14px}
 .fam-head span{font-size:13px;color:var(--muted)}
+.dest-field,.more-src{grid-column:1/-1;padding:4px 6px 0}
+.dest-label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.more-src{border-top:1px dashed var(--border);margin-top:6px;padding-top:12px}
+.more-src .sources{margin:0}
+.dest-chips{display:flex;flex-wrap:wrap;gap:6px}
+.dchip{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.dchip:hover{border-color:var(--accent)}
+.dchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.dchip-stay{border-style:dashed}
+.dest-box{border:1px solid var(--border);background:var(--surface-2);border-radius:var(--radius-sm);padding:12px 14px;margin:0 0 14px}
+.dest-box>b{font-size:14px}
+.dest-box>span{font-size:13px;color:var(--muted)}
+.dest-box .dest-chips{margin-top:10px}
 .docs-used{font-size:13px;margin:-2px 0 12px;color:var(--muted)}
 .docs-used b{color:var(--text)}
 .sources{display:flex;gap:8px;flex-wrap:wrap;margin:14px 4px 4px}
@@ -644,22 +657,24 @@ footer a{color:var(--text)}
           <div class="fam-head"><b data-i18n="famTitle">Уточнить по событиям и семье — необязательно</b><span data-i18n="famSub">Заполненные поля мы подставим в формы поиска архивов (FamilySearch, Find a Grave, Geneteka), и нужная запись окажется в начале списка.</span></div>
           <div class="field"><label for="dy" data-i18n="fDy">Год смерти</label><input id="dy" name="dy" inputmode="numeric" maxlength="4" placeholder="1962"></div>
           <div class="field"><label for="my" data-i18n="fMy">Год брака</label><input id="my" name="my" inputmode="numeric" maxlength="4" placeholder="1912"></div>
-          <div class="field"><label for="ay" data-i18n="fAy">Прибыл(а) в США</label><input id="ay" name="ay" inputmode="numeric" maxlength="4" placeholder="1907"></div>
+          <div class="field"><label for="ay" data-i18n="fAy">Год эмиграции</label><input id="ay" name="ay" inputmode="numeric" maxlength="4" placeholder="1907"></div>
           <div class="field"><label for="rs" data-i18n="fRs">Где жил(а) потом</label><input id="rs" name="rs" data-i18n-ph="fRsPh" placeholder="Нью-Йорк, Чикаго…"></div>
           <div class="field"><label for="sp" data-i18n="fSp">Муж или жена</label><input id="sp" name="sp" data-i18n-ph="fSpPh" placeholder="Сура Гольдман"></div>
           <div class="field"><label for="fa" data-i18n="fFa">Имя отца</label><input id="fa" name="fa" data-i18n-ph="fFaPh" placeholder="Арон"></div>
           <div class="field wide"><label for="mo" data-i18n="fMo">Мать: имя, девичья фамилия</label><input id="mo" name="mo" data-i18n-ph="fMoPh" placeholder="Хая Шапиро"></div>
+          <div class="dest-field"><span class="dest-label" data-i18n="fTo">Куда эмигрировал(а)</span><div class="dest-chips" id="destForm"><button type="button" class="dchip" data-dest="usa" aria-pressed="false">США</button><button type="button" class="dchip" data-dest="canada" aria-pressed="false">Канада</button><button type="button" class="dchip" data-dest="argentina" aria-pressed="false">Аргентина</button><button type="button" class="dchip" data-dest="brazil" aria-pressed="false">Бразилия</button><button type="button" class="dchip" data-dest="uruguay" aria-pressed="false">Уругвай</button><button type="button" class="dchip" data-dest="chile" aria-pressed="false">Чили</button><button type="button" class="dchip" data-dest="mexico" aria-pressed="false">Мексика</button><button type="button" class="dchip" data-dest="cuba" aria-pressed="false">Куба</button><button type="button" class="dchip" data-dest="uk" aria-pressed="false">Англия</button><button type="button" class="dchip" data-dest="france" aria-pressed="false">Франция</button><button type="button" class="dchip" data-dest="germany" aria-pressed="false">Германия</button><button type="button" class="dchip" data-dest="israel" aria-pressed="false">Палестина / Израиль</button><button type="button" class="dchip" data-dest="southafrica" aria-pressed="false">ЮАР</button><button type="button" class="dchip" data-dest="australia" aria-pressed="false">Австралия</button><button type="button" class="dchip dchip-stay" data-dest="stayed" aria-pressed="false">Никуда — остался на родине</button></div></div>
+          <div class="more-src"><span class="dest-label" data-i18n="moreSrc">Где ещё искать совпадения по имени</span>
+            <div class="sources" id="sourceChips" role="group" aria-label="Sources"><button type="button" class="chip" style="--c:var(--c-wikitree)" data-src="wikitree" aria-pressed="true"><span class="dot"></span>WikiTree</button><button type="button" class="chip" style="--c:var(--c-wikidata)" data-src="wikidata" aria-pressed="false"><span class="dot"></span>Wikidata</button><button type="button" class="chip" style="--c:var(--c-openarch)" data-src="openarch" aria-pressed="true"><span class="dot"></span>Open Archives</button><button type="button" class="chip" style="--c:#4fb3c8" data-src="archive" aria-pressed="false"><span class="dot"></span>Internet Archive</button><button type="button" class="chip" style="--c:#3d7be0" data-src="nli" aria-pressed="false"><span class="dot"></span>Нац. библиотека Израиля</button><button type="button" class="chip" style="--c:#9aa3b5" data-src="wikipedia" aria-pressed="false"><span class="dot"></span>Википедия</button><button type="button" class="chip" style="--c:#53c2a0" data-src="commons" aria-pressed="false"><span class="dot"></span>Викисклад</button></div></div>
         </div>
 
         <div class="variants" id="variants" hidden=""></div>
 
-        <div class="sources" id="sourceChips" role="group" aria-label="Sources"><button type="button" class="chip" style="--c:var(--c-wikitree)" data-src="wikitree" aria-pressed="true"><span class="dot"></span>WikiTree</button><button type="button" class="chip" style="--c:var(--c-wikidata)" data-src="wikidata" aria-pressed="true"><span class="dot"></span>Wikidata</button><button type="button" class="chip" style="--c:var(--c-openarch)" data-src="openarch" aria-pressed="true"><span class="dot"></span>Open Archives</button><button type="button" class="chip" style="--c:#4fb3c8" data-src="archive" aria-pressed="true"><span class="dot"></span>Internet Archive</button><button type="button" class="chip" style="--c:#3d7be0" data-src="nli" aria-pressed="true"><span class="dot"></span>Нац. библиотека Израиля</button><button type="button" class="chip" style="--c:#9aa3b5" data-src="wikipedia" aria-pressed="true"><span class="dot"></span>Википедия</button><button type="button" class="chip" style="--c:#53c2a0" data-src="commons" aria-pressed="true"><span class="dot"></span>Викисклад</button></div>
       </form>
 
       <p class="examples"><span data-i18n="tryEx">Попробуйте:</span>
-        <button type="button" data-ex="Albert|Einstein">Albert Einstein</button>,
-        <button type="button" data-ex="Марк|Шагал">Марк Шагал</button>,
-        <button type="button" data-ex="|Goldberg|1860|1910">Goldberg 1860–1910</button>
+        <button type="button" data-ex="Moisei|Tolpolar|1885|1895|Kishinev|usa" data-i18n="ex1">Толполар, Кишинёв → США</button>,
+        <button type="button" data-ex="|Shapiro|1880|1900|Odessa|argentina" data-i18n="ex2">Шапиро, Одесса → Аргентина</button>,
+        <button type="button" data-ex="Icek|Goldberg|1890|1905|Warsaw|uk,canada" data-i18n="ex3">Гольдберг, Варшава → Англия, Канада</button>
       </p>
 
       <a class="promo" id="heroAd" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=banner&amp;utm_campaign=genealogy_search&amp;utm_content=hero" target="_blank" rel="noopener sponsored">
@@ -730,9 +745,9 @@ footer a{color:var(--text)}
   <!-- О источниках -->
   <section class="intro" id="intro">
     <div class="wrap">
-      <h2 class="section-title" data-i18n="introTitle">Где мы ищем</h2>
-      <p class="section-sub" data-i18n="introSub">Только открытые и законные источники. Мы ничего не храним — запрос уходит напрямую в базы.</p>
-      <div class="cards-4" id="srcCards"><div class="src-card" style="--c:var(--c-wikitree)"><span class="tag">Общее древо</span><h4>WikiTree</h4><p>Бесплатное мировое семейное древо: более 30 млн профилей с источниками и связями.</p></div><div class="src-card" style="--c:var(--c-wikidata)"><span class="tag">Энциклопедия</span><h4>Wikidata</h4><p>Известные люди: даты, места, родители, фото. Хорошо ищет и на кириллице.</p></div><div class="src-card" style="--c:var(--c-openarch)"><span class="tag">Архивы Европы</span><h4>Open Archives</h4><p>Сотни миллионов метрических записей: рождения, браки, смерти — Нидерланды, Бельгия и др.</p></div><div class="src-card" style="--c:#4fb3c8"><span class="tag">Книги и справочники</span><h4>Internet Archive</h4><p>Оцифрованные книги, адресные книги, школьные альбомы, книги памяти (Yizkor).</p></div><div class="src-card" style="--c:#3d7be0"><span class="tag">Еврейское наследие</span><h4>Нац. библиотека Израиля</h4><p>Крупнейшее собрание еврейских документов, газет, фото и архивов (в т.ч. на идиш, иврите, русском).</p></div><div class="src-card" style="--c:#9aa3b5"><span class="tag">Статьи</span><h4>Википедия</h4><p>Статьи на русском и английском, где упоминается этот человек или фамилия.</p></div><div class="src-card" style="--c:#53c2a0"><span class="tag">Фото</span><h4>Викисклад</h4><p>Свободные фотографии и сканы: надгробия, документы, портреты.</p></div></div>
+      <h2 class="section-title" data-i18n="introTitle">Какие документы можно найти</h2>
+      <p class="section-sub" data-i18n="introSub">Для каждого типа документов мы откроем поиск в коллекциях архивов США, Канады, Латинской Америки, Европы, Израиля, ЮАР и Австралии — с вашими данными. Мы ничего не храним.</p>
+      <div class="cards-4" id="srcCards"><div class="src-card" style="--c:#3d7be0"><h4>Списки пассажиров кораблей</h4><p>Возраст, родной город, профессия, родственник, оставшийся дома, и к кому ехал в новой стране. Часто это единственный документ с названием местечка.</p></div><div class="src-card" style="--c:#e4574c"><h4>Натурализация и гражданство</h4><p>Заявление о намерении и прошение о гражданстве: дата и место рождения, корабль и дата прибытия, имена супруга и детей, иногда фото.</p></div><div class="src-card" style="--c:var(--accent)"><h4>Рождение, брак, смерть</h4><p>Метрические книги и свидетельства: точные даты, имена родителей (в т. ч. девичья фамилия матери), место жительства, свидетели.</p></div><div class="src-card" style="--c:#2f9fa8"><h4>Переписи населения</h4><p>Вся семья по одному адресу: возраст, год прибытия, родной язык, гражданство, профессия. Переписи США, Канады, Англии, Аргентины и Мексики доступны бесплатно.</p></div><div class="src-card" style="--c:#6b8e23"><h4>Военные документы</h4><p>Призывные карточки США (адрес, дата и место рождения, ближайший родственник) и данные о советских солдатах 1941–1945: награды, потери, госпитали.</p></div><div class="src-card" style="--c:#8a6bd1"><h4>Холокост и депортации</h4><p>Листы свидетельских показаний, списки депортированных, документы лагерей и перемещённых лиц — часто с именами родителей и местом жительства до войны.</p></div><div class="src-card" style="--c:#9aa3b5"><h4>Захоронения</h4><p>Надгробия с датами; на еврейских надгробиях обычно указано имя отца — это ключ к следующему поколению.</p></div><div class="src-card" style="--c:#c9536b"><h4>Репрессии в СССР</h4><p>Даты ареста, приговор, место ссылки или гибели, реабилитация.</p></div></div>
     </div>
   </section>
 
@@ -934,13 +949,14 @@ const I18N = {
     searchBtn: "Найти", advanced: "Годы, место, семья и латинское написание",
     famTitle: "Уточнить по событиям и семье — необязательно",
     famSub: "Заполненные поля мы подставим в формы поиска архивов (FamilySearch, Find a Grave, Geneteka), и нужная запись окажется в начале списка.",
-    fDy: "Год смерти", fMy: "Год брака", fAy: "Прибыл(а) в США", fRs: "Где жил(а) потом", fRsPh: "Нью-Йорк, Чикаго…",
+    fTo: "Куда эмигрировал(а)", moreSrc: "Где ещё искать совпадения по имени",
+    fDy: "Год смерти", fMy: "Год брака", fAy: "Год эмиграции", fRs: "Где жил(а) потом", fRsPh: "Нью-Йорк, Чикаго…",
     fSp: "Муж или жена", fSpPh: "Сура Гольдман", fFa: "Имя отца", fFaPh: "Арон", fMo: "Мать: имя, девичья фамилия", fMoPh: "Хая Шапиро",
     yearFrom: "Родился с", yearTo: "по", place: "Место", placePh: "Город, область или страна",
     latFirst: "Имя латиницей", latLast: "Фамилия латиницей",
     translitNote: "Американские и европейские базы ищут латиницей. Мы заполним эти поля сами — исправьте, если в документах фамилия писалась иначе.",
     variantsLabel: "Другие написания:",
-    tryEx: "Попробуйте:",
+    tryEx: "Попробуйте:", ex1: "Толполар, Кишинёв → США", ex2: "Шапиро, Одесса → Аргентина", ex3: "Гольдберг, Варшава → Англия, Канада",
     adLabel: "Реклама",
     results: n => `${n} ${plural(n, ["находка","находки","находок"])}`,
     resultsFor: q => `по запросу «${q}»`,
@@ -1006,16 +1022,53 @@ const I18N = {
       forRegion: r => `с учётом региона: ${r}`, general: "общий набор — укажите место, и список станет точнее",
       addYears: "Укажите годы рождения — тогда останутся только документы, подходящие по времени, а поиск внутри коллекций станет точнее.",
       foot: "Совет: если человек не находится, попробуйте другие написания фамилии (кнопки «Другие написания» под формой) и имя в форме, принятой в стране въезда: Моисей → Moses, Morris; Ицхак → Isaac, Isidore.",
+      c: {
+        ask: "Куда эмигрировал человек?", askOff: "Выберите страну — добавим её списки пассажиров, натурализацию, метрики и переписи. Пока показаны документы США.", askOn: "Можно выбрать несколько стран.",
+        names: { usa: "США", canada: "Канада", argentina: "Аргентина", brazil: "Бразилия", uruguay: "Уругвай", chile: "Чили", mexico: "Мексика", cuba: "Куба", uk: "Англия", france: "Франция", germany: "Германия", israel: "Палестина / Израиль", southafrica: "ЮАР", australia: "Австралия", stayed: "Никуда — остался на родине" },
+        l: {
+          fsIn: c => `FamilySearch: все записи — ${c}`,
+          caPass: "Канада: списки пассажиров, 1881–1922", caLac: "Архив Канады (LAC) — списки пассажиров 1865–1935", caNat: "Архив Канады — натурализация 1915–1951",
+          ca1921: "Перепись Канады 1921 года", ca1911: "Перепись Канады 1911 года",
+          cemla: "CEMLA — прибытие в Буэнос-Айрес, 1882–1960", ar1895: "Перепись Аргентины 1895 года", agja: "AGJA — Еврейская генеалогия Аргентины", amia: "AMIA — еврейские кладбища Буэнос-Айреса",
+          brCards: "Бразилия: иммиграционные карточки Рио-де-Жанейро, 1900–1965", brMuseu: "Музей иммиграции Сан-Паулу — списки прибывших",
+          mx1930: "Перепись Мексики 1930 года",
+          ukNat: "Национальный архив Великобритании — натурализация", ukBirth: "Англия и Уэльс: индекс рождений, 1837–2008", ukMarr: "Англия и Уэльс: индекс браков, 1837–2005", ukDeath: "Англия и Уэльс: индекс смертей, 1837–2007", uk1911: "Перепись Англии и Уэльса 1911 года",
+          isa: "Государственный архив Израиля — натурализация в Палестине", igra: "IGRA — базы Османского и Британского периода",
+          zaCape: "ЮАР, Капская провинция: метрики 1840–1972", naa: "Национальный архив Австралии — иммиграция и натурализация",
+          bremen: "Выезд из Бремена, 1920–1939 — в любые страны"
+        },
+        n: {
+          fsIn: "Поиск по всем записям, где упоминается эта страна: метрики, переписи, иммиграция.",
+          caPass: "Прибытие в порты Канады: возраст, родина, место назначения.", caLac: "Бесплатные базы по портам и годам; выберите нужный период.",
+          caNat: "Списки натурализованных 1915–1951 с прежним гражданством и местом жительства.",
+          cemla: (f, l) => `Введите ${[f, l].filter(Boolean).join(" ")} — в испанских документах имя часто записано по-испански (Moisés, Isaac). Указаны судно, дата, возраст, профессия.`,
+          ar1895: "Вся семья: возраст, страна рождения, профессия, грамотность.",
+          agja: "Базы прибывших еврейских иммигрантов и кладбищ; простой запрос — бесплатно, по email.",
+          amia: "Кладбища Ла-Таблада, Беразатеги, Линьерс, Сьюдадела.",
+          brCards: "Карточки прибывших: фото, дата и место рождения, родители, судно.",
+          brMuseu: "Списки прибывших в Сантус и записи приюта иммигрантов Сан-Паулу.",
+          mx: "Включая Национальный регистр иностранцев 1926–1951: фото, дата прибытия, место рождения.",
+          ukNat: "Введите в поиск фамилию и «nat*»: найдутся дела и сертификаты о натурализации 1870–1948.",
+          ukMarr: "В индексе указан округ и квартал — по ним заказывают свидетельство.",
+          freebmd: "Бесплатный индекс рождений, браков и смертей Англии и Уэльса с 1837 г.",
+          geneanet: "Крупнейшая база Франции: древа, метрики, кладбища.",
+          isa: "Дела о натурализации 1937–1947 с фото и анкетами; ищите латиницей или на иврите.",
+          igra: "Переписи Монтефиоре, мандатные списки, кладбища; бесплатная регистрация.",
+          eggsa: "Фото надгробий и записи кладбищ ЮАР, включая еврейские.",
+          naa: "В RecordSearch выберите NameSearch → Immigration and naturalisation.",
+          bremen: "Списки отплывших из Бремена: возраст, последнее место жительства, страна назначения."
+        }
+      },
       free: "бесплатно", freeReg: "бесплатно, регистрация", unique: "уникальные данные",
-      used: "В ссылки подставлено:", uDy: "смерть", uMy: "брак", uAy: "прибытие", uSp: "супруг(а)", uFa: "отец", uMo: "мать", uRs: "жительство",
+      used: "В ссылки подставлено:", uDy: "смерть", uMy: "брак", uAy: "эмиграция", uSp: "супруг(а)", uFa: "отец", uMo: "мать", uRs: "жительство",
       patr: p => `Отчество в советских документах, вероятно: ${p}.`,
       gnMarr: "Geneteka — браки", gnMarrN: "Поиск записи о браке по обоим супругам.",
-      arrive: y => `Год прибытия: ${y} — укажите его в форме.`,
+      arrive: y => `Год эмиграции: ${y} — укажите его в форме.`,
       types: {
-        ships: { title: "Списки пассажиров кораблей", what: "Возраст, родной город, профессия, родственник, оставшийся дома, и к кому ехал в Америке. Часто это единственный документ с названием местечка." },
+        ships: { title: "Списки пассажиров кораблей", what: "Возраст, родной город, профессия, родственник, оставшийся дома, и к кому ехал в новой стране. Часто это единственный документ с названием местечка." },
         natur: { title: "Натурализация и гражданство", what: "Заявление о намерении и прошение о гражданстве: дата и место рождения, корабль и дата прибытия, имена супруга и детей, иногда фото." },
         vital: { title: "Рождение, брак, смерть", what: "Метрические книги и свидетельства: точные даты, имена родителей (в т. ч. девичья фамилия матери), место жительства, свидетели." },
-        census: { title: "Переписи населения", what: "Вся семья по одному адресу: возраст, год прибытия, родной язык, гражданство, профессия. Переписи США 1920–1950 доступны бесплатно." },
+        census: { title: "Переписи населения", what: "Вся семья по одному адресу: возраст, год прибытия, родной язык, гражданство, профессия. Переписи США, Канады, Англии, Аргентины и Мексики доступны бесплатно." },
         military: { title: "Военные документы", what: "Призывные карточки США (адрес, дата и место рождения, ближайший родственник) и данные о советских солдатах 1941–1945: награды, потери, госпитали." },
         holocaust: { title: "Холокост и депортации", what: "Листы свидетельских показаний, списки депортированных, документы лагерей и перемещённых лиц — часто с именами родителей и местом жительства до войны." },
         graves: { title: "Захоронения", what: "Надгробия с датами; на еврейских надгробиях обычно указано имя отца — это ключ к следующему поколению." },
@@ -1145,7 +1198,7 @@ const I18N = {
     censusSub: n => `Данные переписи 2010 года для фамилии ${n}`,
     censusCount: "носителей фамилии", censusRank: "место по частоте", censusProp: "на 100 000 человек", censusNone: "Фамилия встречается реже 100 раз и не попала в список.",
     extTitle: "Ищите также здесь", extSub: "У этих баз нет открытого API — ссылка откроет их поиск (где возможно — сразу с вашим запросом).",
-    introTitle: "Где мы ищем", introSub: "Только открытые и законные источники. Мы ничего не храним — запрос уходит напрямую в базы.",
+    introTitle: "Какие документы можно найти", introSub: "Для каждого типа документов мы откроем поиск в коллекциях архивов США, Канады, Латинской Америки, Европы, Израиля, ЮАР и Австралии — с вашими данными. Мы ничего не храним.",
     born: "Рождение", died: "Смерть", parents: "Родители", event: "Событие", archive: "Архив", role: "Роль",
     open: "Открыть", copy: "Копировать", copied: "Скопировано",
     linkCopied: "Ссылка на поиск скопирована",
@@ -1189,13 +1242,14 @@ const I18N = {
     searchBtn: "Search", advanced: "Years, place, family and Latin spelling",
     famTitle: "Narrow down by events and family — optional",
     famSub: "Filled-in fields are passed into the archive search forms (FamilySearch, Find a Grave, Geneteka), so the right record comes up first.",
-    fDy: "Year of death", fMy: "Year of marriage", fAy: "Arrived in U.S.", fRs: "Later residence", fRsPh: "New York, Chicago…",
+    fTo: "Emigrated to", moreSrc: "Where else to look for name matches",
+    fDy: "Year of death", fMy: "Year of marriage", fAy: "Year emigrated", fRs: "Later residence", fRsPh: "New York, Chicago…",
     fSp: "Spouse", fSpPh: "Sarah Goldman", fFa: "Father's first name", fFaPh: "Aaron", fMo: "Mother: first & maiden name", fMoPh: "Chaya Shapiro",
     yearFrom: "Born from", yearTo: "to", place: "Place", placePh: "City, region or country",
     latFirst: "First name (Latin)", latLast: "Last name (Latin)",
     translitNote: "U.S. and European databases search in Latin letters. We fill these in automatically — edit them if records spelled the name differently.",
     variantsLabel: "Other spellings:",
-    tryEx: "Try:",
+    tryEx: "Try:", ex1: "Tolpolar, Kishinev → USA", ex2: "Shapiro, Odessa → Argentina", ex3: "Goldberg, Warsaw → England, Canada",
     adLabel: "Ad",
     results: n => `${n} ${n === 1 ? "result" : "results"}`,
     resultsFor: q => `for “${q}”`,
@@ -1261,16 +1315,53 @@ const I18N = {
       forRegion: r => `based on region: ${r}`, general: "general set — add a place for a more precise list",
       addYears: "Add birth years — only documents that fit the time period will remain, and searches inside collections become more precise.",
       foot: "Tip: if the person doesn't turn up, try other surname spellings (the “Other spellings” buttons under the form) and the name form used in the destination country: Moshe → Moses, Morris; Yitzhak → Isaac, Isidore.",
+      c: {
+        ask: "Where did the person emigrate?", askOff: "Pick a country — we'll add its passenger lists, naturalization, vital records and censuses. U.S. records are shown for now.", askOn: "You can pick several countries.",
+        names: { usa: "USA", canada: "Canada", argentina: "Argentina", brazil: "Brazil", uruguay: "Uruguay", chile: "Chile", mexico: "Mexico", cuba: "Cuba", uk: "England", france: "France", germany: "Germany", israel: "Palestine / Israel", southafrica: "South Africa", australia: "Australia", stayed: "Nowhere — stayed home" },
+        l: {
+          fsIn: c => `FamilySearch: all records — ${c}`,
+          caPass: "Canada passenger lists, 1881–1922", caLac: "Library and Archives Canada — passenger lists 1865–1935", caNat: "Library and Archives Canada — naturalization 1915–1951",
+          ca1921: "1921 Census of Canada", ca1911: "1911 Census of Canada",
+          cemla: "CEMLA — arrivals in Buenos Aires, 1882–1960", ar1895: "1895 Argentina National Census", agja: "AGJA — Jewish Genealogy Society of Argentina", amia: "AMIA — Jewish cemeteries of Buenos Aires",
+          brCards: "Brazil: Rio de Janeiro immigration cards, 1900–1965", brMuseu: "São Paulo Immigration Museum — arrival lists",
+          mx1930: "1930 Mexico National Census",
+          ukNat: "UK National Archives — naturalisation", ukBirth: "England & Wales birth index, 1837–2008", ukMarr: "England & Wales marriage index, 1837–2005", ukDeath: "England & Wales death index, 1837–2007", uk1911: "1911 England & Wales Census",
+          isa: "Israel State Archives — Mandate Palestine naturalization", igra: "IGRA — Ottoman and British Mandate databases",
+          zaCape: "South Africa, Cape Province civil records, 1840–1972", naa: "National Archives of Australia — immigration & naturalisation",
+          bremen: "Departures from Bremen, 1920–1939 — to any country"
+        },
+        n: {
+          fsIn: "Searches all records mentioning this country: vital records, censuses, immigration.",
+          caPass: "Arrivals at Canadian ports: age, origin, destination.", caLac: "Free databases by port and year; pick the period.",
+          caNat: "Lists of naturalized persons 1915–1951 with former nationality and residence.",
+          cemla: (f, l) => `Enter ${[f, l].filter(Boolean).join(" ")} — Spanish records often use Spanish name forms (Moisés, Isaac). Gives ship, date, age, occupation.`,
+          ar1895: "The whole household: age, country of birth, occupation, literacy.",
+          agja: "Databases of Jewish immigrant arrivals and cemeteries; simple requests are free, by email.",
+          amia: "La Tablada, Berazategui, Liniers and Ciudadela cemeteries.",
+          brCards: "Arrival cards: photo, birth date and place, parents, ship.",
+          brMuseu: "Arrival lists for Santos and São Paulo immigrant hostel records.",
+          mx: "Includes the National Register of Foreigners 1926–1951: photo, arrival date, birthplace.",
+          ukNat: "Search for the surname plus “nat*” to find naturalisation case papers and certificates, 1870–1948.",
+          ukMarr: "The index gives district and quarter — used to order the certificate.",
+          freebmd: "Free index of births, marriages and deaths in England & Wales since 1837.",
+          geneanet: "France's largest genealogy database: trees, vital records, cemeteries.",
+          isa: "Naturalization files 1937–1947 with photos and forms; search in Latin letters or Hebrew.",
+          igra: "Montefiore censuses, Mandate-era lists, cemeteries; free sign-up.",
+          eggsa: "Gravestone photos and cemetery records of South Africa, incl. Jewish ones.",
+          naa: "In RecordSearch choose NameSearch → Immigration and naturalisation.",
+          bremen: "Lists of passengers leaving Bremen: age, last residence, destination country."
+        }
+      },
       free: "free", freeReg: "free, sign-up", unique: "unique data",
-      used: "Passed into the links:", uDy: "death", uMy: "marriage", uAy: "arrival", uSp: "spouse", uFa: "father", uMo: "mother", uRs: "residence",
+      used: "Passed into the links:", uDy: "death", uMy: "marriage", uAy: "emigration", uSp: "spouse", uFa: "father", uMo: "mother", uRs: "residence",
       patr: p => `Patronymic in Soviet records is probably: ${p}.`,
       gnMarr: "Geneteka — marriages", gnMarrN: "Marriage record search by both spouses.",
       arrive: y => `Arrival year: ${y} — enter it in the form.`,
       types: {
-        ships: { title: "Ship passenger lists", what: "Age, hometown, occupation, the relative left behind and whom they were joining in America. Often the only document naming the shtetl." },
+        ships: { title: "Ship passenger lists", what: "Age, hometown, occupation, the relative left behind and whom they were joining in the new country. Often the only document naming the shtetl." },
         natur: { title: "Naturalization & citizenship", what: "Declaration of intention and petition: date and place of birth, ship and arrival date, names of spouse and children, sometimes a photo." },
         vital: { title: "Birth, marriage, death", what: "Metrical books and certificates: exact dates, parents' names (incl. mother's maiden name), residence, witnesses." },
-        census: { title: "Censuses", what: "The whole household at one address: ages, year of arrival, native language, citizenship, occupation. U.S. censuses 1920–1950 are free." },
+        census: { title: "Censuses", what: "The whole household at one address: ages, year of arrival, native language, citizenship, occupation. Censuses of the U.S., Canada, England, Argentina and Mexico are free." },
         military: { title: "Military records", what: "U.S. draft cards (address, birth date and place, nearest relative) and Soviet WWII soldiers' records: awards, losses, hospitals." },
         holocaust: { title: "Holocaust & deportations", what: "Pages of Testimony, deportation lists, camp and displaced-persons records — often with parents' names and pre-war residence." },
         graves: { title: "Burials", what: "Gravestones with dates; Jewish gravestones usually give the father's name — the key to the next generation." },
@@ -1400,7 +1491,7 @@ const I18N = {
     censusSub: n => `2010 Census data for the surname ${n}`,
     censusCount: "people with this surname", censusRank: "frequency rank", censusProp: "per 100,000 people", censusNone: "This surname occurs fewer than 100 times and is not listed.",
     extTitle: "Also search here", extSub: "These databases have no open API — the link opens their search (with your query where possible).",
-    introTitle: "Where we search", introSub: "Only open, legal sources. We store nothing — your query goes straight to the databases.",
+    introTitle: "Which records you can find", introSub: "For each record type we open the search in archive collections of the U.S., Canada, Latin America, Europe, Israel, South Africa and Australia — with your details filled in. We store nothing.",
     born: "Born", died: "Died", parents: "Parents", event: "Event", archive: "Archive", role: "Role",
     open: "Open", copy: "Copy", copied: "Copied",
     linkCopied: "Search link copied",
@@ -1453,6 +1544,9 @@ const SOURCES = [
   { id: "commons",   color: "#53c2a0" }
 ];
 const ALL_SOURCES = SOURCES.slice();
+// По умолчанию ищем только там, где есть записи о конкретных людях: метрики, древа, архивные дела, некрологи.
+// Энциклопедии, книги и музейные коллекции включаются вручную.
+const DOC_SOURCES = new Set(["wikitree", "openarch", "nara", "loc"]);
 SOURCES.splice(0, SOURCES.length, ...ALL_SOURCES.filter(s => !s.needs || s.needs()));
 
 /* ---------- утилиты ---------- */
@@ -1962,7 +2056,7 @@ const EXTERNAL = q => {
 };
 
 /* ---------- состояние ---------- */
-const state = { q: null, raw: [], items: [], merged: 0, status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id)), runId: 0 };
+const state = { to: new Set(), q: null, raw: [], items: [], merged: 0, status: {}, mentions: {}, expanded: {}, filter: "all", shown: PAGE_SIZE, enabled: new Set(SOURCES.map(s => s.id).filter(id => DOC_SOURCES.has(id))), runId: 0 };
 
 /* ---------- интерфейс ---------- */
 function applyI18n(){
@@ -1985,11 +2079,33 @@ function applyI18n(){
   updateVariants();
 }
 
+/* страны эмиграции */
+function destChips(sel){
+  const C = t("docs").c, on = new Set(sel);
+  return DESTS.map(k => `<button type="button" class="dchip${k === "stayed" ? " dchip-stay" : ""}" data-dest="${k}" aria-pressed="${on.has(k)}">${esc(C.names[k])}</button>`).join("");
+}
+function setDest(list){
+  state.to = new Set(list);
+  $("#destForm").innerHTML = destChips([...state.to]);
+}
+function toggleDest(k){
+  if (k === "stayed") state.to = state.to.has("stayed") ? new Set() : new Set(["stayed"]);
+  else { state.to.delete("stayed"); state.to.has(k) ? state.to.delete(k) : state.to.add(k); }
+  setDest([...state.to]);
+  if (state.q){ state.q.to = [...state.to]; syncUrl(state.q); renderPlan(); }
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-dest]"); if (!b) return;
+  toggleDest(b.dataset.dest);
+  if (b.closest("[data-dest-box]")) track("dest_pick", { dest: b.dataset.dest });
+});
+
 function renderChips(){
   $("#sourceChips").innerHTML = SOURCES.map(s => `<button type="button" class="chip" style="--c:${s.color}" data-src="${s.id}" aria-pressed="${state.enabled.has(s.id)}"><span class="dot"></span>${esc(t("src")[s.id][0])}</button>`).join("");
 }
 function renderSrcCards(){
-  $("#srcCards").innerHTML = SOURCES.map(s => { const [n, tag, d] = t("src")[s.id]; return `<div class="src-card" style="--c:${s.color}"><span class="tag">${esc(tag)}</span><h4>${esc(n)}</h4><p>${esc(d)}</p></div>`; }).join("");
+  const T = t("docs").types, col = { ships: "#3d7be0", natur: "#e4574c", vital: "var(--accent)", census: "#2f9fa8", military: "#6b8e23", holocaust: "#8a6bd1", graves: "#9aa3b5", repression: "#c9536b" };
+  $("#srcCards").innerHTML = Object.keys(T).map(k => `<div class="src-card" style="--c:${col[k]}"><h4>${esc(T[k].title)}</h4><p>${esc(T[k].what)}</p></div>`).join("");
 }
 
 const ICON = {
@@ -2502,6 +2618,7 @@ const REGION_WORDS = [
   ["israel", /израил|israel|палестин|palestin|тель-авив|tel aviv|tel-aviv|иерусалим|jerusalem|хайф|haifa|ришон|rishon|петах|petah|нетани|netanya|беэр|beer sheva|ашдод|ashdod/i],
   ["germany", /германи|germany|deutschland|берлин|berlin|мюнхен|munich|франкфурт|frankfurt|гамбург|hamburg/i]
 ];
+const DESTS = ["usa", "canada", "argentina", "brazil", "uruguay", "chile", "mexico", "cuba", "uk", "france", "germany", "israel", "southafrica", "australia", "stayed"];
 const EMPIRE = new Set(["moldova", "ukraine", "belarus", "poland", "lithuania", "latvia", "russia", "estonia", "romania"]);
 const USSR = new Set(["moldova", "ukraine", "belarus", "lithuania", "latvia", "russia", "estonia"]);
 function detectRegion(q){
@@ -2528,7 +2645,8 @@ function toCyr(s){
 /* ===================== НАВИГАТОР ПО ДОКУМЕНТАМ ===================== */
 // Списки пассажиров, натурализация, метрики, переписи, военные документы хранятся в базах без открытого API.
 // Навигатор подбирает нужные КОЛЛЕКЦИИ (а не базы целиком) под годы и регион и открывает поиск с данными человека.
-const FS_COLL = {
+const FS_COLL = { caPass: 1823240, ca1911: 2143998, ca1921: 5000285, brCards: 1932363, ar1895: 1410078, mx1930: 1307314,
+  ukBirth: 2285338, ukMarr: 2285732, ukDeath: 2285341, uk1911: 1921547, zaCape: 1779109,
   ellis: 1368704, nyPass: 1849782,
   natNY: 1840501, natNE: 1840474, natMA: 1834334, natMD: 1838829, natCA: 1849628,
   ssdi: 1202535, nycDeaths: 2240477, nycMarr: 2143225,
@@ -2546,6 +2664,13 @@ function buildDocs(q){
   const born = (a, b) => !yf || (yt >= a && yf <= b);           // родился в интервале [a, b] или годы неизвестны
   const empire = !region || EMPIRE.has(region), ussr = !region || USSR.has(region);
   const usaLikely = !region || region === "usa" || empire;
+  // Куда уехали: выбор пользователя; если место рождения само в стране эмиграции — добавляем её
+  const to = new Set(q.to || []);
+  if (region && DESTS.includes(region)) to.add(region);
+  const stayed = to.has("stayed") && to.size === 1;
+  const emigrated = to.size > 0 && !stayed && !(region && DESTS.includes(region) && to.size === 1);
+  const toUSA = to.size ? to.has("usa") : usaLikely;
+  const europeOrigin = empire || ["germany", "hungary", "czech"].includes(region);
   // FamilySearch: поиск сразу внутри коллекции, с именем и годами рождения
   // Дополнительные поля: имена — в латиницу (FamilySearch ищет латиницей), «Имя Фамилия» делим на две части
   const lat = s => hasCyr(s) ? translit(s) : s;
@@ -2573,23 +2698,81 @@ function buildDocs(q){
   const sec = (id, prio, items) => { const list = items.filter(Boolean); if (list.length) sections.push({ id, prio, ...D.types[id], items: list }); };
   const it = (name, url, note, tag) => ({ name, url, note, tag });
 
+  // Страны эмиграции: что искать в каждой (только проверенные коллекции и сайты)
+  const C = D.c, cn = k => C.names[k];
+  const fsC = (country, keys = "dmsfor") => `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` +
+    (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + famFS(keys) + `&q.anyPlace=${enc(country)}`;
+  const fsAllIn = (k, country) => it(C.l.fsIn(cn(k)), fsC(country), C.n.fsIn, "FamilySearch");
+  const X = { ships: [], natur: [], vital: [], census: [], graves: [] };
+  const add = (k, ...items) => X[k].push(...items);
+  if (to.has("canada")){
+    if (arrived(1865, 1935)) add("ships", arrived(1881, 1922) && it(C.l.caPass, fs(FS_COLL.caPass, "asf"), C.n.caPass, "FamilySearch"),
+      it(C.l.caLac, "https://www.canada.ca/en/library-archives/collection/research-help/genealogy-family-history/immigration/passenger-lists-1865-1935.html", C.n.caLac, D.free));
+    add("natur", it(C.l.caNat, "https://www.canada.ca/en/library-archives/collection/research-help/genealogy-family-history/immigration/citizenship-naturalization.html", C.n.caNat, D.free));
+    add("census", born(1830, 1921) && alive(1921) && it(C.l.ca1921, fs(FS_COLL.ca1921, "sfor"), "", "FamilySearch"),
+      born(1820, 1911) && alive(1911) && it(C.l.ca1911, fs(FS_COLL.ca1911, "sfor"), "", "FamilySearch"));
+    add("vital", fsAllIn("canada", "Canada"));
+  }
+  if (to.has("argentina")){
+    add("ships", it(C.l.cemla, "https://www.cemla.com/buscador/", C.n.cemla(f, l), D.free));
+    add("census", born(1800, 1895) && alive(1895) && it(C.l.ar1895, fs(FS_COLL.ar1895, "sfor"), C.n.ar1895, "FamilySearch"));
+    add("vital", fsAllIn("argentina", "Argentina"), it(C.l.agja, "https://www.agja.org.ar/", C.n.agja, D.free));
+    add("graves", it(C.l.amia, "https://sepelioscomunitarios.amia.org.ar/", C.n.amia, D.free));
+  }
+  if (to.has("brazil")){
+    add("ships", arrived(1900, 1965) && it(C.l.brCards, fs(FS_COLL.brCards, "asf"), C.n.brCards, "FamilySearch"),
+      it(C.l.brMuseu, "https://museudaimigracao.org.br/", C.n.brMuseu, D.free));
+    add("vital", fsAllIn("brazil", "Brazil"));
+  }
+  if (to.has("mexico")){
+    add("census", born(1840, 1930) && alive(1930) && it(C.l.mx1930, fs(FS_COLL.mx1930, "sfor"), "", "FamilySearch"));
+    add("vital", it(C.l.fsIn(cn("mexico")), fsC("Mexico"), C.n.mx, "FamilySearch"));
+  }
+  for (const [k, country] of [["uruguay", "Uruguay"], ["chile", "Chile"], ["cuba", "Cuba"], ["france", "France"], ["germany", "Germany"], ["israel", "Israel"], ["australia", "Australia"]])
+    if (to.has(k)) add("vital", fsAllIn(k, country));
+  if (to.has("uk")){
+    add("natur", it(C.l.ukNat, `https://discovery.nationalarchives.gov.uk/results/r?_q=${enc(l + " " + f + " nat*")}`, C.n.ukNat, D.free));
+    add("vital", it(C.l.ukBirth, fs(FS_COLL.ukBirth, "o"), "", "FamilySearch"),
+      it(C.l.ukMarr, fs(FS_COLL.ukMarr, "ms"), C.n.ukMarr, "FamilySearch"),
+      it(C.l.ukDeath, fs(FS_COLL.ukDeath, "d"), "", "FamilySearch"),
+      it("FreeBMD", "https://www.freebmd.org.uk/cgi/search.pl", C.n.freebmd, D.free));
+    add("census", born(1820, 1911) && alive(1911) && it(C.l.uk1911, fs(FS_COLL.uk1911, "sfor"), "", "FamilySearch"));
+  }
+  if (to.has("france")) add("vital", it("Geneanet", `https://www.geneanet.org/fonds/individus/?go=1&nom=${enc(l)}&prenom=${enc(f)}`, C.n.geneanet, D.freeReg));
+  if (to.has("israel")){
+    add("natur", it(C.l.isa, "https://www.archives.gov.il/en/", C.n.isa, D.free));
+    add("vital", it(C.l.igra, "https://genealogy.org.il/", C.n.igra, D.freeReg));
+  }
+  if (to.has("southafrica")){
+    add("vital", it(C.l.zaCape, fs(FS_COLL.zaCape, "dmsfor"), "", "FamilySearch"), fsAllIn("southafrica", "South Africa"));
+    add("graves", it("eGGSA", "https://www.eggsa.org/", C.n.eggsa, D.free));
+  }
+  if (to.has("australia")) add("natur", it(C.l.naa, "https://recordsearch.naa.gov.au/", C.n.naa, D.free));
+  // Выезд из Европы: списки Бремена 1920–1939 — для любой страны назначения
+  const leftEurope = europeOrigin && !stayed && born(1850, 1925) && arrived(1920, 1939);
+
   // 1. Списки пассажиров
   const arrNote = ay ? " " + D.arrive(ay) : "";
-  if (usaLikely && born(1840, 1925) && arrived(1820, 1960)) sec("ships", region === "usa" || empire ? 96 : 70, [
+  const ships = [];
+  if (toUSA && born(1840, 1925) && arrived(1820, 1960)) ships.push(
     arrived(1892, 1925) && it(D.l.ellis, fs(FS_COLL.ellis, "asf"), D.n.ellis, "FamilySearch"),
     arrived(1892, 1957) && it(D.l.ellisSite, "https://heritage.statueofliberty.org/", D.n.ellisSite(l, f) + arrNote, D.free),
     arrived(1820, 1957) && it(D.l.morse, "https://stevemorse.org/ellis/elliswhite.html", D.n.morse + arrNote, D.free),
-    born(1800, 1905) && arrived(1820, 1920) && it(D.l.nyPass, fs(FS_COLL.nyPass, "asf"), D.n.nyPass, "FamilySearch")
-  ]);
+    born(1800, 1905) && arrived(1820, 1920) && it(D.l.nyPass, fs(FS_COLL.nyPass, "asf"), D.n.nyPass, "FamilySearch"));
+  ships.push(...X.ships);
+  if (leftEurope) ships.push(it(C.l.bremen, "https://www.passagierlisten.de/", C.n.bremen + arrNote, D.free));
+  if (!stayed) sec("ships", empire || to.size ? 96 : 70, ships);
   // 2. Натурализация
-  if (usaLikely && born(1840, 1935)) sec("natur", region === "usa" ? 94 : 88, [
+  const natur = [];
+  if (toUSA && born(1840, 1935)) natur.push(
     it(D.l.natNY, fs(FS_COLL.natNY, "msr"), D.n.natNY, "FamilySearch"),
     it(D.l.natNE, fs(FS_COLL.natNE, "msr"), D.n.natNE, "FamilySearch"),
     it(D.l.natMA, fs(FS_COLL.natMA, "msr"), "", "FamilySearch"),
     it(D.l.natMD, fs(FS_COLL.natMD, "msr"), "", "FamilySearch"),
     it(D.l.natCA, fs(FS_COLL.natCA, "msr"), "", "FamilySearch"),
-    it(D.l.nara, `https://catalog.archives.gov/search?q=${enc('"' + full + '" naturalization')}`, D.n.nara, D.free)
-  ]);
+    it(D.l.nara, `https://catalog.archives.gov/search?q=${enc('"' + full + '" naturalization')}`, D.n.nara, D.free));
+  natur.push(...X.natur);
+  if (!stayed) sec("natur", region === "usa" ? 94 : 88, natur);
   // 3. Рождение, брак, смерть
   const vital = [];
   if (empire){
@@ -2604,7 +2787,8 @@ function buildDocs(q){
     if (region === "lithuania") vital.push(it("LitvakSIG", "https://www.litvaksig.org/", D.n.litvak, D.freeReg));
     if (region === "moldova") vital.push(it("JewishGen — Bessarabia", "https://www.jewishgen.org/Bessarabia/", D.n.bess, D.freeReg));
   }
-  if (usaLikely){
+  vital.push(...X.vital);
+  if (toUSA){
     vital.push(it(D.l.nycVital, "https://a860-historicalvitalrecords.nyc.gov/", D.n.nycVital, D.free));
     if (!dy || dy <= 1949) vital.push(it(D.l.nycDeaths, fs(FS_COLL.nycDeaths, "dsfor"), D.n.nycDeaths, "FamilySearch"));
     if (!my || my <= 1938) vital.push(it(D.l.nycMarr, fs(FS_COLL.nycMarr, "msfor"), "", "FamilySearch"));
@@ -2613,21 +2797,23 @@ function buildDocs(q){
   vital.push(it(D.l.fsAll, `https://www.familysearch.org/search/record/results?count=20&q.givenName=${enc(f)}&q.surname=${enc(l)}` + (yf ? `&q.birthLikeDate.from=${yf - 2}&q.birthLikeDate.to=${yt + 2}` : "") + (q.place ? `&q.birthLikePlace=${enc(q.placeLat || q.place)}` : "") + famFS("dmsfor"), D.n.fsAll, "FamilySearch"));
   sec("vital", empire ? 95 : 90, vital);
   // 4. Переписи
-  if (usaLikely && born(1840, 1950) && alive(1920)) sec("census", region === "usa" ? 92 : 80, [
+  sec("census", region === "usa" ? 92 : 80, [
+    ...(toUSA && born(1840, 1950) && alive(1920) ? [
     born(1855, 1950) && alive(1950) && it(D.l.c1950, `https://1950census.archives.gov/search/?name=${enc(full)}&page=1`, D.n.c1950, D.free),
     born(1845, 1940) && alive(1940) && it(D.l.c1940, fs(FS_COLL.c1940, "sfor"), D.n.c1940, "FamilySearch"),
     born(1835, 1930) && alive(1930) && it(D.l.c1930, fs(FS_COLL.c1930, "sfor"), "", "FamilySearch"),
-    born(1825, 1920) && alive(1920) && it(D.l.c1920, fs(FS_COLL.c1920, "sfor"), D.n.c1920, "FamilySearch")
+    born(1825, 1920) && alive(1920) && it(D.l.c1920, fs(FS_COLL.c1920, "sfor"), D.n.c1920, "FamilySearch")] : []),
+    ...X.census
   ]);
   // 5. Военные документы
   const mil = [];
-  if (ussr && born(1870, 1928) && alive(1941)){
+  if (ussr && !emigrated && born(1870, 1928) && alive(1941)){
     const pt = patr ? " " + D.patr(patr) : "";
     mil.push(it(D.l.pn, `https://pamyat-naroda.ru/heroes/?last_name=${enc(lc)}&first_name=${enc(fc)}`, D.n.pn + pt, D.free));
     mil.push(it(D.l.obd, "https://obd-memorial.ru/html/", D.n.obd(lc, fc) + pt, D.free));
   }
-  if (usaLikely && born(1872, 1900) && alive(1917)) mil.push(it(D.l.ww1, fs(FS_COLL.ww1, "r"), D.n.ww1, "FamilySearch"));
-  if (usaLikely && born(1877, 1897) && alive(1942)) mil.push(it(D.l.ww2old, fs(FS_COLL.ww2old, "r"), D.n.ww2old, "FamilySearch"));
+  if (toUSA && born(1872, 1900) && alive(1917)) mil.push(it(D.l.ww1, fs(FS_COLL.ww1, "r"), D.n.ww1, "FamilySearch"));
+  if (toUSA && born(1877, 1897) && alive(1942)) mil.push(it(D.l.ww2old, fs(FS_COLL.ww2old, "r"), D.n.ww2old, "FamilySearch"));
   sec("military", 78, mil);
   // 6. Холокост и депортации
   if (born(1850, 1944) && alive(1939) && (empire || ["germany", "hungary", "czech", "romania"].includes(region))) sec("holocaust", 84, [
@@ -2640,23 +2826,26 @@ function buildDocs(q){
     region === "moldova" && it(D.l.kish, `https://gbsearch.vercel.app/?q=${enc(lc || l)}`, D.n.kish, D.unique),
     it("Find a Grave", `https://www.findagrave.com/memorial/search?firstname=${enc(f)}&lastname=${enc(l)}` + (yf ? `&birthyear=${yf}&birthyearfilter=5` : "") + (dy ? `&deathyear=${dy}&deathyearfilter=1` : ""), D.n.fag, D.free),
     it("BillionGraves", `https://billiongraves.com/search/results?given_names=${enc(f)}&family_names=${enc(l)}`, D.n.bg, D.free),
-    it(D.l.jowbr, "https://www.jewishgen.org/databases/cemetery/", D.n.jowbr, D.freeReg)
+    it(D.l.jowbr, "https://www.jewishgen.org/databases/cemetery/", D.n.jowbr, D.freeReg),
+    ...X.graves
   ]);
   // 8. Репрессии (СССР)
-  if (ussr) sec("repression", 60, [
+  if (ussr && !emigrated) sec("repression", 60, [
     it(D.l.ol, "https://ru.openlist.wiki/", D.n.ol(lc, fc) + (patr ? " " + D.patr(patr) : ""), D.free)
   ]);
   const used = [dy && [D.uDy, dy], my && [D.uMy, my], ay && [D.uAy, ay], q.sp && [D.uSp, q.sp], q.fa && [D.uFa, q.fa], q.mo && [D.uMo, q.mo], q.rs && [D.uRs, q.rs]].filter(Boolean);
-  return { region, used, sections: sections.sort((a, b) => b.prio - a.prio) };
+  return { region, to, toUSA, used, sections: sections.sort((a, b) => b.prio - a.prio) };
 }
 
 function renderPlan(){
   const box = $("#planBox"); if (!state.q){ box.innerHTML = ""; return; }
-  const { region, sections, used } = buildDocs(state.q);
+  const { region, sections, used, to, toUSA } = buildDocs(state.q);
   const D = t("docs");
   box.innerHTML = `<section class="docs">
     <div class="plan-head"><h3>${esc(D.title)}</h3><span>${esc(region ? D.forRegion(t("regions")[region] || region) : D.general)}</span></div>
     <p class="plan-sub">${esc(D.sub)}</p>
+    <div class="dest-box"><b>${esc(D.c.ask)}</b> <span>${esc(to.size ? D.c.askOn : D.c.askOff)}</span>
+      <div class="dest-chips" data-dest-box>${destChips(state.q.to || [])}</div></div>
     ${(!state.q.yf && !state.q.yt) ? `<p class="docs-hint">${esc(D.addYears)}</p>` : ""}
     ${used.length ? `<p class="docs-used">${esc(D.used)} ${used.map(([k, v]) => `${esc(k)} <b>${esc(String(v))}</b>`).join(" · ")}</p>` : ""}
     <div class="doc-grid">${sections.map(s => `<article class="doc" data-doc="${s.id}">
@@ -2708,7 +2897,7 @@ function readQuery(){
   const yr = id => { const v = parseInt($("#" + id).value, 10); return v > 1500 && v < 2100 ? v : null; };
   const tx = id => $("#" + id).value.trim().replace(/\s+/g, " ");
   return { first, last, yf, yt, place, placeLat: translit(place), latFirst, latLast,
-    dy: yr("dy"), my: yr("my"), ay: yr("ay"), sp: tx("sp"), fa: tx("fa"), mo: tx("mo"), rs: tx("rs") };
+    dy: yr("dy"), my: yr("my"), ay: yr("ay"), sp: tx("sp"), fa: tx("fa"), mo: tx("mo"), rs: tx("rs"), to: [...state.to] };
 }
 
 async function runSearch(){
@@ -2768,6 +2957,7 @@ function syncUrl(q){
   if ($("#lfn").value.trim()) p.set("lfn", $("#lfn").value.trim());
   if ($("#lln").value.trim()) p.set("lln", $("#lln").value.trim());
   for (const k of ["dy", "my", "ay", "sp", "fa", "mo", "rs"]) if (q[k]) p.set(k, q[k]);
+  if (q.to && q.to.length) p.set("to", q.to.join(","));
   history.replaceState(null, "", "?" + p.toString());
 }
 
@@ -2818,11 +3008,12 @@ $("#grid").addEventListener("click", e => {
 $("#shareBtn").addEventListener("click", () => { navigator.clipboard && navigator.clipboard.writeText(location.href).then(() => toast(t("linkCopied"))); });
 $("#csvBtn").addEventListener("click", () => { track("csv_export"); toCSV(); });
 document.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", () => {
-  const [f, l, yf, yt] = b.dataset.ex.split("|");
+  const [f, l, yf, yt, pl, pl2to] = b.dataset.ex.split("|");
   $("#fn").value = f || ""; $("#ln").value = l || ""; $("#yf").value = yf || ""; $("#yt").value = yt || "";
   $("#lfn").value = ""; $("#lln").value = ""; $("#pl").value = "";
   ["dy", "my", "ay", "sp", "fa", "mo", "rs"].forEach(k => $("#" + k).value = "");
-  if (yf){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
+  setDest(pl2to ? pl2to.split(",") : []); if (pl) $("#pl").value = pl;
+  if (yf || pl){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
   updateVariants(); runSearch();
 }));
 $("#langBtn").addEventListener("click", e => { e.preventDefault(); location.href = (lang === "ru" ? "/en/" : "/") + location.search; });
@@ -2836,6 +3027,7 @@ $("#themeBtn").addEventListener("click", () => {
 try { const th = localStorage.getItem("theme"); if (th) document.documentElement.dataset.theme = th; } catch(e){}
 $("#year").textContent = new Date().getFullYear();
 applyI18n();
+setDest([]);
 (() => {
   const p = new URLSearchParams(location.search);
   if (!p.get("ln")) return;
@@ -2843,7 +3035,8 @@ applyI18n();
   $("#yf").value = p.get("yf") || ""; $("#yt").value = p.get("yt") || ""; $("#pl").value = p.get("pl") || "";
   $("#lfn").value = p.get("lfn") || ""; $("#lln").value = p.get("lln") || "";
   const fam = ["dy", "my", "ay", "sp", "fa", "mo", "rs"]; fam.forEach(k => $("#" + k).value = p.get(k) || "");
-  if (p.get("yf") || p.get("yt") || p.get("pl") || p.get("lln") || fam.some(k => p.get(k))){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
+  setDest((p.get("to") || "").split(",").filter(k => DESTS.includes(k)));
+  if (p.get("yf") || p.get("yt") || p.get("pl") || p.get("lln") || fam.some(k => p.get(k)) || p.get("to")){ $("#adv").hidden = false; $("#advBtn").setAttribute("aria-expanded", "true"); }
   updateVariants(); runSearch();
 })();
 </script>
