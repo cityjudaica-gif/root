@@ -18,7 +18,7 @@ window.ISTOKI_CONFIG = {
   GA4_ID: "",
 
   // Необязательно: номер счётчика Яндекс Метрики (только цифры), если она снова заработает. 0 — выключено.
-  YANDEX_METRIKA_ID: 113663682,
+  YANDEX_METRIKA_ID: 0,
 
   // Адрес вашего сайта для рекламных блоков
   AD_URL: "https://mystorytel.com",
@@ -39,6 +39,13 @@ window.ISTOKI_CONFIG = {
       cta:   { ru: "Попробовать", en: "Try it" },
       url: "https://mystorytel.com",
       badge: "M"
+    },
+    {
+      title: { ru: "Реестр Кишинёвского еврейского кладбища", en: "Kishinev Jewish Cemetery registry" },
+      text:  { ru: "Найдите сектор и номер могилы", en: "Find the sector and grave number" },
+      cta:   { ru: "Открыть", en: "Open" },
+      url: "https://gbsearch.vercel.app/",
+      badge: "✡"
     }
   ]
 };
