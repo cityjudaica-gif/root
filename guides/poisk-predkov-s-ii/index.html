@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Поиск предков с помощью ИИ-агента: бесплатный навык для архивов бывшего СССР</title>
-<meta name="description" content="Как подключить к ИИ-агенту (Claude Code, Codex) бесплатный навык для поиска по метрикам, военным и архивным документам бывшего СССР, как поставить задачу и как проверять найденное.">
+<title>Поиск предков с помощью ИИ: простая инструкция для начинающих</title>
+<meta name="description" content="Простая пошаговая инструкция: что такое ИИ-агент, что нужно, сколько стоит, как попросить его найти документы о предках в архивах бывшего СССР и как понять, можно ли верить найденному.">
 <link rel="canonical" href="https://isradata.vercel.app/guides/poisk-predkov-s-ii/">
 <link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/guides/poisk-predkov-s-ii/"><link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/guides/ai-genealogy-agent/"><link rel="alternate" hreflang="x-default" href="https://isradata.vercel.app/guides/poisk-predkov-s-ii/">
-<meta property="og:type" content="article"><meta property="og:title" content="Поиск предков с помощью ИИ-агента: бесплатный навык для архивов бывшего СССР"><meta property="og:description" content="Как подключить к ИИ-агенту (Claude Code, Codex) бесплатный навык для поиска по метрикам, военным и архивным документам бывшего СССР, как поставить задачу и как проверять найденное.">
+<meta property="og:type" content="article"><meta property="og:title" content="Поиск предков с помощью ИИ: простая инструкция для начинающих"><meta property="og:description" content="Простая пошаговая инструкция: что такое ИИ-агент, что нужно, сколько стоит, как попросить его найти документы о предках в архивах бывшего СССР и как понять, можно ли верить найденному.">
 <meta property="og:url" content="https://isradata.vercel.app/guides/poisk-predkov-s-ii/"><meta property="og:image" content="https://isradata.vercel.app/og-image.png"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8862e'/%3E%3C/svg%3E">
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Истоки", "item": "https://isradata.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Путеводители", "item": "https://isradata.vercel.app/guides/"}, {"@type": "ListItem", "position": 3, "name": "Поиск предков с помощью ИИ-агента", "item": "https://isradata.vercel.app/guides/poisk-predkov-s-ii/"}]}, {"@type": "Article", "headline": "Поиск предков с помощью ИИ-агента", "description": "Как подключить к ИИ-агенту (Claude Code, Codex) бесплатный навык для поиска по метрикам, военным и архивным документам бывшего СССР, как поставить задачу и как проверять найденное.", "inLanguage": "ru", "url": "https://isradata.vercel.app/guides/poisk-predkov-s-ii/", "dateModified": "2026-11-14", "author": {"@type": "Organization", "name": "Истоки", "url": "https://isradata.vercel.app/"}, "publisher": {"@type": "Organization", "name": "Истоки"}, "image": "https://isradata.vercel.app/og-image.png"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Истоки", "item": "https://isradata.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Путеводители", "item": "https://isradata.vercel.app/guides/"}, {"@type": "ListItem", "position": 3, "name": "Поиск предков с помощью ИИ-помощника", "item": "https://isradata.vercel.app/guides/poisk-predkov-s-ii/"}]}, {"@type": "Article", "headline": "Поиск предков с помощью ИИ-помощника", "description": "Простая пошаговая инструкция: что такое ИИ-агент, что нужно, сколько стоит, как попросить его найти документы о предках в архивах бывшего СССР и как понять, можно ли верить найденному.", "inLanguage": "ru", "url": "https://isradata.vercel.app/guides/poisk-predkov-s-ii/", "dateModified": "2026-11-14", "author": {"@type": "Organization", "name": "Истоки", "url": "https://isradata.vercel.app/"}, "publisher": {"@type": "Organization", "name": "Истоки"}, "image": "https://isradata.vercel.app/og-image.png"}]}</script>
 <script>try{var th=localStorage.getItem("theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
 <style>
 /* ============ ТЕМА ============ */
@@ -525,77 +525,122 @@ footer a{color:var(--text)}
 .g-more{margin-top:34px}.g-more h2{font-size:18px}.g-more ul{padding-left:18px}.g-more a{color:var(--accent)}
 .g-foot{border-top:1px solid var(--border);padding:22px 16px;text-align:center;font-size:13px;color:var(--muted)}.g-foot a{color:var(--muted);margin:0 8px}
 </style>
-<style>.g-tbl{overflow-x:auto;margin:14px 0}.g-body table{width:100%;border-collapse:collapse;font-size:15px}.g-body th,.g-body td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}.g-body th{background:var(--surface-2)}.g-code{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;overflow-x:auto;font-size:14px;white-space:pre-wrap;margin:10px 0}.g-body code{font-size:14px}</style></head><body>
+<style>.g-tbl{overflow-x:auto;margin:14px 0}.g-body table{width:100%;border-collapse:collapse;font-size:15px}.g-body th,.g-body td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}.g-body th{background:var(--surface-2)}.g-code{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;overflow-x:auto;font-size:14px;white-space:pre-wrap;margin:10px 0}.g-body code{font-size:14px}.g-note{background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius-sm);padding:14px 16px;margin:6px 0 22px;font-size:16px;line-height:1.6}.g-steps li{margin-bottom:12px}.g-check>li{margin-bottom:8px}.g-check ul{margin-top:6px}.g-promo{margin:26px 0;padding:20px 22px;border-radius:var(--radius);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));background:color-mix(in srgb,var(--accent) 8%,var(--surface))}.g-promo h3{margin:6px 0 8px;font-family:var(--serif);font-size:21px}.g-promo ul{margin:8px 0}.g-promo-tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.g-promo-btn{display:inline-block;margin-top:6px;background:var(--accent);color:#fff!important;text-decoration:none!important;font-weight:700;padding:10px 18px;border-radius:999px}.g-faq{border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin:8px 0;background:var(--surface)}.g-faq summary{cursor:pointer;font-weight:700}.g-faq p{margin:8px 0 4px}.g-small{font-size:13px;color:var(--muted);margin-top:22px}</style></head><body>
 <header class="top"><div class="wrap">
   <a class="logo" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--accent)"/><path d="M32 50V30M32 30l-10-10M32 30l10-10M32 38l-8-6M32 38l8-6" stroke="var(--bg)" stroke-width="4" stroke-linecap="round" fill="none"/></svg><span>Истоки</span></a>
   <nav><a class="pill-btn" href="/en/guides/ai-genealogy-agent/" hreflang="en">EN</a><a class="pill-btn ad-link" href="/">Найти документы</a></nav>
 </div></header>
 <main class="g-main">
   <div class="g-bc"><a href="/">Главная</a> › <a href="/guides/">Путеводители</a> › </div>
-  <h1>Поиск предков с помощью ИИ-агента</h1>
-  <p class="g-lead">Как подключить к ИИ-агенту (Claude Code, Codex) бесплатный навык для поиска по метрикам, военным и архивным документам бывшего СССР, как поставить задачу и как проверять найденное.</p>
+  <h1>Поиск предков с помощью ИИ-помощника</h1>
+  <p class="g-lead">Простая пошаговая инструкция: что такое ИИ-агент, что нужно, сколько стоит, как попросить его найти документы о предках в архивах бывшего СССР и как понять, можно ли верить найденному.</p>
   <article class="g-body">
-<p>ИИ-агент — это программа вроде Claude Code или Codex, которая не только отвечает в чате, но и сама открывает сайты архивов, читает сканы и записывает найденное в файлы. Обычный чат-бот легко «додумывает» предков. Чтобы агент работал как аккуратный исследователь, ему нужны правила. Такие правила есть в открытом проекте <a href="https://github.com/DenisSergeevitch/ex-ussr-kinship-research" target="_blank" rel="noopener">ex-USSR Kinship Research</a> (автор — Денис Ширяев, лицензия MIT, бесплатно).</p>
+<div class="g-note"><b>Коротко.</b> Есть бесплатная «инструкция для ИИ», которая учит программу-помощника искать документы о предках в архивах бывшего СССР: метрики, военные документы, списки переселенцев. Вы рассказываете, что знаете о семье, — помощник сам ходит по сайтам архивов, читает найденное и пишет понятный отчёт: что доказано, что пока догадка и куда писать дальше. Нужны компьютер и платная подписка на ИИ (около $20 в месяц). Программировать уметь не нужно.</div>
 
-<h2>Что умеет навык</h2>
+<h2>Что такое ИИ-агент — простыми словами</h2>
+<p>Вы, наверное, знаете ChatGPT или Claude: пишешь вопрос — получаешь ответ. Это обычный чат. Он отвечает «по памяти» и иногда уверенно выдумывает.</p>
+<p><b>ИИ-агент</b> — это следующая ступень. Представьте помощника-архивиста, который сидит за вашим компьютером: сам открывает сайты архивов, вводит фамилии в поиск, листает найденные записи, сохраняет их в папку и ведёт записи о том, где уже искал. Вы даёте задание и проверяете результат.</p>
+<p>Чтобы помощник работал аккуратно, ему нужна инструкция. Такую инструкцию для поиска по бывшему СССР бесплатно выложил Денис Ширяев: проект называется <a href="https://github.com/DenisSergeevitch/ex-ussr-kinship-research" target="_blank" rel="noopener">ex-USSR Kinship Research</a>. В мире ИИ такие инструкции называют «навыками» (skills).</p>
+
+<h2>Чем это лучше, чем просто спросить чат</h2>
 <ul>
-<li>Ищет по метрическим книгам, ревизским сказкам, военным, депортационным и репрессивным делам всех 15 бывших советских республик и Российской империи.</li>
-<li>Привязывает каждое событие к губернии, уезду и приходу <b>на дату события</b>, а не к современной карте, — от этого зависит, в каком архиве искать.</li>
-<li>Перебирает написания имён: дореформенные, украинские, польские, румынские, немецкие, идишские формы и транслитерацию.</li>
-<li>Ведёт журнал поиска и таблицы людей, документов и выводов, чтобы любую находку можно было перепроверить.</li>
-<li>Держит однофамильцев раздельно, пока документы не докажут, что это один человек.</li>
-<li>Готовит письма-запросы в архивы и итоговый отчёт, а по просьбе — дерево в формате GEDCOM.</li>
-<li>Инструкции написаны по-русски, но агент отвечает на вашем языке.</li>
+<li><b>Не выдумывает предков.</b> Каждый вывод должен опираться на конкретный документ со ссылкой.</li>
+<li><b>Знает, где искать.</b> Село в 1890 году могло относиться к другой губернии и другой стране, чем сегодня. Помощник ищет по границам того времени — от этого зависит, в каком архиве лежит запись.</li>
+<li><b>Перебирает написания.</b> Шапиро, Shapiro, Szapiro, Schapiro; Хаим, Chaim, Khaim, Ефим — в документах фамилии писали как слышали.</li>
+<li><b>Не путает однофамильцев.</b> Пока документы не доказали, что это один и тот же человек, помощник держит их отдельно.</li>
+<li><b>Готовит письма в архивы</b>, если нужного документа нет в интернете.</li>
 </ul>
 
-<h2>Как установить</h2>
-<ol>
-<li>Нужен ИИ-агент, который умеет работать с файлами и браузером: например, <b>Claude Code</b> или <b>Codex</b>. Обычно это платная подписка.</li>
-<li>Установите навык одной командой (нужен Node.js):
-<pre class="g-code">npx skills add https://github.com/DenisSergeevitch/ex-ussr-kinship-research</pre>
-или скопируйте папку проекта в каталог навыков агента:
-<pre class="g-code">git clone https://github.com/DenisSergeevitch/ex-ussr-kinship-research ~/.claude/skills/ex-ussr-kinship-research</pre>
-Для Codex — папка <code>~/.codex/skills/</code>. Для вспомогательных скриптов нужен Python 3.</li>
-<li>Можно просто попросить агента: «установи навык по этой ссылке» и дать адрес репозитория.</li>
+<h2>Что понадобится</h2>
+<ul class="g-check">
+<li><b>Компьютер</b> (Windows или Mac). С телефона не получится.</li>
+<li><b>Подписка на ИИ-помощника, который умеет работать как агент.</b> Подойдёт один из двух вариантов:
+  <ul>
+  <li><b>Claude</b> от компании Anthropic — тариф Pro, $20 в месяц (при оплате за год $17 в месяц). В него входит Claude Code — режим агента.</li>
+  <li><b>ChatGPT</b> от OpenAI — тариф Plus, $20 в месяц. В него входит Codex — режим агента.</li>
+  </ul>
+  Цены могут меняться — проверьте на сайте компании.</li>
+<li><b>Бесплатный аккаунт на <a href="https://www.familysearch.org" target="_blank" rel="noopener">FamilySearch</a></b> — там хранится большая часть отсканированных метрик. Регистрация бесплатная.</li>
+<li><b>То, что вы знаете о семье:</b> имена, примерные годы, город или местечко. Об этом — ниже.</li>
+<li><b>Час-два времени</b> на первый раз.</li>
+</ul>
+
+<h2>Пошагово</h2>
+<ol class="g-steps">
+<li><b>Оформите подписку и установите программу на компьютер.</b> Для Claude — приложение Claude для компьютера, в нём есть раздел Code. Для ChatGPT — приложение Codex. Войдите в свою учётную запись.</li>
+<li><b>Создайте на компьютере пустую папку</b>, например «Семья Шапиро», и откройте её в программе. В этой папке помощник будет хранить всё найденное.</li>
+<li><b>Попросите помощника установить навык.</b> Скопируйте и отправьте ему такую фразу:
+<pre class="g-code">Установи навык для поиска предков отсюда:
+https://github.com/DenisSergeevitch/ex-ussr-kinship-research
+Потом скажи, что всё готово.</pre>
+Если программа спросит разрешения что-то скачать или запустить — разрешите. Это обычная установка.</li>
+<li><b>Расскажите, что знаете, и задайте один вопрос.</b> Лучше начать с одного человека, а не «найди всю семью». Шаблон — ниже.</li>
+<li><b>Если помощник попросит войти на сайт</b> (например, FamilySearch) — войдите сами. Пароли ИИ не вводит.</li>
+<li><b>Прочитайте отчёт.</b> Помощник покажет, что нашёл, со ссылками на документы. Важные записи откройте и посмотрите своими глазами.</li>
 </ol>
 
-<h2>Как поставить задачу</h2>
-<p>Один вопрос за раз работает лучше, чем «найди всё о семье». Перечислите, что известно, и откуда:</p>
-<pre class="g-code">Найди запись о рождении Хаима Шапиро, около 1885 г., Сороки (Бессарабия).
-Отец — Мойше, со слов бабушки. Семья уехала в Аргентину около 1906 г.
-Отдели доказанное от предположений и укажи, где хранятся оригиналы.</pre>
-<p>Удобно сначала сделать поиск в <a href="/">Истоках</a>: вы увидите, в каких коллекциях может быть человек, и передадите агенту готовый список адресов и вариантов написания.</p>
+<h2>Что написать помощнику — шаблон</h2>
+<p>Замените данные в скобках на свои. Пишите, <b>откуда</b> вы это знаете: «по документу», «со слов бабушки», «примерно».</p>
+<pre class="g-code">Найди запись о рождении [Хаима Шапиро], родился около [1885] года
+в [Сороках, Бессарабия].
+Отца звали [Мойше] — это со слов бабушки, документа нет.
+Семья уехала в [Аргентину] примерно в [1906] году.
+Отдели то, что доказано документами, от предположений.
+Напиши, где хранятся оригиналы и что искать дальше.
+Отвечай по-русски.</pre>
+<p>Совет: сначала сделайте поиск на <a href="/">главной странице Истоков</a>. Вы увидите, в каких коллекциях может быть человек и как могла писаться фамилия, — передайте это помощнику, он начнёт быстрее.</p>
 
-<h2>Насколько надёжна находка</h2>
-<p>Навык не ставит «проценты уверенности», а помечает каждый вывод понятным статусом. Такие пометки полезно вести и без ИИ — в своей таблице или в описании фотографии:</p>
+<h2>Как понимать ответ</h2>
+<p>Помощник не пишет «уверен на 90%». Вместо этого у каждого вывода есть простая пометка:</p>
 <div class="g-tbl"><table>
-<tr><th>Пометка</th><th>Что значит</th></tr>
-<tr><td>Гипотеза</td><td>Догадка или семейное предание, документа пока нет.</td></tr>
-<tr><td>Один источник</td><td>Есть одна запись, но подтвердить её нечем.</td></tr>
-<tr><td>Подтверждено</td><td>Совпадают два независимых документа.</td></tr>
-<tr><td>Надёжно подтверждено</td><td>Несколько независимых документов, противоречий нет.</td></tr>
-<tr><td>Противоречие</td><td>Документы расходятся, нужен ещё источник.</td></tr>
+<tr><th>Пометка</th><th>Что значит</th><th>Можно ли верить</th></tr>
+<tr><td>Гипотеза</td><td>Догадка или семейное предание, документа нет.</td><td>Пока нет — это направление для поиска.</td></tr>
+<tr><td>Один источник</td><td>Нашлась одна запись.</td><td>Осторожно: однофамилец тоже возможен.</td></tr>
+<tr><td>Подтверждено</td><td>Совпадают два независимых документа.</td><td>Да, это хороший результат.</td></tr>
+<tr><td>Надёжно подтверждено</td><td>Несколько документов, противоречий нет.</td><td>Да.</td></tr>
+<tr><td>Противоречие</td><td>Документы расходятся (например, в годе рождения).</td><td>Нужно искать ещё.</td></tr>
 </table></div>
-<p>Важно: копия одной и той же записи на трёх сайтах — это всё ещё один источник, а не три.</p>
+<p>Важно: одна и та же запись, перепечатанная на трёх сайтах, — это всё равно <b>один</b> источник, а не три.</p>
 
 <h2>Прежде чем искать — поговорите с родными</h2>
-<p>Устный рассказ — тоже источник, только его нужно правильно записать. Несколько вопросов, которые помогают:</p>
+<p>Самые ценные зацепки часто не в архиве, а в памяти бабушек и дедушек. Без них помощнику просто не с чего начать. Вот вопросы, которые помогают:</p>
 <ul>
-<li>«Это вы помните сами или слышали от кого-то?» — так видно, где воспоминание, а где пересказ.</li>
-<li>«Как в семье различали двух людей с одним именем?» — подсказка, как не спутать тёзок в документах.</li>
-<li>«Что было до переезда и после? С каким событием он связан?» — помогает определить годы, даже если дату никто не помнит.</li>
-<li>«Остались ли письма, подписи на обороте фото, справки?» — домашние бумаги часто называют место и точную дату.</li>
+<li><b>«Это вы помните сами или слышали от кого-то?»</b> — так понятно, где воспоминание, а где пересказ.</li>
+<li><b>«Как полностью звали ваших родителей, бабушек и дедушек? Какие у женщин были девичьи фамилии?»</b></li>
+<li><b>«Как в семье различали двух людей с одним именем?»</b> — подсказка, как не спутать тёзок в документах.</li>
+<li><b>«Откуда семья родом? Как называлось место тогда?»</b></li>
+<li><b>«Что было до переезда и после? С каким событием он связан?»</b> — помогает определить годы, даже если точную дату никто не помнит.</li>
+<li><b>«Остались ли письма, документы, фото с подписями на обороте?»</b> — там часто указаны место и точная дата.</li>
 </ul>
-<p>Записывайте, кто и когда рассказал. Если собеседник не хочет говорить на какую-то тему, не настаивайте.</p>
+<p>Записывайте, кто и когда рассказал. Если человек не хочет говорить на какую-то тему — не настаивайте.</p>
 
-<h2>О чём помнить</h2>
+<div class="g-promo">
+<span class="g-promo-tag">Сервис от создателей Истоков</span>
+<h3>Где записать рассказы родных, чтобы они не потерялись</h3>
+<p>Рассказы, фотографии и даты удобно собрать в <b>Mystorytel</b> — на русском языке:</p>
 <ul>
-<li>ИИ может ошибиться при чтении старого почерка. Важную запись откройте и прочитайте сами.</li>
-<li>Навык рассчитан на поиск предков, а не на поиск живых людей: адреса и телефоны современников он не ищет.</li>
-<li>Агент работает в вашем браузере и под вашими учётными записями, соблюдает правила сайтов и не обходит капчи.</li>
-<li>Не отправляйте сканы паспортов и личные документы живых родственников в сторонние сервисы без необходимости.</li>
+<li><b>семейное древо</b> — кто кому кем приходится;</li>
+<li><b>летопись и воспоминания</b> — истории бабушек и дедушек их словами;</li>
+<li><b>фотоархив</b> — снимки с подписями, кто на них и когда;</li>
+<li><b>печатная книга памяти</b> — всё собранное можно издать книгой для детей и внуков.</li>
 </ul>
-<p>Навык — независимый проект; Истоки с его автором не связаны. Подробности, обновления и полная инструкция — в <a href="https://github.com/DenisSergeevitch/ex-ussr-kinship-research" target="_blank" rel="noopener">репозитории на GitHub</a>.</p>
+<p>А когда соберёте рассказы — у вас будет готовый материал для задания ИИ-помощнику.</p>
+<a class="g-promo-btn" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=guide&amp;utm_campaign=genealogy_search&amp;utm_content=ai_guide_interview" target="_blank" rel="noopener">Открыть Mystorytel ↗</a>
+</div>
+
+<h2>Частые вопросы</h2>
+<details class="g-faq"><summary>Нужно ли уметь программировать?</summary><p>Нет. Вы пишете обычным языком, как в чате. Программа может показывать технические сообщения — их можно не читать, главное — итоговый ответ.</p></details>
+<details class="g-faq"><summary>Можно ли бесплатно?</summary><p>Сам навык бесплатный. А за ИИ-помощника нужно платить: у Claude режим агента есть только в платных тарифах. У ChatGPT есть бесплатный доступ к Codex, но с небольшими лимитами — для серьёзного поиска его, скорее всего, не хватит. Можно оплатить один месяц, провести поиск и отменить подписку.</p></details>
+<details class="g-faq"><summary>Это безопасно?</summary><p>Помощник работает в той папке, которую вы ему дали, и на сайтах, где вы сами вошли в учётную запись. Он не вводит пароли и не обходит защиту сайтов. Не давайте ему сканы паспортов и личных документов живых родственников без необходимости.</p></details>
+<details class="g-faq"><summary>Найдёт ли он живых родственников?</summary><p>Нет. Навык создан для поиска предков по историческим документам. Адреса и телефоны современников он не ищет.</p></details>
+<details class="g-faq"><summary>А если ИИ ошибётся?</summary><p>Может — особенно при чтении старого почерка. Поэтому у каждого вывода есть ссылка на документ. Важные записи откройте и посмотрите сами или покажите знающему человеку.</p></details>
+<details class="g-faq"><summary>Для тех, кто умеет пользоваться терминалом</summary><p>Установка одной командой (нужен Node.js):</p>
+<pre class="g-code">npx skills add https://github.com/DenisSergeevitch/ex-ussr-kinship-research</pre>
+<p>Или вручную в папку навыков: <code>~/.claude/skills/</code> для Claude Code, <code>~/.codex/skills/</code> для Codex:</p>
+<pre class="g-code">git clone https://github.com/DenisSergeevitch/ex-ussr-kinship-research ~/.claude/skills/ex-ussr-kinship-research</pre>
+<p>Вспомогательным скриптам нужен Python 3.</p></details>
+
+<p class="g-small">Навык — независимый проект Дениса Ширяева (лицензия MIT); Истоки с автором не связаны. Подробности и обновления — в <a href="https://github.com/DenisSergeevitch/ex-ussr-kinship-research" target="_blank" rel="noopener">репозитории на GitHub</a>.</p>
 </article>
   <form class="g-cta" action="/" method="get">
   <h2>Найдите документы о своём предке</h2><p>Введите, что знаете, — откроем поиск в нужных архивах с вашими данными.</p>
