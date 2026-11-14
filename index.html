@@ -654,6 +654,27 @@ footer a{color:var(--text)}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.sumbar{margin:0 0 20px}
+.sum-msg{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);font-size:15px;line-height:1.5;margin-bottom:12px}
+.sum-msg b{font-weight:700}
+.sum-msg .ic{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;background:var(--accent);margin-top:1px}
+.sum-msg.wait .ic{background:transparent;border:2.5px solid var(--border-strong);border-top-color:var(--accent);animation:sumspin .8s linear infinite}
+.sum-msg.ok{border-color:color-mix(in srgb,#2e8b57 45%,var(--border));background:color-mix(in srgb,#2e8b57 7%,var(--surface))}
+.sum-msg.ok .ic{background:#2e8b57}
+.sum-msg.zero .ic{background:var(--accent)}
+@keyframes sumspin{to{transform:rotate(360deg)}}
+.sum-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sum-tile{display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;font:inherit;color:var(--text);transition:.2s}
+.sum-tile:hover{border-color:var(--accent);transform:translateY(-1px)}
+.sum-tile .num{font-family:var(--serif);font-size:28px;font-weight:700;line-height:1.1;color:var(--accent)}
+.sum-tile .lbl{font-size:13px;color:var(--muted);line-height:1.35}
+.sum-tile .sgo{font-size:12px;font-weight:700;color:var(--accent);margin-top:4px}
+.sum-tile.dim .num{color:var(--faint)}
+@media (max-width:760px){.sum-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.sum-tile .num{font-size:24px}}
+.empty-sm{border:1px dashed var(--border-strong);border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;color:var(--muted);margin:0 0 22px}
+#planBox{scroll-margin-top:80px}#openHead,#extLinks,#letters{scroll-margin-top:80px}
+.res-head h2 small{margin-top:4px}
 </style>
 </head>
 <body>
@@ -770,6 +791,7 @@ footer a{color:var(--text)}
       <div class="res-head">
         <h2 id="resTitle"></h2>
         <div class="res-tools">
+          <button class="pill-btn" id="editSearch" type="button">✎ <span id="editSearchTxt"></span></button>
           <select class="select" id="sort" aria-label="Sort">
             <option value="rel" data-i18n="sortRel">По точности</option>
             <option value="year" data-i18n="sortYear">По году</option>
@@ -787,6 +809,7 @@ footer a{color:var(--text)}
       </div>
       <div class="tabs" id="statusRow" role="tablist"></div>
       <div class="src-line" id="srcLine"></div>
+      <div class="sumbar" id="sumBar"></div>
 
       <div class="layout">
         <div>
@@ -840,6 +863,7 @@ footer a{color:var(--text)}
         <span class="guide-num">1</span>
         <h3>Начните с семьи и домашних документов</h3>
         <p>Запишите всё, что помнят старшие родственники: полные имена, отчества, девичьи фамилии, годы и места рождения, переезды. Соберите свидетельства о рождении и браке, военные билеты, письма и фотографии с подписями на обороте — это ключи к архивным записям.</p>
+        <p>Спрашивайте: «Это вы помните сами или слышали от других?», «Как в семье различали тёзок?», «С каким событием связан переезд?» — так проще отделить воспоминание от пересказа и уточнить годы. <a href="/guides/poisk-predkov-s-ii/">Больше вопросов</a></p>
         <p style="margin-top:8px">Спрашивайте: «Это вы помните сами или слышали от других?», «Как в семье различали тёзок?», «С каким событием связан переезд?» — так проще отделить воспоминание от пересказа и уточнить годы. <a href="/guides/poisk-predkov-s-ii/">Больше вопросов</a></p>
       </article>
       <article class="guide-card">
@@ -906,7 +930,7 @@ footer a{color:var(--text)}
 
 <footer>
   <div class="wrap footer-ads" id="footerAds"><div class="fa-head">Рекомендуем<span>Реклама</span></div><div class="fa-grid"><a class="fa" href="https://mystorytel.com?utm_source=istoki&amp;utm_medium=banner&amp;utm_campaign=genealogy_search&amp;utm_content=footer" target="_blank" rel="noopener sponsored"><span class="fa-b">M</span><span class="fa-t"><b>Нашли предков? Сохраните их историю</b><small>Mystorytel — семейное древо, летопись, фото и печатная книга памяти на русском.</small></span><span class="fa-c">Попробовать ↗</span></a></div></div>
-  <div class="wrap foot-guides"><h5>Путеводители</h5><ul><li><a href="/guides/rossijskaya-imperiya/">Как найти предков из Российской империи</a></li><li><a href="/guides/bessarabiya-moldova/">Как найти предков из Бессарабии и Молдовы</a></li><li><a href="/guides/emigraciya-v-ssha/">Как найти родственника, эмигрировавшего в США</a></li><li><a href="/guides/evrejskaya-genealogiya/">Еврейская генеалогия: с чего начать</a></li><li><a href="/guides/uchastniki-vojny/">Как найти участника Великой Отечественной войны</a></li><li><a href="/guides/zhertvy-holokosta/">Как найти жертв Холокоста по имени</a></li><li><a href="/guides/metricheskie-knigi/">Метрические книги: где искать и как читать</a></li><li><a href="/guides/latinskaya-amerika/">Как найти предков, уехавших в Латинскую Америку</a></li><li><a href="/guides/poisk-predkov-s-ii/">Поиск предков с помощью ИИ-агента</a></li></ul></div>
+  <div class="wrap foot-guides"><h5>Путеводители</h5><ul><li><a href="/guides/rossijskaya-imperiya/">Как найти предков из Российской империи</a></li><li><a href="/guides/bessarabiya-moldova/">Как найти предков из Бессарабии и Молдовы</a></li><li><a href="/guides/emigraciya-v-ssha/">Как найти родственника, эмигрировавшего в США</a></li><li><a href="/guides/evrejskaya-genealogiya/">Еврейская генеалогия: с чего начать</a></li><li><a href="/guides/uchastniki-vojny/">Как найти участника Великой Отечественной войны</a></li><li><a href="/guides/zhertvy-holokosta/">Как найти жертв Холокоста по имени</a></li><li><a href="/guides/metricheskie-knigi/">Метрические книги: где искать и как читать</a></li><li><a href="/guides/latinskaya-amerika/">Как найти предков, уехавших в Латинскую Америку</a></li><li><a href="/guides/poisk-predkov-s-ii/">Поиск предков с помощью ИИ-помощника</a></li></ul></div>
   <div class="wrap cols">
     <div>
       <h5 data-i18n="aboutTitle">О проекте</h5>
@@ -1191,7 +1215,7 @@ Requester: [ваше имя], [родство], [e-mail]`
     regions: { moldova: "Бессарабия и Молдова", ukraine: "Украина", belarus: "Беларусь", poland: "Польша", lithuania: "Литва", latvia: "Латвия", russia: "Россия", romania: "Румыния", usa: "США", israel: "Израиль", germany: "Германия", hungary: "Венгрия", czech: "Чехия", estonia: "Эстония", canada: "Канада", uk: "Великобритания", argentina: "Аргентина", brazil: "Бразилия", australia: "Австралия" },
     namesakes: n => `Известные однофамильцы (${n}) — биографии без совпадения имени и лет`,
     openTitle: "Найдено в открытых базах",
-    openNote: "Эти базы мы проверяем сами и показываем записи прямо здесь. В них лишь малая часть документов о людях из Восточной Европы — основные записи ищите по плану выше.",
+    openNote: "Эти базы мы проверяем сами и показываем записи прямо здесь. В них лишь малая часть документов о людях из Восточной Европы — основные записи ищите в коллекциях архивов выше.",
     regSector: "сектор", regGrave: "могила",
     docs: {
       title: "Какие документы искать",
@@ -1541,7 +1565,7 @@ Requester: [ваше имя], [родство], [e-mail]`
     regions: { moldova: "Bessarabia & Moldova", ukraine: "Ukraine", belarus: "Belarus", poland: "Poland", lithuania: "Lithuania", latvia: "Latvia", russia: "Russia", romania: "Romania", usa: "USA", israel: "Israel", germany: "Germany", hungary: "Hungary", czech: "Czechia", estonia: "Estonia", canada: "Canada", uk: "UK", argentina: "Argentina", brazil: "Brazil", australia: "Australia" },
     namesakes: n => `Notable namesakes (${n}) — biographies without a first-name and year match`,
     openTitle: "Found in open databases",
-    openNote: "We query these databases ourselves and show records right here. They hold only a small share of records on people from Eastern Europe — look for the main records via the plan above.",
+    openNote: "We query these databases ourselves and show records right here. They hold only a small share of records on people from Eastern Europe — look for the main records in the archive collections above.",
     regSector: "sector", regGrave: "grave",
     docs: {
       title: "Which documents to look for",
@@ -2733,6 +2757,66 @@ function filteredItems(){
   return sortList(state.items.filter(r => state.filter === "all" || r.cat === state.filter));
 }
 
+
+/* ---------- сводка результатов: что найдено и куда смотреть ---------- */
+const SUM_TXT = {
+  ru: {
+    head: "Результаты поиска",
+    edit: "Изменить поиск",
+    wait: (d, a) => `Архивные коллекции ниже уже готовы — открывайте. Параллельно ищем в открытых базах… проверено ${d} из ${a}.`,
+    found: (n, s) => `<b>Готово.</b> Ниже — архивные коллекции, где хранится большинство документов: поиск в них уже настроен на ваши данные. А ещё в открытых базах <b>найдено ${n} ${plural(n, ["запись","записи","записей"])}</b>${s ? ` (вероятных совпадений: ${s})` : ""} — нажмите на плитку, чтобы посмотреть.`,
+    zero: "<b>Поиск завершён. В открытых базах совпадений нет — это нормально.</b> Большинство документов о людях из Восточной Европы хранятся в архивах. Откройте коллекции ниже: поиск в них уже настроен на ваше имя и годы.",
+    fail: "<b>Открытые базы сейчас не ответили.</b> Попробуйте позже. Коллекции архивов ниже работают — нажмите на любую, поиск откроется с вашими данными.",
+    t1: "записей найдено в открытых базах", t1w: "ищем…",
+    t2: "коллекций архивов — поиск с вашими данными",
+    t3: "баз для проверки по ссылке",
+    t4: "письмо в архив — готовый текст",
+    go: "Показать ↓"
+  },
+  en: {
+    head: "Search results",
+    edit: "Edit search",
+    wait: (d, a) => `The archive collections below are ready — open them. Meanwhile searching open databases… ${d} of ${a} checked.`,
+    found: (n, s) => `<b>Done.</b> Below are the archive collections that hold most records, already set to your details. Also, <b>${n} ${n === 1 ? "record" : "records"} found</b> in open databases${s ? ` (likely matches: ${s})` : ""} — click the tile to see them.`,
+    zero: "<b>Search finished. No matches in open databases — that's normal.</b> Most records on people from Eastern Europe are held in archives. Open the collections below: they are already set to your name and years.",
+    fail: "<b>The open databases did not respond right now.</b> Try again later. The archive collections below work — click any of them to search with your details.",
+    t1: "records found in open databases", t1w: "searching…",
+    t2: "archive collections searched with your details",
+    t3: "more databases to check by link",
+    t4: "letter to an archive — ready text",
+    go: "Show ↓"
+  }
+};
+function renderSummary(){
+  const box = $("#sumBar"); if (!box || !state.q) return;
+  const S = SUM_TXT[lang] || SUM_TXT.ru;
+  const st = Object.values(state.status);
+  const active = st.length, pending = st.filter(s => s.state === "loading").length;
+  const failed = st.filter(s => s.state === "link").length, done = active - pending;
+  const n = state.items.length, strongN = state.items.filter(r => r.level !== "low").length;
+  const planN = document.querySelectorAll("#docsSec li").length;
+  const extN = EXTERNAL(state.q).length;
+  const hasLetter = !!document.getElementById("letters");
+  let cls, ic, msg;
+  if (pending){ cls = "wait"; ic = ""; msg = S.wait(done, active); }
+  else if (n){ cls = "ok"; ic = "✓"; msg = S.found(n, strongN); }
+  else if (active && failed === active){ cls = "zero"; ic = "!"; msg = S.fail; }
+  else { cls = "zero"; ic = "i"; msg = S.zero; }
+  const tile = (target, num, lbl, dim) => `<button type="button" class="sum-tile${dim ? " dim" : ""}" data-jump="${target}"><span class="num">${num}</span><span class="lbl">${esc(lbl)}</span><span class="sgo">${esc(S.go)}</span></button>`;
+  box.innerHTML = `<div class="sum-msg ${cls}" role="status" aria-live="polite"><span class="ic">${ic}</span><span>${msg}</span></div>
+    <div class="sum-tiles">
+      ${tile("planBox", planN, S.t2)}
+      ${tile("openHead", pending && !n ? "…" : n, pending && !n ? S.t1w : S.t1, !n && !pending)}
+      ${tile("extLinks", extN, S.t3)}
+      ${hasLetter ? tile("letters", "✉", S.t4) : ""}
+    </div>`;
+  const sr = $("#statusRow"); if (sr) sr.style.display = n ? "" : "none";
+}
+document.addEventListener("click", e => {
+  const j = e.target.closest("[data-jump]"); if (j){ const el = document.getElementById(j.dataset.jump); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  if (e.target.closest("#editSearch")){ window.scrollTo({ top: 0, behavior: "smooth" }); setTimeout(() => $("#ln") && $("#ln").focus({ preventScroll: true }), 400); }
+});
+
 const GROUP_LIMIT = 8;
 function renderGrid(){
   const loading = Object.values(state.status).some(s => s.state === "loading");
@@ -2740,7 +2824,7 @@ function renderGrid(){
   const n = state.items.length;
   const query = [state.q.first, state.q.last].filter(Boolean).join(" ");
   const strongN = state.items.filter(r => r.level !== "low").length;
-  $("#resTitle").innerHTML = `${esc(t("results", n))}<small>${esc(t("resultsFor", query))}${n ? " · " + esc(t("likely", strongN)) : ""}</small>`;
+  $("#resTitle").innerHTML = `${esc(query)}<small>${esc((SUM_TXT[lang] || SUM_TXT.ru).head)}</small>`; $("#editSearchTxt").textContent = (SUM_TXT[lang] || SUM_TXT.ru).edit;
 
   // в режиме «Все» первой идёт категория с самым сильным совпадением
   const best = c => Math.max(0, ...state.items.filter(r => r.cat === c && (c !== "bios" || (r.level === "high" && r.verdict && r.verdict.cls === "ok"))).map(r => r.score || 0));
@@ -2777,10 +2861,11 @@ function renderGrid(){
     if (!adPlaced){ html += adRowHTML(); adPlaced = true; }
   }
   if (loading) html += `<div class="rlist">${'<div class="skel-row"></div>'.repeat(state.items.length ? 2 : 5)}</div>`;
-  if (!html) html = `<div class="empty"><h3>${esc(t("emptyTitle"))}</h3><p>${esc(t("emptyText"))}</p></div>`;
+  if (!html) html = `<p class="empty-sm">${esc(t("emptyText"))}</p>`;
   grid.innerHTML = html;
   $("#moreWrap").hidden = true;
   $("#openHead").innerHTML = `<h3>${esc(t("openTitle"))}</h3><p>${esc(t("openNote"))}</p>`;
+  renderSummary();
 }
 
 function renderStatus(){
