@@ -178,4 +178,36 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/privacy/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/privacy/"/>
   </url>
+  <url>
+    <loc>https://isradata.vercel.app/guides/bessarabiya-moldova/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/guides/bessarabiya-moldova/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/guides/bessarabia-moldova-records/"/>
+  </url>
+  <url>
+    <loc>https://isradata.vercel.app/en/guides/bessarabia-moldova-records/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/guides/bessarabiya-moldova/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/guides/bessarabia-moldova-records/"/>
+  </url>
+  <url>
+    <loc>https://isradata.vercel.app/guides/poisk-predkov-s-ii/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/guides/poisk-predkov-s-ii/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/guides/ai-genealogy-agent/"/>
+  </url>
+  <url>
+    <loc>https://isradata.vercel.app/en/guides/ai-genealogy-agent/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/guides/poisk-predkov-s-ii/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/guides/ai-genealogy-agent/"/>
+  </url>
 </urlset>
