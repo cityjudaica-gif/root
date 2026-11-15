@@ -5,7 +5,7 @@
 <link rel="canonical" href="https://isradata.vercel.app/en/privacy/">
 <link rel="alternate" hreflang="ru" href="https://isradata.vercel.app/privacy/"><link rel="alternate" hreflang="en" href="https://isradata.vercel.app/en/privacy/"><link rel="alternate" hreflang="x-default" href="https://isradata.vercel.app/privacy/">
 <meta property="og:type" content="article"><meta property="og:title" content="Privacy — Istoki"><meta property="og:description" content="What data Istoki collects, how search, analytics and in-browser marks work.">
-<meta property="og:url" content="https://isradata.vercel.app/en/privacy/"><meta property="og:image" content="https://isradata.vercel.app/og-image-en.png"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="https://isradata.vercel.app/en/privacy/"><meta property="og:image" content="https://isradata.vercel.app/en/og-image-en.png"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8862e'/%3E%3C/svg%3E">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Istoki", "item": "https://isradata.vercel.app/en/"}, {"@type": "ListItem", "position": 2, "name": "Privacy", "item": "https://isradata.vercel.app/en/privacy/"}]}]}</script>
 <script>try{var th=localStorage.getItem("theme");if(th)document.documentElement.dataset.theme=th}catch(e){}</script>
@@ -540,13 +540,14 @@ footer a{color:var(--text)}
 <h2>“Found / not found” marks</h2>
 <p>Marks are stored only in your browser (localStorage). They are never sent to us and are deleted when you clear site data.</p>
 <h2>Visit statistics</h2>
-<p>We use Google Analytics 4 to count visits: country, referrer, pages viewed, clicks on archive links. Names and other search details are never sent to analytics. Google may use cookies, which you can disable in your browser.</p>
+<p>We use a web analytics service to count visits: country, referrer, pages viewed, clicks on archive links. Names and other search details are never sent to analytics. The analytics service may use cookies, which you can disable in your browser.</p>
 <h2>Archive sites and ads</h2>
 <p>Links lead to third-party sites — archives, databases, Mystorytel — each with its own privacy policy. Mystorytel links carry a source tag (utm_source=istoki) and are labelled as ads.</p>
+<p>The guide “Finding ancestors with an AI helper” embeds a YouTube video in privacy-enhanced mode (youtube-nocookie.com): YouTube sets no cookies until you play the video; the player itself loads from Google servers when the page opens.</p>
 </article>
   
 </main>
 <footer class="g-foot"><a href="/en/">Istoki</a><a href="/en/guides/">Guides</a><a href="/en/about/">About</a><a href="/en/privacy/">Privacy</a></footer>
 <script src="/config.js"></script>
-<script>(function(){var C=window.ISTOKI_CONFIG||{},id=String(C.GA4_ID||"").trim();if(!id)return;var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id="+id;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config",id);})();</script>
+<script src="/assets/site.js"></script>
 </body></html>
